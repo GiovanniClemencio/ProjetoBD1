@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
  */
 public class CampanhaDAO {
 
+    // Inserção
     public void inserir(Campanha campanha) {
 
         String sql = "INSERT INTO campanha(idCampanha, nome) VALUES (?, ?)";

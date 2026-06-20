@@ -4,7 +4,6 @@
  */
 package Classes;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -14,12 +13,11 @@ import java.util.UUID;
 public class Jogador {
     private String idJogador;
     private String nome;
-    private ArrayList<Personagem> personagens;
+    // private ArrayList<Personagem> personagens;
 
     public Jogador(String nome) {
         this.idJogador = UUID.randomUUID().toString();
         this.nome = nome;
-        this.personagens = new ArrayList<>();
     }
 
     public String getIdJogador() {
@@ -30,9 +28,6 @@ public class Jogador {
         return nome;
     }
 
-    public ArrayList<Personagem> getPersonagens() {
-        return personagens;
-    }
 
     public void setIdJogador(String idJogador) {
         this.idJogador = idJogador;
@@ -42,9 +37,6 @@ public class Jogador {
         this.nome = nome;
     }
 
-    public void setPersonagens(ArrayList<Personagem> personagens) {
-        this.personagens = personagens;
-    }
     
     
 }

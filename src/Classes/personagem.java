@@ -4,7 +4,6 @@
  */
 package Classes;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -24,10 +23,10 @@ public class Personagem {
     private int sabedoria;
     private int carisma;
     private String idJogador;
-    private ArrayList<Classe> classes;
-    private ArrayList<Item> inventario;
+    // private ArrayList<Classe> classes;
+    // private ArrayList<Item> inventario;
 
-    public Personagem(String nome, double cargaMaxima, double xp, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, String idJogador, ArrayList<Classe> classes, ArrayList<Item> inventario){
+    public Personagem(String nome, double cargaMaxima, double xp, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, String idJogador){
         this.idPersonagem = UUID.randomUUID().toString();
         this.nome = nome;
         this.cargaMaxima = cargaMaxima;
@@ -40,8 +39,6 @@ public class Personagem {
         this.sabedoria = sabedoria;
         this.carisma = carisma;
         this.idJogador = idJogador;
-        this.classes = new ArrayList<>();
-        this.inventario = new ArrayList<>();
     }
 
     public String getIdPersonagem() {
@@ -92,14 +89,6 @@ public class Personagem {
         return idJogador;
     }
 
-    public ArrayList<Classe> getClasses() {
-        return classes;
-    }
-
-    public ArrayList<Item> getInventario() {
-        return inventario;
-    }
-
     public void setIdPersonagem(String idPersonagem) {
         this.idPersonagem = idPersonagem;
     }
@@ -146,14 +135,6 @@ public class Personagem {
 
     public void setIdJogador(String idJogador) {
         this.idJogador = idJogador;
-    }
-
-    public void setClasses(ArrayList<Classe> classes) {
-        this.classes = classes;
-    }
-
-    public void setInventario(ArrayList<Item> inventario) {
-        this.inventario = inventario;
     }
     
     

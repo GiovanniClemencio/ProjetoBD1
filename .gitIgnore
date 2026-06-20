@@ -1,0 +1,12 @@
+# Pastas geradas pelo NetBeans
+/build/
+/dist/
+
+# Configurações locais do NetBeans
+/nbproject/private/
+
+# Arquivos compilados Java
+*.class
+
+# Configurações locais do VS Code
+.vscode/

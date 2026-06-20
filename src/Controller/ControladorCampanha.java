@@ -12,7 +12,13 @@ import DAO.CampanhaDAO;
  * @author Luan
  */
 public class ControladorCampanha {
-    public void cadastrarCampanha(Campanha campanha) {
+
+    private CampanhaDAO dao = new CampanhaDAO();
+
+    public void cadastrarCampanha(String nome) {
         
+        Campanha campanha = new Campanha(nome);
+
+        dao.inserir(campanha);
     }
 }

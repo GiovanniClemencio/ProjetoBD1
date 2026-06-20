@@ -18,7 +18,7 @@ public class Campanha {
     private ArrayList<Jogador> mestres;
     private ArrayList<Personagem> personagens;
 
-    public Campanha(String idCampanha, String nome) {
+    public Campanha(String nome) {
         this.idCampanha = UUID.randomUUID().toString();
         this.nome = nome;
         this.missoes = new ArrayList<>();

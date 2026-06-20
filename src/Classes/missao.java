@@ -11,17 +11,17 @@ import java.util.UUID;
  *
  * @author Portu
  */
-public class missao {
+public class Missao {
     private String idMissao;
     private String nome;
     private String descricao;
-    private jogador mestre;
-    private ArrayList<personagem> personagens;
-    private ArrayList<monstro> inimigos;
-    private ArrayList<item> recompensas;
+    private Jogador mestre;
+    private ArrayList<Personagem> personagens;
+    private ArrayList<Monstro> inimigos;
+    private ArrayList<Item> recompensas;
     private int xpBonus;
 
-    public missao(String idMissao, String nome, String descricao, jogador mestre, ArrayList<personagem> personagens, ArrayList<monstro> inimigos, ArrayList<item> recompensas, int xpBonus) {
+    public Missao(String idMissao, String nome, String descricao, Jogador mestre, ArrayList<Personagem> personagens, ArrayList<Monstro> inimigos, ArrayList<Item> recompensas, int xpBonus) {
         this.idMissao = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;
@@ -44,19 +44,19 @@ public class missao {
         return descricao;
     }
 
-    public jogador getMestre() {
+    public Jogador getMestre() {
         return mestre;
     }
 
-    public ArrayList<personagem> getPersonagens() {
+    public ArrayList<Personagem> getPersonagens() {
         return personagens;
     }
 
-    public ArrayList<monstro> getInimigos() {
+    public ArrayList<Monstro> getInimigos() {
         return inimigos;
     }
 
-    public ArrayList<item> getRecompensas() {
+    public ArrayList<Item> getRecompensas() {
         return recompensas;
     }
 
@@ -76,19 +76,19 @@ public class missao {
         this.descricao = descricao;
     }
 
-    public void setMestre(jogador mestre) {
+    public void setMestre(Jogador mestre) {
         this.mestre = mestre;
     }
 
-    public void setPersonagens(ArrayList<personagem> personagens) {
+    public void setPersonagens(ArrayList<Personagem> personagens) {
         this.personagens = personagens;
     }
 
-    public void setInimigos(ArrayList<monstro> inimigos) {
+    public void setInimigos(ArrayList<Monstro> inimigos) {
         this.inimigos = inimigos;
     }
 
-    public void setRecompensas(ArrayList<item> recompensas) {
+    public void setRecompensas(ArrayList<Item> recompensas) {
         this.recompensas = recompensas;
     }
 

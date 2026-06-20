@@ -11,14 +11,14 @@ import java.util.UUID;
  *
  * @author Portu
  */
-public class campanha {
+public class Campanha {
     private String idCampanha;
     private String nome;
-    private ArrayList<missao> missoes;
-    private ArrayList<jogador> mestres;
-    private ArrayList<personagem> personagens;
+    private ArrayList<Missao> missoes;
+    private ArrayList<Jogador> mestres;
+    private ArrayList<Personagem> personagens;
 
-    public campanha(String idCampanha, String nome) {
+    public Campanha(String idCampanha, String nome) {
         this.idCampanha = UUID.randomUUID().toString();
         this.nome = nome;
         this.missoes = new ArrayList<>();
@@ -34,15 +34,15 @@ public class campanha {
         return nome;
     }
 
-    public ArrayList<missao> getMissoes() {
+    public ArrayList<Missao> getMissoes() {
         return missoes;
     }
 
-    public ArrayList<jogador> getMestres() {
+    public ArrayList<Jogador> getMestres() {
         return mestres;
     }
 
-    public ArrayList<personagem> getPersonagens() {
+    public ArrayList<Personagem> getPersonagens() {
         return personagens;
     }
 
@@ -54,15 +54,15 @@ public class campanha {
         this.nome = nome;
     }
 
-    public void setMissoes(ArrayList<missao> missoes) {
+    public void setMissoes(ArrayList<Missao> missoes) {
         this.missoes = missoes;
     }
 
-    public void setMestres(ArrayList<jogador> participantes) {
+    public void setMestres(ArrayList<Jogador> participantes) {
         this.mestres = participantes;
     }
 
-    public void setPersonagens(ArrayList<personagem> personagens) {
+    public void setPersonagens(ArrayList<Personagem> personagens) {
         this.personagens = personagens;
     }
     

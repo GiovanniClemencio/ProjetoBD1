@@ -11,12 +11,12 @@ import java.util.UUID;
  *
  * @author Portu
  */
-public class jogador {
+public class Jogador {
     private String idJogador;
     private String nome;
-    private ArrayList<personagem> personagens;
+    private ArrayList<Personagem> personagens;
 
-    public jogador(String nome) {
+    public Jogador(String nome) {
         this.idJogador = UUID.randomUUID().toString();
         this.nome = nome;
         this.personagens = new ArrayList<>();
@@ -30,7 +30,7 @@ public class jogador {
         return nome;
     }
 
-    public ArrayList<personagem> getPersonagens() {
+    public ArrayList<Personagem> getPersonagens() {
         return personagens;
     }
 
@@ -42,7 +42,7 @@ public class jogador {
         this.nome = nome;
     }
 
-    public void setPersonagens(ArrayList<personagem> personagens) {
+    public void setPersonagens(ArrayList<Personagem> personagens) {
         this.personagens = personagens;
     }
     

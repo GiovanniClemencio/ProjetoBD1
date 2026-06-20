@@ -11,7 +11,7 @@ import java.util.UUID;
  *
  * @author Portu
  */
-public class monstro {
+public class Monstro {
     private String idMonstro;
     private String nome;
     private String descricao;
@@ -24,9 +24,9 @@ public class monstro {
     private int sabedoria;
     private int carisma;
     private int cr;
-    private ArrayList<item> drops;
+    private ArrayList<Item> drops;
 
-    public monstro(String idMonstro, String nome, String descricao, String tipo, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, int cr) {
+    public Monstro(String idMonstro, String nome, String descricao, String tipo, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, int cr) {
         this.idMonstro = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;
@@ -138,11 +138,11 @@ public class monstro {
         this.cr = cr;
     }
 
-    public ArrayList<item> getDrops() {
+    public ArrayList<Item> getDrops() {
         return drops;
     }
 
-    public void setDrops(ArrayList<item> drops) {
+    public void setDrops(ArrayList<Item> drops) {
         this.drops = drops;
     }
     

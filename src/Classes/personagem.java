@@ -11,7 +11,7 @@ import java.util.UUID;
  *
  * @author Portu
  */
-public class personagem {
+public class Personagem {
     private String idPersonagem;
     private String nome;
     private double cargaMaxima;
@@ -24,10 +24,10 @@ public class personagem {
     private int sabedoria;
     private int carisma;
     private String idJogador;
-    private ArrayList<classe> classes;
-    private ArrayList<item> inventario;
+    private ArrayList<Classe> classes;
+    private ArrayList<Item> inventario;
 
-    public personagem(String nome, double cargaMaxima, double xp, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, String idJogador, ArrayList<classe> classes, ArrayList<item> inventario){
+    public Personagem(String nome, double cargaMaxima, double xp, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, String idJogador, ArrayList<Classe> classes, ArrayList<Item> inventario){
         this.idPersonagem = UUID.randomUUID().toString();
         this.nome = nome;
         this.cargaMaxima = cargaMaxima;
@@ -92,11 +92,11 @@ public class personagem {
         return idJogador;
     }
 
-    public ArrayList<classe> getClasses() {
+    public ArrayList<Classe> getClasses() {
         return classes;
     }
 
-    public ArrayList<item> getInventario() {
+    public ArrayList<Item> getInventario() {
         return inventario;
     }
 
@@ -148,11 +148,11 @@ public class personagem {
         this.idJogador = idJogador;
     }
 
-    public void setClasses(ArrayList<classe> classes) {
+    public void setClasses(ArrayList<Classe> classes) {
         this.classes = classes;
     }
 
-    public void setInventario(ArrayList<item> inventario) {
+    public void setInventario(ArrayList<Item> inventario) {
         this.inventario = inventario;
     }
     

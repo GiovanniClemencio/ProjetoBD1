@@ -8,14 +8,14 @@ package Classes;
  *
  * @author Portu
  */
-public class valor {
+public class Valor {
     private int platinum;
     private int gold;
     private int electrum;
     private int silver;
     private int copper;
 
-    public valor(int platinum, int gold, int electrum, int silver, int copper) {
+    public Valor(int platinum, int gold, int electrum, int silver, int copper) {
         this.platinum = platinum;
         this.gold = gold;
         this.electrum = electrum;

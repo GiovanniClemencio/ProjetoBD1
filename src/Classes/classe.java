@@ -10,12 +10,12 @@ import java.util.UUID;
  *
  * @author Portu
  */
-public class classe {
+public class Classe {
     private String idClasse;
     private String nome;
     private String descricao;
 
-    public classe(String idClasse, String nome, String descricao) {
+    public Classe(String idClasse, String nome, String descricao) {
         this.idClasse = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;

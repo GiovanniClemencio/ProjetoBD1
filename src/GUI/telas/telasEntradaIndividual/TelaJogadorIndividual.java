@@ -4,7 +4,7 @@
  */
 package GUI.telas.telasEntradaIndividual;
 
-import Classes.jogador;
+import Classes.Jogador;
 import GUI.telas.TelaInicial;
 
 /**
@@ -14,10 +14,10 @@ import GUI.telas.TelaInicial;
 public class TelaJogadorIndividual extends javax.swing.JFrame {
 
     private final java.awt.Frame parent;
-    private final jogador jogador;
+    private final Jogador jogador;
     private final Runnable aoFechar;
     
-    public TelaJogadorIndividual(java.awt.Frame parent, jogador jogador, Runnable aoFechar) {
+    public TelaJogadorIndividual(java.awt.Frame parent, Jogador jogador, Runnable aoFechar) {
         this.parent = parent;
         this.jogador = jogador;
         this.aoFechar = aoFechar;

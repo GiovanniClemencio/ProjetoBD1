@@ -4,33 +4,32 @@
  */
 package GUI.telas.telasEntradaIndividual;
 
-import Classes.Campanha;
-import Classes.Personagem;
+import Classes.Item;
 import GUI.telas.TelaInicial;
 
 /**
  *
  * @author Portu
  */
-public class TelaPersonagemIndividual extends javax.swing.JFrame {
+public class TelaItemIndividual extends javax.swing.JFrame {
 
     private final java.awt.Frame parent;
-    private final Personagem personagem;
+    private final Item item;
     private final Runnable aoFechar;
     
-    public TelaPersonagemIndividual(java.awt.Frame parent, Personagem personagem, Runnable aoFechar) {
+    public TelaItemIndividual(java.awt.Frame parent, Item item, Runnable aoFechar) {
         this.parent = parent;
-        this.personagem = personagem;
+        this.item = item;
         this.aoFechar = aoFechar;
         initComponents();
         
-        titulo.setText(personagem.getNome());
+        titulo.setText(item.getNome());
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                if (TelaPersonagemIndividual.this.aoFechar != null) {
-                    TelaPersonagemIndividual.this.aoFechar.run();
+                if (TelaItemIndividual.this.aoFechar != null) {
+                    TelaItemIndividual.this.aoFechar.run();
                 }
             }
         });
@@ -45,11 +44,6 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textAreaPersonagem = new javax.swing.JTextArea();
-        buttonEditar = new javax.swing.JButton();
-        buttonExcluir = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         buttonCampanhas = new javax.swing.JButton();
         buttonInicio = new javax.swing.JButton();
@@ -59,61 +53,21 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         buttonMonstros = new javax.swing.JButton();
         buttonClasses = new javax.swing.JButton();
         buttonMissoes = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textAreaItem = new javax.swing.JTextArea();
+        buttonEditar = new javax.swing.JButton();
+        buttonExcluir = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel2.setBackground(new java.awt.Color(125, 125, 156));
-
-        textAreaPersonagem.setColumns(20);
-        textAreaPersonagem.setRows(5);
-        jScrollPane1.setViewportView(textAreaPersonagem);
-
-        buttonEditar.setText("Editar");
-
-        buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
-        buttonExcluir.setText("Excluir");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonExcluir)
-                    .addComponent(buttonEditar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         jPanel3.setBackground(new java.awt.Color(51, 104, 156));
 
         buttonCampanhas.setText("Campanhas");
         buttonCampanhas.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonCampanhas.setMinimumSize(new java.awt.Dimension(96, 23));
-        buttonCampanhas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCampanhasActionPerformed(evt);
-            }
-        });
 
         buttonInicio.setText("Inicio");
         buttonInicio.setMaximumSize(new java.awt.Dimension(96, 23));
@@ -192,6 +146,46 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
                     .addContainerGap(220, Short.MAX_VALUE)))
         );
 
+        jPanel2.setBackground(new java.awt.Color(125, 125, 156));
+
+        textAreaItem.setColumns(20);
+        textAreaItem.setRows(5);
+        jScrollPane1.setViewportView(textAreaItem);
+
+        buttonEditar.setText("Editar");
+
+        buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
+        buttonExcluir.setText("Excluir");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonExcluir)
+                    .addComponent(buttonEditar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         jPanel1.setBackground(new java.awt.Color(229, 29, 32));
 
         titulo.setFont(new java.awt.Font("Times New Roman", 3, 36)); // NOI18N
@@ -246,10 +240,6 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonInicioActionPerformed
 
-    private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonCampanhasActionPerformed
-
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -267,7 +257,7 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea textAreaPersonagem;
+    private javax.swing.JTextArea textAreaItem;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

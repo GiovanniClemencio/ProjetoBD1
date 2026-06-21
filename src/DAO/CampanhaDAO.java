@@ -6,6 +6,7 @@ package DAO;
 
 import Classes.Campanha;
 import Classes.Jogador;
+import Classes.Missao;
 import Classes.Personagem;
 import database.Conexao;
 import java.sql.Connection;
@@ -202,14 +203,13 @@ public class CampanhaDAO {
     public ArrayList<Jogador> listarJogadoresPorCampanha(String idCampanha) throws SQLException {
 
         ArrayList<Jogador> jogadores = new ArrayList<>();
-        
-        String sql = "SELECT DISTINCT j.id_jogador, j.nome FROM jogador j " +
-                     "JOIN personagem p ON j.id_jogador = p.id_jogador " +
-                     "JOIN campanha_personagem cp ON p.id_personagem = cp.id_personagem " +
-                     "WHERE cp.id_campanha = ? ORDER BY j.nome ASC";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String sql = "SELECT DISTINCT j.id_jogador, j.nome FROM jogador j "
+                + "JOIN personagem p ON j.id_jogador = p.id_jogador "
+                + "JOIN campanha_personagem cp ON p.id_personagem = cp.id_personagem "
+                + "WHERE cp.id_campanha = ? ORDER BY j.nome ASC";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idCampanha);
 
@@ -241,5 +241,29 @@ public class CampanhaDAO {
             }
         }
         return campanhas;
+    }
+
+    // Listar todas as missões vinculadas a campanha
+    public ArrayList<Missao> listarMissoesPorCampanha(String idCampanha) throws SQLException {
+        ArrayList<Missao> missoes = new ArrayList<>();
+        String sql = "SELECT m.* FROM missao m " +
+                     "JOIN campanha_missao cm ON m.id_missao = cm.id_missao " +
+                     "WHERE cm.id_campanha = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Missao m = new Missao(rs.getString("nome"), rs.getString("descricao"), rs.getString("id_mestre"), rs.getInt("xp_bonus"));
+                    m.setIdMissao(rs.getString("id_missao"));
+
+                    missoes.add(m);
+                }
+            }
+        }
+        return missoes;
     }
 }

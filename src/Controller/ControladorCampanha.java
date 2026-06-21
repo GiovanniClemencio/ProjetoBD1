@@ -6,6 +6,7 @@ package Controller;
 
 import Classes.Campanha;
 import Classes.Jogador;
+import Classes.Missao;
 import Classes.Personagem;
 import DAO.CampanhaDAO;
 import java.sql.SQLException;
@@ -144,6 +145,13 @@ public class ControladorCampanha implements Controlador {
         return campanhaDAO.listarTodos();
     }
     
-    // TODO: listar todas as missões da campanha
+    // Listar todas as missões vinculadas a campanha
+    public ArrayList<Missao> listarMissoesDaCampanha(String idCampanha) throws SQLException, IllegalArgumentException {
+        if (idCampanha == null || idCampanha.isBlank()) {
+            throw new IllegalArgumentException("ID da campanha inválido para listagem de missões.");
+        }
+
+        return campanhaDAO.listarMissoesPorCampanha(idCampanha);
+    }
 
 }

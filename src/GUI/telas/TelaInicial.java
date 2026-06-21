@@ -174,6 +174,11 @@ public class TelaInicial extends javax.swing.JFrame {
         buttonCampanhas.setText("Campanhas");
         buttonCampanhas.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonCampanhas.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonCampanhas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCampanhasActionPerformed(evt);
+            }
+        });
 
         buttonInicio.setText("Inicio");
         buttonInicio.setEnabled(false);
@@ -183,24 +188,54 @@ public class TelaInicial extends javax.swing.JFrame {
         buttonJogadores.setText("Jogadores");
         buttonJogadores.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonJogadores.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonJogadores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonJogadoresActionPerformed(evt);
+            }
+        });
 
         buttonPersonagens.setText("Personagens");
+        buttonPersonagens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonagensActionPerformed(evt);
+            }
+        });
 
         buttonItens.setText("Itens");
         buttonItens.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonItens.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonItens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonItensActionPerformed(evt);
+            }
+        });
 
         buttonMonstros.setText("Monstros");
         buttonMonstros.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonMonstros.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonMonstros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMonstrosActionPerformed(evt);
+            }
+        });
 
         buttonClasses.setText("Classes");
         buttonClasses.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonClasses.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonClasses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClassesActionPerformed(evt);
+            }
+        });
 
         buttonMissoes.setLabel("Missões");
         buttonMissoes.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonMissoes.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonMissoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMissoesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -272,7 +307,12 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboCampanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCampanhaActionPerformed
-        // TODO add your handling code here:
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();  
     }//GEN-LAST:event_comboCampanhaActionPerformed
 
     private void comboJogadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboJogadorActionPerformed
@@ -282,6 +322,64 @@ public class TelaInicial extends javax.swing.JFrame {
     private void comboPersonagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPersonagemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboPersonagemActionPerformed
+
+    private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonCampanhasActionPerformed
+
+    private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
+        TelaJogadores dialog = new TelaJogadores(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();  
+    }//GEN-LAST:event_buttonJogadoresActionPerformed
+
+    private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
+        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();  
+    }//GEN-LAST:event_buttonPersonagensActionPerformed
+
+    private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
+        TelaClasses dialog = new TelaClasses(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();  
+    }//GEN-LAST:event_buttonClassesActionPerformed
+
+    private void buttonMonstrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMonstrosActionPerformed
+        TelaMonstros dialog = new TelaMonstros(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonMonstrosActionPerformed
+
+    private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
+        TelaItens dialog = new TelaItens(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonItensActionPerformed
+
+    private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
+        TelaMissoes dialog = new TelaMissoes(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonMissoesActionPerformed
 
     
 

@@ -4,11 +4,13 @@
  */
 package GUI.formularios;
 
+import Classes.Campanha;
 import Classes.Item;
 import Classes.Jogador;
 import Classes.Missao;
 import Classes.Monstro;
 import Classes.Personagem;
+import Controller.ControladorCampanha;
 import Controller.ControladorItem;
 import Controller.ControladorJogador;
 import Controller.ControladorMissao;
@@ -31,6 +33,7 @@ public class cadastroMissao extends javax.swing.JDialog {
     private final ControladorJogador ctrlJogador;
     private final ControladorPersonagem ctrlPersonagem;
     private final ControladorMonstro ctrlMonstro;
+    private final ControladorCampanha ctrlCampanha;
     private final ControladorItem ctrlItem;
     private final Runnable aoFechar;
     
@@ -42,6 +45,7 @@ public class cadastroMissao extends javax.swing.JDialog {
         this.ctrlJogador = controladores.obter(ControladorJogador.class);
         this.ctrlPersonagem = controladores.obter(ControladorPersonagem.class);
         this.ctrlMonstro = controladores.obter(ControladorMonstro.class);
+        this.ctrlCampanha = controladores.obter(ControladorCampanha.class);
         this.ctrlItem = controladores.obter(ControladorItem.class);
         this.aoFechar = aoFechar;
         
@@ -90,6 +94,8 @@ public class cadastroMissao extends javax.swing.JDialog {
         jScrollPane4 = new javax.swing.JScrollPane();
         listRecompensas = new javax.swing.JList<>();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        comboCampanha = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
 
@@ -148,6 +154,9 @@ public class cadastroMissao extends javax.swing.JDialog {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Recompensas: ");
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Campanha: ");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -166,40 +175,39 @@ public class cadastroMissao extends javax.swing.JDialog {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboMestre, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboMestre, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(campoXp, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoXp, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(104, 104, 104)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboCampanha, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,17 +224,19 @@ public class cadastroMissao extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
                     .addComponent(jLabel4)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(campoXp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(campoXp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(comboCampanha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(68, 68, 68)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonCadastrar)
                     .addComponent(buttonLimpar))
@@ -284,6 +294,7 @@ public class cadastroMissao extends javax.swing.JDialog {
         campoXp.setText("");
         jTextArea1.setText("");
         comboMestre.setSelectedItem(null);
+        comboCampanha.setSelectedItem(null);
 
         listPersonagens.clearSelection();
         listMonstros.clearSelection();
@@ -307,9 +318,17 @@ public class cadastroMissao extends javax.swing.JDialog {
             String idMestre = mestreSelecionado.getIdJogador();
 
             Missao novaMissao = ctrlMissao.cadastrarMissao(nome, descricao, idMestre, xpBonus);
+            
+            Campanha campanhaSelecionada = (Campanha) comboCampanha.getSelectedItem();
+            if (campanhaSelecionada == null) {
+                JOptionPane.showMessageDialog(this, "Selecione uma campanha.");
+                return;
+            }
+
+            String idCampanha = campanhaSelecionada.getIdCampanha();
 
             for (Personagem personagem : listPersonagens.getSelectedValuesList()) {
-                ctrlMissao.adicionarParticipante(novaMissao.getIdMissao(), personagem.getIdPersonagem());
+                ctrlMissao.adicionarParticipante(idCampanha, novaMissao.getIdMissao(), personagem.getIdPersonagem());
             }
 
             for (Monstro monstro : listMonstros.getSelectedValuesList()) {
@@ -378,6 +397,14 @@ public class cadastroMissao extends javax.swing.JDialog {
             listRecompensas.setModel(modelItens);
             listRecompensas.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
             listRecompensas.clearSelection();
+            
+            comboCampanha.removeAllItems();
+
+            ArrayList<Campanha> campanhas = ctrlCampanha.listarTodasAsCampanhas();
+            for (Campanha campanha : campanhas) {
+                comboCampanha.addItem(campanha);
+            }
+            comboCampanha.setSelectedItem(null);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
@@ -417,6 +444,13 @@ public class cadastroMissao extends javax.swing.JDialog {
                 atualizarEstadoBotaoCadastrar();
             }
         });
+        
+        comboCampanha.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
 
         javax.swing.event.ListSelectionListener selectionListener = e -> {
             if (!e.getValueIsAdjusting()) {
@@ -434,6 +468,7 @@ public class cadastroMissao extends javax.swing.JDialog {
         boolean xpValido = textoEhInteiro(campoXp.getText().trim());
         boolean descricaoPreenchida = !jTextArea1.getText().trim().isEmpty();
         boolean mestreSelecionado = comboMestre.getSelectedIndex() != -1;
+        boolean campanhaSelecionada = comboCampanha.getSelectedIndex() != -1;
 
         boolean personagensSelecionados = !listPersonagens.isSelectionEmpty();
         boolean monstrosSelecionados = !listMonstros.isSelectionEmpty();
@@ -444,6 +479,7 @@ public class cadastroMissao extends javax.swing.JDialog {
                 && xpValido
                 && descricaoPreenchida
                 && mestreSelecionado
+                && campanhaSelecionada
                 && personagensSelecionados
                 && monstrosSelecionados
                 && recompensasSelecionadas
@@ -468,6 +504,7 @@ public class cadastroMissao extends javax.swing.JDialog {
     private javax.swing.JButton buttonLimpar;
     private javax.swing.JTextField campoNome;
     private javax.swing.JTextField campoXp;
+    private javax.swing.JComboBox<Campanha> comboCampanha;
     private javax.swing.JComboBox<Jogador> comboMestre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -476,6 +513,7 @@ public class cadastroMissao extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

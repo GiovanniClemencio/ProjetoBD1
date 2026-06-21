@@ -334,6 +334,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCampanhasActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonInicio">
           <Properties>
@@ -357,11 +360,17 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonJogadoresActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonPersonagens">
           <Properties>
             <Property name="text" type="java.lang.String" value="Personagens"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonPersonagensActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonItens">
           <Properties>
@@ -373,6 +382,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonItensActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonMonstros">
           <Properties>
@@ -384,6 +396,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMonstrosActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonClasses">
           <Properties>
@@ -395,6 +410,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonClassesActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonMissoes">
           <Properties>
@@ -406,6 +424,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMissoesActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

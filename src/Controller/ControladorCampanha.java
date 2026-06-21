@@ -16,16 +16,20 @@ import java.util.ArrayList;
  */
 public class ControladorCampanha {
 
-    private CampanhaDAO dao = new CampanhaDAO();
+    private CampanhaDAO dao;
+
+    public ControladorCampanha(CampanhaDAO dao) {
+        this.dao = new CampanhaDAO();
+    }
 
     // Cadastrar
     public void cadastrarCampanha(String nome) throws SQLException, IllegalArgumentException {
-        
+
         // Validar nome
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("O nome da campanha não pode estar vazio!");
         }
-        
+
         Campanha campanha = new Campanha(nome);
 
         dao.inserir(campanha);
@@ -36,7 +40,7 @@ public class ControladorCampanha {
         if (idCampanha == null || idCampanha.isBlank()) {
             throw new IllegalArgumentException("ID inválido para busca de campanha.");
         }
-        
+
         return dao.buscarPorId(idCampanha);
     }
 
@@ -45,7 +49,7 @@ public class ControladorCampanha {
         if (idCampanha == null || idCampanha.isBlank()) {
             throw new IllegalArgumentException("ID da campanha inválido para listagem de participantes.");
         }
-        
+
         return dao.listarPersonagensParticipantes(idCampanha);
     }
 

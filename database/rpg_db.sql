@@ -76,5 +76,37 @@ CREATE TABLE classe_personagem (
     FOREIGN KEY (id_classe) REFERENCES classe(id_classe) ON DELETE CASCADE
 );
 
+CREATE TABLE monstro (
+    id_monstro VARCHAR(36) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    tipo VARCHAR(50),
+    vida INT NOT NULL,
+    forca INT NOT NULL,
+    destreza INT NOT NULL,
+    constituicao INT NOT NULL,
+    inteligencia INT NOT NULL,
+    sabedoria INT NOT NULL,
+    carisma INT NOT NULL,
+    cr INT NOT NULL
+);
 
+CREATE TABLE item (
+    id_item VARCHAR(36) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    raridade VARCHAR(50),
+    custo DOUBLE DEFAULT 0.0,
+    peso DOUBLE DEFAULT 0.0,
+    descricao TEXT
+);
+
+CREATE TABLE monstro_drop (
+    id_monstro VARCHAR(36),
+    id_item VARCHAR(36),
+    quantidade INT NOT NULL DEFAULT 1,
+    
+    PRIMARY KEY (id_monstro, id_item),
+    FOREIGN KEY (id_monstro) REFERENCES monstro(id_monstro) ON DELETE CASCADE,
+    FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
+);
 

@@ -7,7 +7,6 @@ package Controller;
 import Classes.Classe;
 import DAO.ClasseDAO;
 import java.sql.SQLException;
-import java.util.UUID;
 
 /**
  *
@@ -15,7 +14,11 @@ import java.util.UUID;
  */
 public class ControladorClasse {
 
-    private ClasseDAO classeDAO = new ClasseDAO();
+    private ClasseDAO classeDAO;
+
+    public ControladorClasse() {
+        this.classeDAO = new ClasseDAO();
+    }
 
     // Cadastrar classe
     public void cadastrarClasse(String nome, String descricao) throws SQLException, IllegalArgumentException {
@@ -42,10 +45,10 @@ public class ControladorClasse {
 
         classeDAO.adicionarClasseAoPersonagem(idPersonagem, idClasse, nivelInicial);
     }
-    
+
     // Personagem upa o nível
     public void uparClassePersonagem(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
-        
+
         // Validação IDs
         if (idPersonagem == null || idPersonagem.isBlank()) {
             throw new IllegalArgumentException("ID do personagem inválido para subir de nível.");
@@ -56,7 +59,7 @@ public class ControladorClasse {
 
         classeDAO.uparNivelClasse(idPersonagem, idClasse);
     }
-    
+
     // Reduzir o nível de uma classe (Caso o usuário de um clique acidental de aumento de nivel)
     public void diminuirNivelClasse(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
         if (idPersonagem == null || idPersonagem.isBlank()) {
@@ -68,7 +71,6 @@ public class ControladorClasse {
 
         // Você pode usar um método de busca (tipo o que fizemos para o inventário) 
         // para checar o nível atual se quiser validar antes, ou deixar o WHERE do banco barrar.
-        
         classeDAO.reduzirNivelClasse(idPersonagem, idClasse);
     }
 }

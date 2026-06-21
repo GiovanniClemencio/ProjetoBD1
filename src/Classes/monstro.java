@@ -4,7 +4,6 @@
  */
 package Classes;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -24,9 +23,9 @@ public class Monstro {
     private int sabedoria;
     private int carisma;
     private int cr;
-    private ArrayList<Item> drops;
+    // private ArrayList<Item> drops;
 
-    public Monstro(String idMonstro, String nome, String descricao, String tipo, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, int cr) {
+    public Monstro(String nome, String descricao, String tipo, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, int cr) {
         this.idMonstro = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;
@@ -39,7 +38,6 @@ public class Monstro {
         this.sabedoria = sabedoria;
         this.carisma = carisma;
         this.cr = cr;
-        this.drops = new ArrayList<>();
     }
 
     public String getIdMonstro() {
@@ -136,14 +134,6 @@ public class Monstro {
 
     public void setCr(int cr) {
         this.cr = cr;
-    }
-
-    public ArrayList<Item> getDrops() {
-        return drops;
-    }
-
-    public void setDrops(ArrayList<Item> drops) {
-        this.drops = drops;
     }
     
     

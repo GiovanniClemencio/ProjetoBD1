@@ -8,7 +8,9 @@ import Classes.Classe;
 import database.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -75,4 +77,23 @@ public class ClasseDAO {
             stmt.executeUpdate();
         }
     }
+
+    // Listar todas as classes cadastradas
+    public ArrayList<Classe> listarTodos() throws SQLException {
+        ArrayList<Classe> classes = new ArrayList<>();
+        String sql = "SELECT * FROM classe ORDER BY nome ASC";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Classe c = new Classe(
+                        rs.getString("nome"),
+                        rs.getString("descricao")
+                );
+                c.setIdClasse(rs.getString("id_classe"));
+                classes.add(c);
+            }
+        }
+        return classes;
+    } 
 }

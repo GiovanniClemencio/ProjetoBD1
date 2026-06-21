@@ -7,6 +7,7 @@ package Controller;
 import Classes.Classe;
 import DAO.ClasseDAO;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -72,5 +73,10 @@ public class ControladorClasse implements Controlador  {
         // Você pode usar um método de busca (tipo o que fizemos para o inventário) 
         // para checar o nível atual se quiser validar antes, ou deixar o WHERE do banco barrar.
         classeDAO.reduzirNivelClasse(idPersonagem, idClasse);
+    }
+
+    // Listar todas as classes cadastradas
+    public ArrayList<Classe> listarTodasAsClasses() throws SQLException {
+        return classeDAO.listarTodos();
     }
 }

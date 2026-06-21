@@ -4,7 +4,13 @@
  */
 package GUI.formularios;
 
+import Classes.Jogador;
+import Controller.ControladorJogador;
+import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -14,14 +20,22 @@ public class cadastroPersonagem extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
+    private final ControladorPersonagem ctrlPersonagem;
+    private final ControladorJogador ctrlJogador;
     private final Runnable aoFechar;
     
     public cadastroPersonagem(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
+        this.ctrlPersonagem = controladores.obter(ControladorPersonagem.class);
+        this.ctrlJogador = controladores.obter(ControladorJogador.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        configurarEventos();
+        carregarJogadores();
+        atualizarEstadoBotaoCadastrar();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -75,8 +89,18 @@ public class cadastroPersonagem extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
 
         campoNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,8 +137,6 @@ public class cadastroPersonagem extends javax.swing.JDialog {
 
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Jogador: ");
-
-        comboJogador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Capacidade de carga:");
@@ -271,7 +293,192 @@ public class cadastroPersonagem extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeActionPerformed
 
-    
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        campoNome.setText("");
+        campoCarga.setText("");
+        campoXp.setText("");
+        campoHp.setText("");
+        campoStr.setText("");
+        campoDex.setText("");
+        campoCon.setText("");
+        campoInt.setText("");
+        campoWis.setText("");
+        campoChar.setText("");
+        atualizarEstadoBotaoCadastrar();
+    }//GEN-LAST:event_buttonLimparActionPerformed
+
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+            double cargaMaxima = Double.parseDouble(campoCarga.getText().trim());
+            double xp = Double.parseDouble(campoXp.getText().trim());
+            int vida = Integer.parseInt(campoHp.getText().trim());
+            int forca = Integer.parseInt(campoStr.getText().trim());
+            int destreza = Integer.parseInt(campoDex.getText().trim());
+            int constituicao = Integer.parseInt(campoCon.getText().trim());
+            int inteligencia = Integer.parseInt(campoInt.getText().trim());
+            int sabedoria = Integer.parseInt(campoWis.getText().trim());
+            int carisma = Integer.parseInt(campoChar.getText().trim());
+
+            Jogador jogadorSelecionado = (Jogador) comboJogador.getSelectedItem();
+            if (jogadorSelecionado == null) {
+                JOptionPane.showMessageDialog(this,
+                        "Selecione um jogador.",
+                        "Validação",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String idJogador = jogadorSelecionado.getIdJogador();
+
+            ctrlPersonagem.cadastrarPersonagem(
+                    nome,
+                    cargaMaxima,
+                    xp,
+                    vida,
+                    forca,
+                    destreza,
+                    constituicao,
+                    inteligencia,
+                    sabedoria,
+                    carisma,
+                    idJogador
+            );
+
+            JOptionPane.showMessageDialog(this,
+                    "Personagem cadastrado com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Verifique se os campos numéricos estão preenchidos corretamente.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar personagem: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void carregarJogadores() {
+        try {
+            comboJogador.removeAllItems();
+
+            ArrayList<Jogador> jogadores = ctrlJogador.listarTodosOsJogadores();
+            for (Jogador jogador : jogadores) {
+                comboJogador.addItem(jogador);
+            }
+
+            comboJogador.setSelectedItem(null);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar jogadores: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void configurarEventos() {
+        buttonCadastrar.setEnabled(false);
+
+        javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        campoNome.getDocument().addDocumentListener(listener);
+        campoCarga.getDocument().addDocumentListener(listener);
+        campoXp.getDocument().addDocumentListener(listener);
+        campoHp.getDocument().addDocumentListener(listener);
+        campoStr.getDocument().addDocumentListener(listener);
+        campoDex.getDocument().addDocumentListener(listener);
+        campoCon.getDocument().addDocumentListener(listener);
+        campoInt.getDocument().addDocumentListener(listener);
+        campoWis.getDocument().addDocumentListener(listener);
+        campoChar.getDocument().addDocumentListener(listener);
+
+        comboJogador.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
+    }
+
+    private void atualizarEstadoBotaoCadastrar() {
+        boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
+        boolean cargaPreenchida = textoEhDouble(campoCarga.getText().trim());
+        boolean xpPreenchido = textoEhDouble(campoXp.getText().trim());
+        boolean hpPreenchido = textoEhInteiro(campoHp.getText().trim());
+        boolean strPreenchido = textoEhInteiro(campoStr.getText().trim());
+        boolean dexPreenchido = textoEhInteiro(campoDex.getText().trim());
+        boolean conPreenchido = textoEhInteiro(campoCon.getText().trim());
+        boolean intPreenchido = textoEhInteiro(campoInt.getText().trim());
+        boolean wisPreenchido = textoEhInteiro(campoWis.getText().trim());
+        boolean charPreenchido = textoEhInteiro(campoChar.getText().trim());
+        boolean jogadorSelecionado = comboJogador.getSelectedIndex() != -1;
+
+        buttonCadastrar.setEnabled(
+                nomePreenchido
+                && cargaPreenchida
+                && xpPreenchido
+                && hpPreenchido
+                && strPreenchido
+                && dexPreenchido
+                && conPreenchido
+                && intPreenchido
+                && wisPreenchido
+                && charPreenchido
+                && jogadorSelecionado
+        );
+    }
+
+    private boolean textoEhDouble(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return false;
+        }
+        try {
+            Double.parseDouble(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean textoEhInteiro(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;
@@ -286,7 +493,7 @@ public class cadastroPersonagem extends javax.swing.JDialog {
     private javax.swing.JTextField campoStr;
     private javax.swing.JTextField campoWis;
     private javax.swing.JTextField campoXp;
-    private javax.swing.JComboBox<String> comboJogador;
+    private javax.swing.JComboBox<Jogador> comboJogador;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

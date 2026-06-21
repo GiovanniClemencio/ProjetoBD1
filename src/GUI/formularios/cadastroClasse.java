@@ -198,11 +198,6 @@ public class cadastroClasse extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Item cadastrado com sucesso!");
             dispose();
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Custo e peso devem ser números válidos.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
                     "Erro ao cadastrar item: " + e.getMessage(),

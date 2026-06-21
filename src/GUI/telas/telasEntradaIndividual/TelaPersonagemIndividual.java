@@ -28,6 +28,7 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         initComponents();
         
         titulo.setText(personagem.getNome());
+        carregarConteudo();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -253,7 +254,9 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonCampanhasActionPerformed
 
-    
+    private void carregarConteudo(){
+        textAreaPersonagem.setText(personagem.toStringResumo());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCampanhas;

@@ -41,5 +41,8 @@ public class Jogador {
         return "Jogador{" + "nome=" + nome + '}';
     }
     
-    
+    public String toStringResumo() {
+        return "Jogador{" + "idJogador=" + idJogador + 
+                "\n nome=" + nome + '}';
+    }
 }

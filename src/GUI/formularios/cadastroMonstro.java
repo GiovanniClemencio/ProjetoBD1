@@ -4,7 +4,14 @@
  */
 package GUI.formularios;
 
+import Classes.Item;
+import Classes.Monstro;
+import Controller.ControladorItem;
+import Controller.ControladorMonstro;
 import Controller.GerenciadorControladores;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -14,14 +21,22 @@ public class cadastroMonstro extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
+    private final ControladorMonstro ctrlMonstro;
+    private final ControladorItem ctrlItem;
     private final Runnable aoFechar;
     
     public cadastroMonstro(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
+        this.ctrlMonstro = controladores.obter(ControladorMonstro.class);
+        this.ctrlItem = controladores.obter(ControladorItem.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        configurarEventos();
+        carregarItens();
+        atualizarEstadoBotaoCadastrar();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -79,8 +94,18 @@ public class cadastroMonstro extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nome: ");
@@ -128,11 +153,6 @@ public class cadastroMonstro extends javax.swing.JDialog {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Drops: ");
 
-        listDrops.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(listDrops);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -297,7 +317,177 @@ public class cadastroMonstro extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeActionPerformed
 
-    
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        campoNome.setText("");
+        campoTipo.setText("");
+        campoHp.setText("");
+        campoStr.setText("");
+        campoDex.setText("");
+        campoCon.setText("");
+        campoInt.setText("");
+        campoWis.setText("");
+        campoChar.setText("");
+        campoCr.setText("");
+        textAreaDescricao.setText("");
+
+        listDrops.clearSelection();
+
+        atualizarEstadoBotaoCadastrar();
+    }//GEN-LAST:event_buttonLimparActionPerformed
+
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+            String descricao = textAreaDescricao.getText().trim();
+            String tipo = campoTipo.getText().trim();
+            int vida = Integer.parseInt(campoHp.getText().trim());
+            int forca = Integer.parseInt(campoStr.getText().trim());
+            int destreza = Integer.parseInt(campoDex.getText().trim());
+            int constituicao = Integer.parseInt(campoCon.getText().trim());
+            int inteligencia = Integer.parseInt(campoInt.getText().trim());
+            int sabedoria = Integer.parseInt(campoWis.getText().trim());
+            int carisma = Integer.parseInt(campoChar.getText().trim());
+            int cr = Integer.parseInt(campoCr.getText().trim());
+
+            java.util.List<Item> itensSelecionados = listDrops.getSelectedValuesList();
+
+            Monstro novoMonstro = ctrlMonstro.cadastrarMonstro(
+                    nome, descricao, tipo, vida, forca, destreza,
+                    constituicao, inteligencia, sabedoria, carisma, cr
+            );
+
+            for (Item item : itensSelecionados) {
+                ctrlMonstro.adicionarDropAoMonstro(novoMonstro.getIdMonstro(), item.getIdItem(), 1);
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Monstro cadastrado com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Os campos numéricos devem conter valores válidos.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar monstro: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void carregarItens() {
+        try {
+            javax.swing.DefaultListModel<Item> model = new javax.swing.DefaultListModel<>();
+
+            ArrayList<Item> itens = ctrlItem.listarTodosOsItens();
+            for (Item item : itens) {
+                model.addElement(item);
+            }
+
+            listDrops.setModel(model);
+            listDrops.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            listDrops.clearSelection();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar itens: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void configurarEventos() {
+        buttonCadastrar.setEnabled(false);
+
+        javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        campoNome.getDocument().addDocumentListener(listener);
+        campoTipo.getDocument().addDocumentListener(listener);
+        campoHp.getDocument().addDocumentListener(listener);
+        campoStr.getDocument().addDocumentListener(listener);
+        campoDex.getDocument().addDocumentListener(listener);
+        campoCon.getDocument().addDocumentListener(listener);
+        campoInt.getDocument().addDocumentListener(listener);
+        campoWis.getDocument().addDocumentListener(listener);
+        campoChar.getDocument().addDocumentListener(listener);
+        campoCr.getDocument().addDocumentListener(listener);
+        textAreaDescricao.getDocument().addDocumentListener(listener);
+
+        listDrops.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
+    }
+
+    private void atualizarEstadoBotaoCadastrar() {
+        boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
+        boolean tipoPreenchido = !campoTipo.getText().trim().isEmpty();
+        boolean descricaoPreenchida = !textAreaDescricao.getText().trim().isEmpty();
+
+        boolean hpValido = textoEhInteiro(campoHp.getText().trim());
+        boolean strValido = textoEhInteiro(campoStr.getText().trim());
+        boolean dexValido = textoEhInteiro(campoDex.getText().trim());
+        boolean conValido = textoEhInteiro(campoCon.getText().trim());
+        boolean intValido = textoEhInteiro(campoInt.getText().trim());
+        boolean wisValido = textoEhInteiro(campoWis.getText().trim());
+        boolean charValido = textoEhInteiro(campoChar.getText().trim());
+        boolean crValido = textoEhInteiro(campoCr.getText().trim());
+
+        boolean temDropSelecionado = !listDrops.isSelectionEmpty();
+
+        buttonCadastrar.setEnabled(
+                nomePreenchido
+                && tipoPreenchido
+                && descricaoPreenchida
+                && hpValido
+                && strValido
+                && dexValido
+                && conValido
+                && intValido
+                && wisValido
+                && charValido
+                && crValido
+                && temDropSelecionado
+        );
+    }
+
+    private boolean textoEhInteiro(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;
@@ -328,7 +518,7 @@ public class cadastroMonstro extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JList<String> listDrops;
+    private javax.swing.JList<Item> listDrops;
     private javax.swing.JTextArea textAreaDescricao;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

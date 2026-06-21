@@ -74,6 +74,20 @@ public class Item {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" + "nome=" + nome + '}';
+    }
+
+    public String toStringResumo() {
+        return "Item{" + "idItem=" + idItem + 
+                "\n nome=" + nome + 
+                "\n raridade=" + raridade + 
+                "\n custo=" + custo + 
+                "\n peso=" + peso + 
+                "\n descricao=" + descricao + '}';
+    }
     
     
 }

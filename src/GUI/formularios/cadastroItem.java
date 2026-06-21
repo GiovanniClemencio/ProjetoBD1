@@ -4,7 +4,10 @@
  */
 package GUI.formularios;
 
+import Controller.ControladorItem;
 import Controller.GerenciadorControladores;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -14,14 +17,18 @@ public class cadastroItem extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
+    private final ControladorItem ctrlItem;
     private final Runnable aoFechar;
     
     public cadastroItem(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
+        this.ctrlItem = controladores.obter(ControladorItem.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        configurarEventos();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -64,6 +71,11 @@ public class cadastroItem extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
         buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
@@ -230,10 +242,106 @@ public class cadastroItem extends javax.swing.JDialog {
     }//GEN-LAST:event_campoPesoActionPerformed
 
     private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
-        // TODO add your handling code here:
+        campoNome.setText("");
+        campoCusto.setText("");
+        campoPeso.setText("");
+        textAreaDescricao.setText("");
+        atualizarEstadoBotaoCadastrar();
     }//GEN-LAST:event_buttonLimparActionPerformed
 
-    
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+            String raridade = (String) comboRaridade.getSelectedItem();
+            double custo = Double.parseDouble(campoCusto.getText().trim());
+            double peso = Double.parseDouble(campoPeso.getText().trim());
+            String descricao = textAreaDescricao.getText().trim();
+
+            ctrlItem.cadastrarItem(nome, raridade, custo, peso, descricao);
+
+            JOptionPane.showMessageDialog(this, "Item cadastrado com sucesso!");
+            dispose();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Custo e peso devem ser números válidos.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar item: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void configurarEventos() {
+        buttonCadastrar.setEnabled(false);
+
+        javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        campoNome.getDocument().addDocumentListener(listener);
+        campoCusto.getDocument().addDocumentListener(listener);
+        campoPeso.getDocument().addDocumentListener(listener);
+        textAreaDescricao.getDocument().addDocumentListener(listener);
+
+        comboRaridade.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
+    }
+
+    private void atualizarEstadoBotaoCadastrar() {
+        boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
+        boolean custoPreenchido = !campoCusto.getText().trim().isEmpty();
+        boolean pesoPreenchido = !campoPeso.getText().trim().isEmpty();
+        boolean descricaoPreenchida = !textAreaDescricao.getText().trim().isEmpty();
+        boolean raridadeSelecionada = comboRaridade.getSelectedIndex() != -1;
+
+        buttonCadastrar.setEnabled(
+                nomePreenchido
+                && custoPreenchido
+                && pesoPreenchido
+                && descricaoPreenchida
+                && raridadeSelecionada
+                && textoEhDouble(campoCusto.getText().trim())
+                && textoEhDouble(campoPeso.getText().trim())
+        );
+    }
+
+    private boolean textoEhDouble(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return false;
+        }
+        try {
+            Double.parseDouble(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;

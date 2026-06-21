@@ -44,6 +44,15 @@ public class Classe {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    @Override
+    public String toString() {
+        return "Classe{" + "nome=" + nome + '}';
+    } 
     
-    
+    public String toStringResumo() {
+        return "Classe{" + "idClasse=" + idClasse + 
+                "\nnome=" + nome + 
+                "\ndescricao=" + descricao + '}';
+    }
 }

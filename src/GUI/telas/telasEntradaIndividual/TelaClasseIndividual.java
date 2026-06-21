@@ -243,7 +243,9 @@ public class TelaClasseIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonInicioActionPerformed
 
-    
+    private void carregarConteudo(){
+        textAreaClasse.setText(classe.toStringResumo());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCampanhas;

@@ -4,37 +4,43 @@
  */
 package GUI.formularios;
 
-import Controller.ControladorClasse;
+import Classes.Campanha;
+import Classes.Item;
+import Controller.ControladorCampanha;
+import Controller.ControladorItem;
+import Controller.ControladorJogador;
 import Controller.GerenciadorControladores;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Portu
  */
-public class cadastroClasse extends javax.swing.JDialog {
+public class edicaoItem extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
-    private final ControladorClasse ctrlClasse;
+    private final ControladorItem ctrlItem;
+    private final Item item;
     private final Runnable aoFechar;
     
-    public cadastroClasse(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
+    public edicaoItem(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Item item, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
-        this.ctrlClasse = controladores.obter(ControladorClasse.class);
+        this.ctrlItem = controladores.obter(ControladorItem.class);
+        this.item = item;
         this.aoFechar = aoFechar;
         
         initComponents();
         configurarEventos();
+        carregarDadosDoItem();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                if (cadastroClasse.this.aoFechar != null) {
-                    cadastroClasse.this.aoFechar.run();
+                if (edicaoItem.this.aoFechar != null) {
+                    edicaoItem.this.aoFechar.run();
                 }
             }
         });
@@ -55,8 +61,14 @@ public class cadastroClasse extends javax.swing.JDialog {
         campoNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        comboRaridade = new javax.swing.JComboBox<>();
+        campoCusto = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        campoPeso = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textAreaDescricao = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
 
@@ -64,7 +76,7 @@ public class cadastroClasse extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
-        buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.setText("Editar");
         buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCadastrarActionPerformed(evt);
@@ -88,11 +100,34 @@ public class cadastroClasse extends javax.swing.JDialog {
         jLabel1.setText("Nome: ");
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Descrição:  ");
+        jLabel2.setText("Raridade: ");
+
+        comboRaridade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Comum", "Incomum", "Raro", "Muito Raro", "Lendário", " " }));
+
+        campoCusto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoCustoActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Custo (em ouro):");
+
+        campoPeso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoPesoActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Peso:");
 
         textAreaDescricao.setColumns(20);
         textAreaDescricao.setRows(5);
         jScrollPane1.setViewportView(textAreaDescricao);
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Descrição:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -101,35 +136,57 @@ public class cadastroClasse extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addComponent(buttonLimpar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 331, Short.MAX_VALUE)
                 .addComponent(buttonCadastrar)
                 .addGap(71, 71, 71))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(jLabel1)
+                        .addContainerGap()
+                        .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(57, 57, 57)
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(34, 34, 34)
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(comboRaridade, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(71, 71, 71)
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(campoCusto, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(40, 40, 40)
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(campoPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(comboRaridade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(campoCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(campoPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonCadastrar)
                     .addComponent(buttonLimpar))
@@ -141,7 +198,7 @@ public class cadastroClasse extends javax.swing.JDialog {
         titulo.setFont(new java.awt.Font("Times New Roman", 3, 36)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Cadastro de Classe");
+        titulo.setText("Cadastro de Item");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -178,44 +235,64 @@ public class cadastroClasse extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void campoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoNomeActionPerformed
-
     private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
         campoNome.setText("");
+        comboRaridade.setSelectedIndex(-1);
+        campoCusto.setText("");
+        campoPeso.setText("");
         textAreaDescricao.setText("");
         atualizarEstadoBotaoCadastrar();
     }//GEN-LAST:event_buttonLimparActionPerformed
 
+    private void campoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoNomeActionPerformed
+
+    private void campoCustoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCustoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoCustoActionPerformed
+
+    private void campoPesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoPesoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoPesoActionPerformed
+
     private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
         try {
             String nome = campoNome.getText().trim();
+            String raridade = (String) comboRaridade.getSelectedItem();
+            double custo = Double.parseDouble(campoCusto.getText().trim());
+            double peso = Double.parseDouble(campoPeso.getText().trim());
             String descricao = textAreaDescricao.getText().trim();
 
-            ctrlClasse.cadastrarClasse(nome, descricao);
+            ctrlItem.atualizarItem(
+                    item.getIdItem(),
+                    nome,
+                    raridade,
+                    custo,
+                    peso,
+                    descricao
+            );
 
-            JOptionPane.showMessageDialog(this, "Item cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(this, "Item atualizado com sucesso!");
             dispose();
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Custo e peso devem ser números válidos.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao cadastrar item: " + e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),
-                    "Validação",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Custo e peso devem ser números válidos.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar item: " + e.getMessage());
         }
     }//GEN-LAST:event_buttonCadastrarActionPerformed
 
+    private void carregarDadosDoItem() {
+        campoNome.setText(item.getNome());
+        comboRaridade.setSelectedItem(item.getRaridade());
+        campoCusto.setText(String.valueOf(item.getCusto()));
+        campoPeso.setText(String.valueOf(item.getPeso()));
+        textAreaDescricao.setText(item.getDescricao());
+
+        atualizarEstadoBotaoCadastrar();
+    }
+    
     private void configurarEventos() {
         buttonCadastrar.setEnabled(false);
 
@@ -237,26 +314,58 @@ public class cadastroClasse extends javax.swing.JDialog {
         };
 
         campoNome.getDocument().addDocumentListener(listener);
-        
+        campoCusto.getDocument().addDocumentListener(listener);
+        campoPeso.getDocument().addDocumentListener(listener);
         textAreaDescricao.getDocument().addDocumentListener(listener);
+
+        comboRaridade.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
     }
 
     private void atualizarEstadoBotaoCadastrar() {
         boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
+        boolean raridadeSelecionada = comboRaridade.getSelectedIndex() != -1;
+        boolean custoValido = textoEhDouble(campoCusto.getText().trim());
+        boolean pesoValido = textoEhDouble(campoPeso.getText().trim());
         boolean descricaoPreenchida = !textAreaDescricao.getText().trim().isEmpty();
 
         buttonCadastrar.setEnabled(
                 nomePreenchido
+                && raridadeSelecionada
+                && custoValido
+                && pesoValido
                 && descricaoPreenchida
         );
+    }
+
+    private boolean textoEhDouble(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return false;
+        }
+        try {
+            Double.parseDouble(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;
     private javax.swing.JButton buttonLimpar;
+    private javax.swing.JTextField campoCusto;
     private javax.swing.JTextField campoNome;
+    private javax.swing.JTextField campoPeso;
+    private javax.swing.JComboBox<String> comboRaridade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -4,37 +4,41 @@
  */
 package GUI.formularios;
 
-import Controller.ControladorClasse;
+import Classes.Item;
+import Classes.Jogador;
+import Controller.ControladorItem;
+import Controller.ControladorJogador;
 import Controller.GerenciadorControladores;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Portu
  */
-public class cadastroClasse extends javax.swing.JDialog {
+public class edicaoJogador extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
-    private final ControladorClasse ctrlClasse;
+    private final ControladorJogador ctrlJogador;
+    private final Jogador jogador;
     private final Runnable aoFechar;
     
-    public cadastroClasse(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
+    public edicaoJogador(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Jogador jogador, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
-        this.ctrlClasse = controladores.obter(ControladorClasse.class);
+        this.ctrlJogador = controladores.obter(ControladorJogador.class);
+        this.jogador = jogador;
         this.aoFechar = aoFechar;
         
         initComponents();
-        configurarEventos();
+        carregarDadosDoJogador();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                if (cadastroClasse.this.aoFechar != null) {
-                    cadastroClasse.this.aoFechar.run();
+                if (edicaoJogador.this.aoFechar != null) {
+                    edicaoJogador.this.aoFechar.run();
                 }
             }
         });
@@ -49,99 +53,22 @@ public class cadastroClasse extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        titulo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         buttonCadastrar = new javax.swing.JButton();
         buttonLimpar = new javax.swing.JButton();
-        campoNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textAreaDescricao = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
-        titulo = new javax.swing.JLabel();
+        campoNome = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jPanel2.setBackground(new java.awt.Color(125, 125, 156));
-
-        buttonCadastrar.setLabel("Cadastrar");
-        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCadastrarActionPerformed(evt);
-            }
-        });
-
-        buttonLimpar.setLabel("Limpar");
-        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonLimparActionPerformed(evt);
-            }
-        });
-
-        campoNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoNomeActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Nome: ");
-
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Descrição:  ");
-
-        textAreaDescricao.setColumns(20);
-        textAreaDescricao.setRows(5);
-        jScrollPane1.setViewportView(textAreaDescricao);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(buttonLimpar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
-                .addComponent(buttonCadastrar)
-                .addGap(71, 71, 71))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonCadastrar)
-                    .addComponent(buttonLimpar))
-                .addContainerGap())
-        );
 
         jPanel1.setBackground(new java.awt.Color(229, 29, 32));
 
         titulo.setFont(new java.awt.Font("Times New Roman", 3, 36)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Cadastro de Classe");
+        titulo.setText("Edição de Jogador");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -157,6 +84,56 @@ public class cadastroClasse extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel2.setBackground(new java.awt.Color(125, 125, 156));
+
+        buttonCadastrar.setText("Editar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
+
+        buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Nome: ");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(buttonLimpar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 331, Short.MAX_VALUE)
+                .addComponent(buttonCadastrar)
+                .addGap(71, 71, 71))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(166, 166, 166)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonCadastrar)
+                    .addComponent(buttonLimpar))
                 .addContainerGap())
         );
 
@@ -178,44 +155,36 @@ public class cadastroClasse extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void campoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoNomeActionPerformed
-
     private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
         campoNome.setText("");
-        textAreaDescricao.setText("");
         atualizarEstadoBotaoCadastrar();
     }//GEN-LAST:event_buttonLimparActionPerformed
 
     private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
         try {
             String nome = campoNome.getText().trim();
-            String descricao = textAreaDescricao.getText().trim();
 
-            ctrlClasse.cadastrarClasse(nome, descricao);
+            ctrlJogador.atualizarJogador(
+                    jogador.getIdJogador(),
+                    nome
+            );
 
-            JOptionPane.showMessageDialog(this, "Item cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(this, "Item atualizado com sucesso!");
             dispose();
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Custo e peso devem ser números válidos.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao cadastrar item: " + e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),
-                    "Validação",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Custo e peso devem ser números válidos.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar item: " + e.getMessage());
         }
     }//GEN-LAST:event_buttonCadastrarActionPerformed
 
+    private void carregarDadosDoJogador() {
+        campoNome.setText(jogador.getNome());
+
+        atualizarEstadoBotaoCadastrar();
+    }
+    
     private void configurarEventos() {
         buttonCadastrar.setEnabled(false);
 
@@ -237,17 +206,13 @@ public class cadastroClasse extends javax.swing.JDialog {
         };
 
         campoNome.getDocument().addDocumentListener(listener);
-        
-        textAreaDescricao.getDocument().addDocumentListener(listener);
     }
 
     private void atualizarEstadoBotaoCadastrar() {
         boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
-        boolean descricaoPreenchida = !textAreaDescricao.getText().trim().isEmpty();
 
         buttonCadastrar.setEnabled(
                 nomePreenchido
-                && descricaoPreenchida
         );
     }
 
@@ -256,11 +221,8 @@ public class cadastroClasse extends javax.swing.JDialog {
     private javax.swing.JButton buttonLimpar;
     private javax.swing.JTextField campoNome;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea textAreaDescricao;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

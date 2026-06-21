@@ -5,6 +5,7 @@
 package DAO;
 
 import Classes.Campanha;
+import Classes.Jogador;
 import Classes.Personagem;
 import database.Conexao;
 import java.sql.Connection;
@@ -197,4 +198,29 @@ public class CampanhaDAO {
         }
     }
 
+    // Listar todos os jogadores únicos que possuem personagem na campanha
+    public ArrayList<Jogador> listarJogadoresPorCampanha(String idCampanha) throws SQLException {
+
+        ArrayList<Jogador> jogadores = new ArrayList<>();
+        
+        String sql = "SELECT DISTINCT j.id_jogador, j.nome FROM jogador j " +
+                     "JOIN personagem p ON j.id_jogador = p.id_jogador " +
+                     "JOIN campanha_personagem cp ON p.id_personagem = cp.id_personagem " +
+                     "WHERE cp.id_campanha = ? ORDER BY j.nome ASC";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Jogador j = new Jogador(rs.getString("nome"));
+                    j.setIdJogador(rs.getString("id_jogador"));
+                    jogadores.add(j);
+                }
+            }
+        }
+        return jogadores;
+    }
 }

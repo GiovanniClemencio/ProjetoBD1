@@ -5,6 +5,7 @@
 package Controller;
 
 import Classes.Campanha;
+import Classes.Jogador;
 import Classes.Personagem;
 import DAO.CampanhaDAO;
 import java.sql.SQLException;
@@ -145,5 +146,17 @@ public class ControladorCampanha implements Controlador {
         }
 
         campanhaDAO.removerMissaoDaCampanha(idCampanha, idMissao);
+    }
+
+    // Listar todos os jogadores únicos que possuem personagem na campanha
+    public ArrayList<Jogador> listarJogadoresDaCampanha(String idCampanha) throws SQLException, IllegalArgumentException {
+        
+        // Validação de segurança básica
+        if (idCampanha == null || idCampanha.isBlank()) {
+            throw new IllegalArgumentException("ID da campanha inválido para listagem de jogadores.");
+        }
+
+        //Chama o DAO que faz a mágica do JOIN
+        return campanhaDAO.listarJogadoresPorCampanha(idCampanha);
     }
 }

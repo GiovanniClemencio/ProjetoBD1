@@ -29,7 +29,9 @@ public class TelaCampanhas extends javax.swing.JFrame {
         this.controladores = controladores;
         this.ctrlCampanha = controladores.obter(ControladorCampanha.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        carregarCampanhas();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override

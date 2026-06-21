@@ -328,9 +328,7 @@ public class TelaCampanhas extends javax.swing.JFrame {
 
     private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
         TelaItens dialog = new TelaItens(this, true, controladores, () -> {
-            new TelaCampanhas(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -359,7 +357,9 @@ public class TelaCampanhas extends javax.swing.JFrame {
         Campanha campanhaSelecionada = (Campanha) comboCampanhas.getSelectedItem();
         
         TelaCampanhaIndividual dialog = new TelaCampanhaIndividual(this, campanhaSelecionada, controladores, () -> {
-            new TelaInicial(controladores).setVisible(true);
+            new TelaCampanhas(this, true, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            }).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);

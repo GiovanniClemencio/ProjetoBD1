@@ -16,13 +16,15 @@ public class Item {
     private String raridade;
     private double custo;
     private double peso;
+    private String descricao;
 
-    public Item(String nome, String raridade, double custo, double peso) {
+    public Item(String nome, String raridade, double custo, double peso, String descricao) {
         this.idItem = UUID.randomUUID().toString();
         this.nome = nome;
         this.raridade = raridade;
         this.custo = custo;
         this.peso = peso;
+        this.descricao = descricao;
     }
 
     public String getIdItem() {
@@ -63,6 +65,14 @@ public class Item {
 
     public void setPeso(double peso) {
         this.peso = peso;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
     
     

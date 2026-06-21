@@ -5,6 +5,7 @@
 package GUI.formularios;
 
 import Controller.GerenciadorControladores;
+import java.sql.SQLException;
 
 /**
  *

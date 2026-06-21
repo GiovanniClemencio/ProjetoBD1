@@ -44,6 +44,13 @@ public class Campanha {
     public void setIdMestre(String idMestre) {
         this.idMestre = idMestre;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Campanha{" + "nome=" + nome + '}';
+    }
+
+    public String toStringResumo() {
+        return "Campanha{" + "idCampanha=" + idCampanha + ", nome=" + nome + ", idMestre=" + idMestre + '}';
+    }
 }

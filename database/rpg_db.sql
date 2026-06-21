@@ -28,18 +28,14 @@ CREATE TABLE personagem (
 
 CREATE TABLE campanha (
     id_campanha VARCHAR(36) PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE campanha_mestre (
-    id_campanha VARCHAR(36),
+    nome VARCHAR(100) NOT NULL,
     id_mestre VARCHAR(36),
 
-    PRIMARY KEY (id_campanha, id_mestre),
-
-    FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,
-    FOREIGN KEY (id_mestre) REFERENCES jogador(id_jogador) ON DELETE CASCADE
-)
+    CONSTRAINT fk_campanha_mestre
+        FOREIGN KEY (id_mestre)
+        REFERENCES jogador(id_jogador)
+        ON DELETE SET NULL
+);
 
 CREATE TABLE campanha_personagem (
     id_campanha VARCHAR(36),

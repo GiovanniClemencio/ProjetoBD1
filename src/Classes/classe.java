@@ -15,7 +15,7 @@ public class Classe {
     private String nome;
     private String descricao;
 
-    public Classe(String idClasse, String nome, String descricao) {
+    public Classe(String nome, String descricao) {
         this.idClasse = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;

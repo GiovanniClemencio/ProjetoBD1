@@ -193,7 +193,7 @@ public class PersonagemDAO {
     public ArrayList<Campanha> listarCampanhasParticipando(String idPersonagem) throws SQLException {
         ArrayList<Campanha> campanhas = new ArrayList<>();
 
-        // O SQL faz um JOIN entre a tabela intermediária e a tabela de campanhas
+        // JOIN intermediária e campanha
         String sql = "SELECT c.* FROM campanha c "
                 + "JOIN campanha_personagem cp ON c.id_campanha = cp.id_campanha "
                 + "WHERE cp.id_personagem = ?";
@@ -204,13 +204,10 @@ public class PersonagemDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    // Instancia a campanha com os dados vindos do banco
                     Campanha c = new Campanha(rs.getString("nome"));
 
-                    // Garante que o objeto Java use o ID real que veio do banco
                     c.setIdCampanha(rs.getString("id_campanha"));
 
-                    // Adiciona a campanha na lista
                     campanhas.add(c);
                 }
             }
@@ -219,5 +216,4 @@ public class PersonagemDAO {
         return campanhas;
     }
 
-    // 
 }

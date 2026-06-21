@@ -59,3 +59,22 @@ CREATE TABLE inventario (
     FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem) ON DELETE CASCADE,
     FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
 );
+
+CREATE TABLE classe (
+    id_classe VARCHAR(36) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT
+);
+
+CREATE TABLE classe_personagem (
+    id_personagem VARCHAR(36),
+    id_classe VARCHAR(36),
+    nivel_classe INT NOT NULL DEFAULT 1,
+    
+    PRIMARY KEY (id_personagem, id_classe),
+    FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem) ON DELETE CASCADE,
+    FOREIGN KEY (id_classe) REFERENCES classe(id_classe) ON DELETE CASCADE
+);
+
+
+

@@ -7,6 +7,7 @@ package Controller;
 import Classes.Campanha;
 import Classes.ItemDTO;
 import Classes.Personagem;
+import Classes.PersonagemClasseDTO;
 import DAO.MonstroDAO;
 import DAO.PersonagemDAO;
 import java.sql.SQLException;
@@ -188,5 +189,14 @@ public class ControladorPersonagem implements Controlador {
         }
 
         return personagemDAO.listarItensDoInventario(idPersonagem);
+    }
+
+    // Listar todas as classes que um personagem tem
+    public ArrayList<PersonagemClasseDTO> obterClassesDoPersonagem(String idPersonagem) throws SQLException, IllegalArgumentException {
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido para carregar as classes.");
+        }
+
+        return personagemDAO.listarClassesDoPersonagem(idPersonagem);
     }
 }

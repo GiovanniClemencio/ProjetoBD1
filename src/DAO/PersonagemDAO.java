@@ -7,6 +7,7 @@ package DAO;
 import Classes.Campanha;
 import Classes.ItemDTO;
 import Classes.Personagem;
+import Classes.PersonagemClasseDTO;
 import database.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -224,14 +225,12 @@ public class PersonagemDAO {
         ArrayList<Personagem> personagens = new ArrayList<>();
         String sql = "SELECT * FROM personagem ORDER BY nome ASC";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Personagem p = new Personagem(rs.getString("nome"), rs.getDouble("carga_maxima"), rs.getDouble("xp"),
-                rs.getInt("vida"), rs.getInt("forca"), rs.getInt("destreza"), rs.getInt("constituicao"), rs.getInt("inteligencia"),
-                rs.getInt("sabedoria"), rs.getInt("carisma"), rs.getString("id_jogador"));
+                        rs.getInt("vida"), rs.getInt("forca"), rs.getInt("destreza"), rs.getInt("constituicao"), rs.getInt("inteligencia"),
+                        rs.getInt("sabedoria"), rs.getInt("carisma"), rs.getString("id_jogador"));
 
                 p.setIdPersonagem(rs.getString("id_personagem"));
 
@@ -244,14 +243,13 @@ public class PersonagemDAO {
     // Listar todos os itens que estão no inventário de um personagem específico
     public ArrayList<ItemDTO> listarItensDoInventario(String idPersonagem) throws SQLException {
         ArrayList<ItemDTO> inventario = new ArrayList<>();
-        
-        // Pega o item e a quantidade
-        String sql = "SELECT i.id_item, i.nome, i.peso, pi.quantidade FROM item i " +
-                     "JOIN personagem_item pi ON i.id_item = pi.id_item " +
-                     "WHERE pi.id_personagem = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        // Pega o item e a quantidade
+        String sql = "SELECT i.id_item, i.nome, i.peso, pi.quantidade FROM item i "
+                + "JOIN personagem_item pi ON i.id_item = pi.id_item "
+                + "WHERE pi.id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idPersonagem);
 
@@ -263,6 +261,32 @@ public class PersonagemDAO {
             }
         }
         return inventario;
+    }
+
+    // Listar todas as classes que um personagem tem
+    public ArrayList<PersonagemClasseDTO> listarClassesDoPersonagem(String idPersonagem) throws SQLException {
+        ArrayList<PersonagemClasseDTO> classesDoPersonagem = new ArrayList<>();
+
+        String sql = "SELECT c.id_classe, c.nome, pc.nivel FROM classe c "
+                + "JOIN classe_personagem pc ON c.id_classe = pc.id_classe "
+                + "WHERE pc.id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    PersonagemClasseDTO classeFormatada = new PersonagemClasseDTO();
+                    classeFormatada.setIdClasse(rs.getString("id_classe"));
+                    classeFormatada.setNome(rs.getString("nome"));
+                    classeFormatada.setNivel(rs.getInt("nivel"));
+
+                    classesDoPersonagem.add(classeFormatada);
+                }
+            }
+        }
+        return classesDoPersonagem;
     }
 
 }

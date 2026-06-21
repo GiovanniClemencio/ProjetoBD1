@@ -15,9 +15,7 @@ public class Missao {
     private String nome;
     private String descricao;
     private String idMestre;
-    // private ArrayList<Personagem> personagens;
-    // private ArrayList<Monstro> inimigos;
-    // private ArrayList<Item> recompensas;
+
     private int xpBonus;
 
     public Missao(String nome, String descricao, String idMestre, int xpBonus) {

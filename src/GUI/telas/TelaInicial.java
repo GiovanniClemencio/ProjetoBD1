@@ -174,6 +174,11 @@ public class TelaInicial extends javax.swing.JFrame {
         buttonCampanhas.setText("Campanhas");
         buttonCampanhas.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonCampanhas.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonCampanhas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCampanhasActionPerformed(evt);
+            }
+        });
 
         buttonInicio.setText("Inicio");
         buttonInicio.setEnabled(false);
@@ -272,7 +277,12 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboCampanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCampanhaActionPerformed
-        // TODO add your handling code here:
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();  
     }//GEN-LAST:event_comboCampanhaActionPerformed
 
     private void comboJogadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboJogadorActionPerformed
@@ -282,6 +292,10 @@ public class TelaInicial extends javax.swing.JFrame {
     private void comboPersonagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPersonagemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboPersonagemActionPerformed
+
+    private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonCampanhasActionPerformed
 
     
 

@@ -158,4 +158,9 @@ public class ControladorMissao implements Controlador {
 
         missaoDAO.atualizarStatusMissao(idCampanha, idMissao, true);
     }
+
+    // Listar todas as missões cadastradas
+    public ArrayList<Missao> listarTodasAsMissoes() throws SQLException {
+        return missaoDAO.listarTodos();
+    }
 }

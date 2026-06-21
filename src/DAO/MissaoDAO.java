@@ -198,4 +198,25 @@ public class MissaoDAO {
             stmt.executeUpdate();
         }
     }
+
+    // Listar todas as missões cadastradas
+    public ArrayList<Missao> listarTodos() throws SQLException {
+        ArrayList<Missao> missoes = new ArrayList<>();
+        String sql = "SELECT * FROM missao ORDER BY nome ASC";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Missao m = new Missao(
+                        rs.getString("nome"),
+                        rs.getString("descricao"),
+                        rs.getString("id_mestre"),
+                        rs.getInt( "xp_bonus")
+                );
+                m.setIdMissao(rs.getString("id_missao"));
+                missoes.add(m);
+            }
+        }
+        return missoes;
+    } 
 }

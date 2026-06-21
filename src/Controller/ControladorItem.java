@@ -78,7 +78,7 @@ public class ControladorItem implements Controlador  {
         return itemDAO.buscarPorId(id);
     }
 
-    // Listar todos os itens
+    // Listar todos os itens cadastrados
     public ArrayList<Item> listarTodosOsItens() throws SQLException {
         return itemDAO.listarTodos();
     }

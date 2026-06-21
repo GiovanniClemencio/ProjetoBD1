@@ -4,7 +4,7 @@
  */
 package DAO;
 
-import Classes.ItemDropDTO;
+import Classes.ItemDTO;
 import Classes.Missao;
 import Classes.Personagem;
 import database.Conexao;
@@ -163,8 +163,8 @@ public class MissaoDAO {
     }
 
     // Listar todas as recompensas de uma missão
-    public ArrayList<ItemDropDTO> listarRecompensasDaMissao(String idMissao) throws SQLException {
-        ArrayList<ItemDropDTO> recompensas = new ArrayList<>();
+    public ArrayList<ItemDTO> listarRecompensasDaMissao(String idMissao) throws SQLException {
+        ArrayList<ItemDTO> recompensas = new ArrayList<>();
         String sql = "SELECT id_item, quantidade FROM missao_item WHERE id_missao = ?";
 
         try (Connection conn = Conexao.conectar();
@@ -174,7 +174,7 @@ public class MissaoDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    ItemDropDTO drop = new ItemDropDTO(
+                    ItemDTO drop = new ItemDTO(
                         rs.getString("id_item"),
                         rs.getInt("quantidade")
                     );

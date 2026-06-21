@@ -5,6 +5,7 @@
 package DAO;
 
 import Classes.Campanha;
+import Classes.ItemDTO;
 import Classes.Personagem;
 import database.Conexao;
 import java.sql.Connection;
@@ -238,6 +239,30 @@ public class PersonagemDAO {
             }
         }
         return personagens;
+    }
+
+    // Listar todos os itens que estão no inventário de um personagem específico
+    public ArrayList<ItemDTO> listarItensDoInventario(String idPersonagem) throws SQLException {
+        ArrayList<ItemDTO> inventario = new ArrayList<>();
+        
+        // Pega o item e a quantidade
+        String sql = "SELECT i.id_item, i.nome, i.peso, pi.quantidade FROM item i " +
+                     "JOIN personagem_item pi ON i.id_item = pi.id_item " +
+                     "WHERE pi.id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ItemDTO itemFormatado = new ItemDTO(rs.getString("id_item"), rs.getInt("quantidade"));
+                    inventario.add(itemFormatado);
+                }
+            }
+        }
+        return inventario;
     }
 
 }

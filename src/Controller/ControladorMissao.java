@@ -4,7 +4,7 @@
  */
 package Controller;
 
-import Classes.ItemDropDTO;
+import Classes.ItemDTO;
 import Classes.Missao;
 import Classes.Personagem;
 import DAO.MissaoDAO;
@@ -143,7 +143,7 @@ public class ControladorMissao implements Controlador {
             throw new IllegalArgumentException("Não é possível concluir uma missão sem personagens participantes!");
         }
 
-        ArrayList<ItemDropDTO> recompensas = missaoDAO.listarRecompensasDaMissao(idMissao);
+        ArrayList<ItemDTO> recompensas = missaoDAO.listarRecompensasDaMissao(idMissao);
 
 
         for (Personagem personagem : participantes) {
@@ -151,7 +151,7 @@ public class ControladorMissao implements Controlador {
             
             personagemDAO.adicionarXP(idPersonagem, xpGanho);
             
-            for (ItemDropDTO item : recompensas) {
+            for (ItemDTO item : recompensas) {
                 personagemDAO.adquirirItem(idPersonagem, item.getIdItem(), item.getQuantidade());
             }
         }

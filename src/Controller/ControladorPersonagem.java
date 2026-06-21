@@ -5,7 +5,7 @@
 package Controller;
 
 import Classes.Campanha;
-import Classes.ItemDropDTO;
+import Classes.ItemDTO;
 import Classes.Personagem;
 import DAO.MonstroDAO;
 import DAO.PersonagemDAO;
@@ -159,9 +159,9 @@ public class ControladorPersonagem implements Controlador {
             throw new IllegalArgumentException("ID do monstro inválido para gerar o drop.");
         }
 
-        ArrayList<ItemDropDTO> itensDoMonstro = monstroDAO.buscarItensDoDrop(idMonstro);
+        ArrayList<ItemDTO> itensDoMonstro = monstroDAO.buscarItensDoDrop(idMonstro);
 
-        for (ItemDropDTO drop : itensDoMonstro) {
+        for (ItemDTO drop : itensDoMonstro) {
             personagemDAO.adquirirItem(idPersonagem, drop.getIdItem(), drop.getQuantidade());
         }
     }
@@ -179,5 +179,14 @@ public class ControladorPersonagem implements Controlador {
     // Listar todos os personagens cadastrados
     public ArrayList<Personagem> listarTodosOsPersonagens() throws SQLException {
         return personagemDAO.listarTodos();
+    }
+
+    // Listar todos os itens que estão no inventário de um personagem específico
+    public ArrayList<ItemDTO> obterInventarioDoPersonagem(String idPersonagem) throws SQLException, IllegalArgumentException {
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido para carregar o inventário.");
+        }
+
+        return personagemDAO.listarItensDoInventario(idPersonagem);
     }
 }

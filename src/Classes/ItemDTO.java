@@ -8,11 +8,11 @@ package Classes;
  *
  * @author Luan
  */
-public class ItemDropDTO {
+public class ItemDTO {
     private String idItem;
     private int quantidade;
 
-    public ItemDropDTO(String idItem, int quantidade) {
+    public ItemDTO(String idItem, int quantidade) {
         this.idItem = idItem;
         this.quantidade = quantidade;
     }

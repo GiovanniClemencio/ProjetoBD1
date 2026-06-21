@@ -4,7 +4,7 @@
  */
 package DAO;
 
-import Classes.ItemDropDTO;
+import Classes.ItemDTO;
 import Classes.Monstro;
 import database.Conexao;
 import java.sql.Connection;
@@ -168,8 +168,8 @@ public class MonstroDAO {
     }
 
     // Método auxiliar no MonstroDAO para listar os itens que ele carrega
-    public ArrayList<ItemDropDTO> buscarItensDoDrop(String idMonstro) throws SQLException {
-        ArrayList<ItemDropDTO> lista = new ArrayList<>();
+    public ArrayList<ItemDTO> buscarItensDoDrop(String idMonstro) throws SQLException {
+        ArrayList<ItemDTO> lista = new ArrayList<>();
         String sql = "SELECT id_item, quantidade FROM monstro_drop WHERE id_monstro = ?";
 
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -177,7 +177,7 @@ public class MonstroDAO {
             stmt.setString(1, idMonstro);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    lista.add(new ItemDropDTO(rs.getString("id_item"), rs.getInt("quantidade")));
+                    lista.add(new ItemDTO(rs.getString("id_item"), rs.getInt("quantidade")));
                 }
             }
         }

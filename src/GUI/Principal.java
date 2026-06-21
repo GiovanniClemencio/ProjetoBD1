@@ -11,6 +11,7 @@ import Controller.ControladorJogador;
 import Controller.ControladorMissao;
 import Controller.ControladorMonstro;
 import Controller.ControladorPersonagem;
+import Controller.GerenciadorControladores;
 import DAO.CampanhaDAO;
 import DAO.ClasseDAO;
 import DAO.ItemDAO;

@@ -4,16 +4,18 @@
  */
 package GUI.telas;
 
+import Controller.GerenciadorControladores;
+
 /**
  *
  * @author Portu
  */
 public class TelaInicial extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaInicial
-     */
-    public TelaInicial() {
+    private final GerenciadorControladores controladores;
+    
+    public TelaInicial(GerenciadorControladores controladores) {
+        this.controladores = controladores;
         initComponents();
     }
 

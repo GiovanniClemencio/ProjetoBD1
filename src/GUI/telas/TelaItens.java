@@ -4,17 +4,32 @@
  */
 package GUI.telas;
 
+import Controller.GerenciadorControladores;
+
 /**
  *
  * @author Portu
  */
 public class TelaItens extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaItens
-     */
-    public TelaItens() {
+    private final java.awt.Frame parent;
+    private final GerenciadorControladores controladores;
+    private final Runnable aoFechar;
+    
+    public TelaItens(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
+        this.parent = parent;
+        this.controladores = controladores;
+        this.aoFechar = aoFechar;
         initComponents();
+        
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                if (TelaItens.this.aoFechar != null) {
+                    TelaItens.this.aoFechar.run();
+                }
+            }
+        });
     }
 
     /**

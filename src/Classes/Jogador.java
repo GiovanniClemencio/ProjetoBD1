@@ -35,5 +35,11 @@ public class Jogador {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    @Override
+    public String toString() {
+        return "Jogador{" + "nome=" + nome + '}';
+    }
+    
     
 }

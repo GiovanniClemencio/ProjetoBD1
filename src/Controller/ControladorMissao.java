@@ -4,7 +4,6 @@
  */
 package Controller;
 
-import Classes.Jogador;
 import Classes.Missao;
 import DAO.MissaoDAO;
 import java.sql.SQLException;
@@ -15,7 +14,7 @@ import java.sql.SQLException;
  */
 public class ControladorMissao implements Controlador  {
 
-    private MissaoDAO missaoDAO;
+    private final MissaoDAO missaoDAO;
 
     public ControladorMissao() {
         this.missaoDAO = new MissaoDAO();

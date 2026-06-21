@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class ControladorItem implements Controlador  {
 
-    private ItemDAO itemDAO;
+    private final ItemDAO itemDAO;
 
     public ControladorItem() {
         this.itemDAO = new ItemDAO();

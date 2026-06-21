@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class ControladorMonstro implements Controlador {
 
-    private MonstroDAO monstroDAO;
+    private final MonstroDAO monstroDAO;
 
     public ControladorMonstro() {
         this.monstroDAO = new MonstroDAO();

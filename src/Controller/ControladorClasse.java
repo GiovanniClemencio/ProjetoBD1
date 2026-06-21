@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class ControladorClasse implements Controlador  {
 
-    private ClasseDAO classeDAO;
+    private final ClasseDAO classeDAO;
 
     public ControladorClasse() {
         this.classeDAO = new ClasseDAO();

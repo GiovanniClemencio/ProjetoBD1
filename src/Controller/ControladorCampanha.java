@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class ControladorCampanha implements Controlador {
 
-    private CampanhaDAO campanhaDAO;
+    private final CampanhaDAO campanhaDAO;
 
     public ControladorCampanha() {
         this.campanhaDAO = new CampanhaDAO();

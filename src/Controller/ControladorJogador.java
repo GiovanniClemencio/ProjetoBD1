@@ -67,7 +67,7 @@ public class ControladorJogador implements Controlador  {
         return jogadorDAO.buscarPorId(id);
     }
 
-    // Listar todos os jogadores
+    // Listar todos os jogadores cadastrados
     public ArrayList<Jogador> listarTodosOsJogadores() throws SQLException {
         return jogadorDAO.listarTodos();
     }

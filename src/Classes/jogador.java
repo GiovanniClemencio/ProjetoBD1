@@ -13,7 +13,6 @@ import java.util.UUID;
 public class Jogador {
     private String idJogador;
     private String nome;
-    // private ArrayList<Personagem> personagens;
 
     public Jogador(String nome) {
         this.idJogador = UUID.randomUUID().toString();

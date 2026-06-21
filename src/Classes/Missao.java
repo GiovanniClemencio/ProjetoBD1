@@ -67,6 +67,17 @@ public class Missao {
     public void setXpBonus(int xpBonus) {
         this.xpBonus = xpBonus;
     }
+
+    @Override
+    public String toString() {
+        return "Missao{" + "nome=" + nome + '}';
+    }
     
-    
+    public String toStringResumo() {
+        return "Missao{" + "idMissao=" + idMissao + 
+                "\n nome=" + nome + 
+                "\n descricao=" + descricao + 
+                "\n idMestre=" + idMestre + 
+                "\n xpBonus=" + xpBonus + '}' + "\n\n";
+    }
 }

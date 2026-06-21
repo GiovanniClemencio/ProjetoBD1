@@ -27,7 +27,7 @@ public class ControladorMissao implements Controlador {
     }
 
     // Criar Missão
-    public void cadastrarMissao(String nome, String descricao, String idMestre, int xpBonus)
+    public Missao cadastrarMissao(String nome, String descricao, String idMestre, int xpBonus)
             throws SQLException, IllegalArgumentException {
 
         if (nome == null || nome.isBlank()) {
@@ -43,6 +43,8 @@ public class ControladorMissao implements Controlador {
         Missao novaMissao = new Missao(nome, descricao, idMestre, xpBonus);
 
         missaoDAO.inserir(novaMissao);
+        
+        return novaMissao;
     }
 
     // Excluir Missão

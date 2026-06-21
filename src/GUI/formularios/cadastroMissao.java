@@ -4,8 +4,20 @@
  */
 package GUI.formularios;
 
+import Classes.Item;
+import Classes.Jogador;
+import Classes.Missao;
+import Classes.Monstro;
+import Classes.Personagem;
+import Controller.ControladorItem;
+import Controller.ControladorJogador;
+import Controller.ControladorMissao;
+import Controller.ControladorMonstro;
+import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,14 +27,28 @@ public class cadastroMissao extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
+    private final ControladorMissao ctrlMissao;
+    private final ControladorJogador ctrlJogador;
+    private final ControladorPersonagem ctrlPersonagem;
+    private final ControladorMonstro ctrlMonstro;
+    private final ControladorItem ctrlItem;
     private final Runnable aoFechar;
     
     public cadastroMissao(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
+        this.ctrlMissao = controladores.obter(ControladorMissao.class);
+        this.ctrlJogador = controladores.obter(ControladorJogador.class);
+        this.ctrlPersonagem = controladores.obter(ControladorPersonagem.class);
+        this.ctrlMonstro = controladores.obter(ControladorMonstro.class);
+        this.ctrlItem = controladores.obter(ControladorItem.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        configurarEventos();
+        carregarDados();
+        atualizarEstadoBotaoCadastrar();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -72,8 +98,18 @@ public class cadastroMissao extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
 
         campoNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,33 +133,16 @@ public class cadastroMissao extends javax.swing.JDialog {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Monstros: ");
 
-        listMonstros.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(listMonstros);
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Mestre: ");
 
-        comboMestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        listPersonagens.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane3.setViewportView(listPersonagens);
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Personagens: ");
 
-        listRecompensas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane4.setViewportView(listRecompensas);
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -260,6 +279,188 @@ public class cadastroMissao extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeActionPerformed
 
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        campoNome.setText("");
+        campoXp.setText("");
+        jTextArea1.setText("");
+        comboMestre.setSelectedItem(null);
+
+        listPersonagens.clearSelection();
+        listMonstros.clearSelection();
+        listRecompensas.clearSelection();
+
+        atualizarEstadoBotaoCadastrar();
+    }//GEN-LAST:event_buttonLimparActionPerformed
+
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+            String descricao = jTextArea1.getText().trim();
+            int xpBonus = Integer.parseInt(campoXp.getText().trim());
+
+            Jogador mestreSelecionado = (Jogador) comboMestre.getSelectedItem();
+            if (mestreSelecionado == null) {
+                JOptionPane.showMessageDialog(this, "Selecione um mestre.");
+                return;
+            }
+
+            String idMestre = mestreSelecionado.getIdJogador();
+
+            Missao novaMissao = ctrlMissao.cadastrarMissao(nome, descricao, idMestre, xpBonus);
+
+            for (Personagem personagem : listPersonagens.getSelectedValuesList()) {
+                ctrlMissao.adicionarParticipante(novaMissao.getIdMissao(), personagem.getIdPersonagem());
+            }
+
+            for (Monstro monstro : listMonstros.getSelectedValuesList()) {
+                ctrlMissao.adicionarInimigo(novaMissao.getIdMissao(), monstro.getIdMonstro(), 1);
+            }
+
+            for (Item item : listRecompensas.getSelectedValuesList()) {
+                ctrlMissao.adicionarRecompensa(novaMissao.getIdMissao(), item.getIdItem(), 1);
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Missão cadastrada com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "XP bônus deve ser um número inteiro válido.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar missão: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void carregarDados() {
+        try {
+            comboMestre.removeAllItems();
+
+            ArrayList<Jogador> jogadores = ctrlJogador.listarTodosOsJogadores();
+            for (Jogador jogador : jogadores) {
+                comboMestre.addItem(jogador);
+            }
+            comboMestre.setSelectedItem(null);
+
+            javax.swing.DefaultListModel<Personagem> modelPersonagens = new javax.swing.DefaultListModel<>();
+            for (Personagem personagem : ctrlPersonagem.listarTodosOsPersonagens()) {
+                modelPersonagens.addElement(personagem);
+            }
+            listPersonagens.setModel(modelPersonagens);
+            listPersonagens.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            listPersonagens.clearSelection();
+
+            javax.swing.DefaultListModel<Monstro> modelMonstros = new javax.swing.DefaultListModel<>();
+            for (Monstro monstro : ctrlMonstro.listarTodosOsMonstros()) {
+                modelMonstros.addElement(monstro);
+            }
+            listMonstros.setModel(modelMonstros);
+            listMonstros.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            listMonstros.clearSelection();
+
+            javax.swing.DefaultListModel<Item> modelItens = new javax.swing.DefaultListModel<>();
+            for (Item item : ctrlItem.listarTodosOsItens()) {
+                modelItens.addElement(item);
+            }
+            listRecompensas.setModel(modelItens);
+            listRecompensas.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            listRecompensas.clearSelection();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar dados: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void configurarEventos() {
+        buttonCadastrar.setEnabled(false);
+
+        javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        campoNome.getDocument().addDocumentListener(listener);
+        campoXp.getDocument().addDocumentListener(listener);
+        jTextArea1.getDocument().addDocumentListener(listener);
+
+        comboMestre.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
+
+        javax.swing.event.ListSelectionListener selectionListener = e -> {
+            if (!e.getValueIsAdjusting()) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        listPersonagens.addListSelectionListener(selectionListener);
+        listMonstros.addListSelectionListener(selectionListener);
+        listRecompensas.addListSelectionListener(selectionListener);
+    }
+    
+    private void atualizarEstadoBotaoCadastrar() {
+        boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
+        boolean xpValido = textoEhInteiro(campoXp.getText().trim());
+        boolean descricaoPreenchida = !jTextArea1.getText().trim().isEmpty();
+        boolean mestreSelecionado = comboMestre.getSelectedIndex() != -1;
+
+        boolean personagensSelecionados = !listPersonagens.isSelectionEmpty();
+        boolean monstrosSelecionados = !listMonstros.isSelectionEmpty();
+        boolean recompensasSelecionadas = !listRecompensas.isSelectionEmpty();
+
+        buttonCadastrar.setEnabled(
+                nomePreenchido
+                && xpValido
+                && descricaoPreenchida
+                && mestreSelecionado
+                && personagensSelecionados
+                && monstrosSelecionados
+                && recompensasSelecionadas
+        );
+    }
+
+    private boolean textoEhInteiro(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -267,7 +468,7 @@ public class cadastroMissao extends javax.swing.JDialog {
     private javax.swing.JButton buttonLimpar;
     private javax.swing.JTextField campoNome;
     private javax.swing.JTextField campoXp;
-    private javax.swing.JComboBox<String> comboMestre;
+    private javax.swing.JComboBox<Jogador> comboMestre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -282,9 +483,9 @@ public class cadastroMissao extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JList<String> listMonstros;
-    private javax.swing.JList<String> listPersonagens;
-    private javax.swing.JList<String> listRecompensas;
+    private javax.swing.JList<Monstro> listMonstros;
+    private javax.swing.JList<Personagem> listPersonagens;
+    private javax.swing.JList<Item> listRecompensas;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

@@ -40,3 +40,22 @@ CREATE TABLE campanha_personagem (
     FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,
     FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem) ON DELETE CASCADE
 );
+
+CREATE TABLE item (
+    id_item VARCHAR(36) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    raridade VARCHAR(50) NOT NULL,
+    custo DOUBLE NOT NULL DEFAULT 0.0,
+    peso DOUBLE NOT NULL DEFAULT 0.0
+);
+
+CREATE TABLE inventario (
+    id_personagem VARCHAR(36),
+    id_item VARCHAR(36),
+    quantidade INT NOT NULL DEFAULT 1,
+    
+    PRIMARY KEY (id_personagem, id_item),
+    
+    FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem) ON DELETE CASCADE,
+    FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
+);

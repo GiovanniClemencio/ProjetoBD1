@@ -93,6 +93,25 @@ public class ControladorPersonagem {
         personagemDAO.adicionarXP(idPersonagem, xp);
     }
 
+    // Personagem ganha um item
+    public void personagemGanhaItem(String idPersonagem, String idItem, int qtd) throws SQLException, IllegalArgumentException {
+
+        // Validação IDs
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido.");
+        }
+        if (idItem == null || idItem.isBlank()) {
+            throw new IllegalArgumentException("ID do item inválido.");
+        }
+
+        // Validação quantidade
+        if (qtd <= 0) {
+            throw new IllegalArgumentException("A quantidade de itens adquiridos deve ser maior que zero!");
+        }
+
+        personagemDAO.adquirirItem(idPersonagem, idItem, qtd);
+    }
+
     // Listar campanhas que o personagem participa
     public ArrayList<Campanha> obterCampanhasParticipando(String idPersonagem) throws SQLException, IllegalArgumentException {
         // Validação

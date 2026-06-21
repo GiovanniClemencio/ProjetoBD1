@@ -118,6 +118,23 @@ public class PersonagemDAO {
         }
     }
 
+    // Aquisição de um item
+    public void adquirirItem(String idPersonagem, String idItem, int qtd) throws SQLException {
+        // Se a combinação de id_personagem e id_item já existir, ele soma a nova quantidade a atual
+        String sql = "INSERT INTO inventario (id_personagem, id_item, quantidade) VALUES (?, ?, ?) "
+                + "ON DUPLICATE KEY UPDATE quantidade = quantidade + ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            stmt.setString(2, idItem);
+            stmt.setInt(3, qtd);
+            stmt.setInt(4, qtd);
+
+            stmt.executeUpdate();
+        }
+    }
+
     // Campanhas que participa
     public ArrayList<Campanha> listarCampanhasParticipando(String idPersonagem) throws SQLException {
         ArrayList<Campanha> campanhas = new ArrayList<>();
@@ -148,4 +165,5 @@ public class PersonagemDAO {
         return campanhas;
     }
 
+    // 
 }

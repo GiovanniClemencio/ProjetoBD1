@@ -117,6 +117,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCampanhasActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonInicio">
           <Properties>
@@ -128,6 +131,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonInicioActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonJogadores">
           <Properties>
@@ -139,11 +145,17 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonJogadoresActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonPersonagens">
           <Properties>
             <Property name="text" type="java.lang.String" value="Personagens"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonPersonagensActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonItens">
           <Properties>
@@ -155,6 +167,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonItensActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonMonstros">
           <Properties>
@@ -166,6 +181,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMonstrosActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonClasses">
           <Properties>
@@ -189,6 +207,9 @@
               <Dimension value="[96, 23]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMissoesActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -240,16 +261,11 @@
         <Component class="javax.swing.JComboBox" name="comboClasses">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Classe&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
@@ -268,11 +284,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Abrir classe"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAbrirActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonCriar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cadastrar nova classe"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCriarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

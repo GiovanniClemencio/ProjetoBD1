@@ -122,34 +122,35 @@ public class CampanhaDAO {
     }
 
     // Vincular um mestre a campanha
-    public void adicionarMestre(String idCampanha, String idMestre) throws SQLException {
-        String sql = "INSERT INTO campanha_mestre (id_campanha, id_Mestre) VALUES (?, ?)";
+    public void adicionarMestreACampanha(String idCampanha, String idMestre) throws SQLException {
+        String sql = "UPDATE campanha SET id_mestre = ? WHERE id_campanha = ?";
 
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, idCampanha);
-            stmt.setString(2, idMestre);
+            stmt.setString(1, idMestre);
+            stmt.setString(2, idCampanha);  
 
             stmt.executeUpdate();
         }
     }
 
     // Desvincula um mestre a campanha
-    public void removerMestre(String idCampanha, String idMestre) throws SQLException {
-        String sql = "DELETE FROM campanha_mestre WHERE id_campanha = ? AND id_personagem = ?";
+    public void removerMestreDaCampanha(String idCampanha, String idMestre) throws SQLException {
+        String sql = "UPDATE campanha SET id_mestre = NULL WHERE id_campanha = ?";
 
         try (Connection conn = Conexao.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, idCampanha);
-            stmt.setString(2, idMestre);
+            stmt.setString(1, idMestre);
+            stmt.setString(2, idCampanha);
+            
 
             stmt.executeUpdate();
         }
     }
 
     // Vincular uma missão a uma campanha
-    public void adicionarMissaoAocampanha(String idCampanha, String idMissao) throws SQLException {
+    public void adicionarMissaoAcampanha(String idCampanha, String idMissao) throws SQLException {
         String sql = "INSERT INTO campanha_missao (id_campanha, id_missao) VALUES (?, ?)";
 
         try (Connection conn = Conexao.conectar();

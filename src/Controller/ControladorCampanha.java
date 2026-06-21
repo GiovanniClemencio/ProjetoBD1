@@ -105,7 +105,7 @@ public class ControladorCampanha implements Controlador {
             throw new IllegalArgumentException("ID da missão inválido.");
         }
 
-        campanhaDAO.adicionarMissaoAocampanha(idCampanha, idMissao);
+        campanhaDAO.adicionarMissaoAcampanha(idCampanha, idMissao);
     }
 
     // Remover missão da campanha

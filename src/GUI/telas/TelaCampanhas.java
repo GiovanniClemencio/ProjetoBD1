@@ -346,7 +346,9 @@ public class TelaCampanhas extends javax.swing.JFrame {
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
         cadastroCampanha dialog = new cadastroCampanha(this, true, controladores, () -> {
-            new TelaInicial(controladores).setVisible(true);
+            new TelaCampanhas(parent, true, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            }).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);

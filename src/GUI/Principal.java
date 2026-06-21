@@ -19,6 +19,7 @@ import DAO.JogadorDAO;
 import DAO.MissaoDAO;
 import DAO.MonstroDAO;
 import DAO.PersonagemDAO;
+import GUI.telas.TelaInicial;
 
 /**
  *
@@ -26,11 +27,28 @@ import DAO.PersonagemDAO;
  */
 public class Principal {
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) {
         GerenciadorControladores gerenciador = new GerenciadorControladores();
+        
+        ControladorCampanha ctrlCampanha = new ControladorCampanha();
+        ControladorClasse ctrlClasse = new ControladorClasse();
+        ControladorItem ctrlItem = new ControladorItem();
+        ControladorJogador ctrlJogador = new ControladorJogador();
+        ControladorMissao ctrlMissao = new ControladorMissao();
+        ControladorMonstro ctrlMonstro = new ControladorMonstro();
+        ControladorPersonagem ctrlPersonagem = new ControladorPersonagem();
+        
+        gerenciador.registrar(ctrlCampanha);
+        gerenciador.registrar(ctrlClasse);
+        gerenciador.registrar(ctrlItem);
+        gerenciador.registrar(ctrlJogador);
+        gerenciador.registrar(ctrlMissao);
+        gerenciador.registrar(ctrlMonstro);
+        gerenciador.registrar(ctrlPersonagem);
+        
+        TelaInicial inicio = new TelaInicial(gerenciador);
+        inicio.setVisible(true);
     }
     
 }

@@ -50,7 +50,7 @@ public class edicaoMissao extends javax.swing.JDialog {
             }
         });
         
-        fduhgaoisdhgfoa // vou arrumar isso é só pra eu lembrar que essa janela n ta finalizada
+        //fduhgaoisdhgfoa // vou arrumar isso é só pra eu lembrar que essa janela n ta finalizada
     }
 
     /**

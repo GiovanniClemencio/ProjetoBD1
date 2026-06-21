@@ -307,12 +307,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboCampanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCampanhaActionPerformed
-        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
-            new TelaInicial(controladores).setVisible(true);
-        });
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-        dispose();  
+        
     }//GEN-LAST:event_comboCampanhaActionPerformed
 
     private void comboJogadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboJogadorActionPerformed
@@ -324,7 +319,12 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_comboPersonagemActionPerformed
 
     private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
-        // TODO add your handling code here:
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();  
     }//GEN-LAST:event_buttonCampanhasActionPerformed
 
     private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed

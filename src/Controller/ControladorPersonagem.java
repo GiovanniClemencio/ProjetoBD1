@@ -5,7 +5,9 @@
 package Controller;
 
 import Classes.Campanha;
+import Classes.ItemDropDTO;
 import Classes.Personagem;
+import DAO.MonstroDAO;
 import DAO.PersonagemDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,9 +19,11 @@ import java.util.ArrayList;
 public class ControladorPersonagem implements Controlador {
 
     private final PersonagemDAO personagemDAO;
+    private final MonstroDAO monstroDAO;
 
     public ControladorPersonagem() {
         this.personagemDAO = new PersonagemDAO();
+        this.monstroDAO = new MonstroDAO();
     }
 
     public void cadastrarPersonagem(String nome, double cargaMaxima, double xp, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, String idJogador) throws SQLException, IllegalArgumentException {
@@ -143,6 +147,23 @@ public class ControladorPersonagem implements Controlador {
         }
 
         personagemDAO.removerItem(idPersonagem, idItem, qtd);
+    }
+
+    // Transferir drops do monstro ao personagem
+    public void processarDropDoMonstro(String idPersonagem, String idMonstro) throws SQLException, IllegalArgumentException {
+
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido para receber o drop.");
+        }
+        if (idMonstro == null || idMonstro.isBlank()) {
+            throw new IllegalArgumentException("ID do monstro inválido para gerar o drop.");
+        }
+
+        ArrayList<ItemDropDTO> itensDoMonstro = monstroDAO.buscarItensDoDrop(idMonstro);
+
+        for (ItemDropDTO drop : itensDoMonstro) {
+            personagemDAO.adquirirItem(idPersonagem, drop.getIdItem(), drop.getQuantidade());
+        }
     }
 
     // Listar campanhas que o personagem participa

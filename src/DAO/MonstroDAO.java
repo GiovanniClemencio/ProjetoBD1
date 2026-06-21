@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Classes.ItemDropDTO;
 import Classes.Monstro;
 import database.Conexao;
 import java.sql.Connection;
@@ -42,13 +43,12 @@ public class MonstroDAO {
             stmt.executeUpdate();
         }
     }
-    
+
     // Excluir monstro
     public void excluir(String idMonstro) throws SQLException {
         String sql = "DELETE FROM monstro WHERE id_monstro = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMonstro);
             stmt.executeUpdate();
@@ -59,8 +59,7 @@ public class MonstroDAO {
     public void atualizar(Monstro monstro) throws SQLException {
         String sql = "UPDATE monstro SET nome = ?, descricao = ?, tipo = ?, vida = ?, forca = ?, destreza = ?, constituicao = ?, inteligencia = ?, sabedoria = ?, carisma = ?, cr = ? WHERE id_monstro = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, monstro.getNome());
             stmt.setString(2, monstro.getDescricao());
@@ -137,15 +136,14 @@ public class MonstroDAO {
         }
         return monstros;
     }
-    
-    // Drop do monstro
+
+    // Adicionar drop ao monstro
     public void adicionarDrop(String idMonstro, String idItem, int quantidade) throws SQLException {
         // Se o monstro já tiver esse item na tabela de drops atualiza a quantidade senão insere
-        String sql = "INSERT INTO monstro_drop (id_monstro, id_item, quantidade) VALUES (?, ?, ?) " +
-                     "ON DUPLICATE KEY UPDATE quantidade = ?";
+        String sql = "INSERT INTO monstro_drop (id_monstro, id_item, quantidade) VALUES (?, ?, ?) "
+                + "ON DUPLICATE KEY UPDATE quantidade = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMonstro);
             stmt.setString(2, idItem);
@@ -155,18 +153,34 @@ public class MonstroDAO {
             stmt.executeUpdate();
         }
     }
-    
+
     // Remover um item da lista de drops do monstro
     public void removerDrop(String idMonstro, String idItem) throws SQLException {
         String sql = "DELETE FROM monstro_drop WHERE id_monstro = ? AND id_item = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMonstro);
             stmt.setString(2, idItem);
 
             stmt.executeUpdate();
         }
+    }
+
+    // Método auxiliar no MonstroDAO para listar os itens que ele carrega
+    public ArrayList<ItemDropDTO> buscarItensDoDrop(String idMonstro) throws SQLException {
+        ArrayList<ItemDropDTO> lista = new ArrayList<>();
+        String sql = "SELECT id_item, quantidade FROM monstro_drop WHERE id_monstro = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idMonstro);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new ItemDropDTO(rs.getString("id_item"), rs.getInt("quantidade")));
+                }
+            }
+        }
+        return lista;
     }
 }

@@ -16,10 +16,10 @@ import java.util.ArrayList;
  */
 public class ControladorCampanha {
 
-    private CampanhaDAO dao;
+    private CampanhaDAO campanhaDAO;
 
-    public ControladorCampanha(CampanhaDAO dao) {
-        this.dao = new CampanhaDAO();
+    public ControladorCampanha(CampanhaDAO campanhaDAO) {
+        this.campanhaDAO = new CampanhaDAO();
     }
 
     // Cadastrar
@@ -32,7 +32,7 @@ public class ControladorCampanha {
 
         Campanha campanha = new Campanha(nome);
 
-        dao.inserir(campanha);
+        campanhaDAO.inserir(campanha);
     }
 
     // Buscar por ID
@@ -41,7 +41,7 @@ public class ControladorCampanha {
             throw new IllegalArgumentException("ID inválido para busca de campanha.");
         }
 
-        return dao.buscarPorId(idCampanha);
+        return campanhaDAO.buscarPorId(idCampanha);
     }
 
     // Buscar personagens que participam da campanha
@@ -50,7 +50,7 @@ public class ControladorCampanha {
             throw new IllegalArgumentException("ID da campanha inválido para listagem de participantes.");
         }
 
-        return dao.listarPersonagensParticipantes(idCampanha);
+        return campanhaDAO.listarPersonagensParticipantes(idCampanha);
     }
 
     // Vinculando um personagem a uma campanha
@@ -60,7 +60,7 @@ public class ControladorCampanha {
             throw new IllegalArgumentException("IDs inválidos para realizar o vínculo.");
         }
 
-        dao.adicionarPersonagem(idCampanha, idPersonagem);
+        campanhaDAO.adicionarPersonagem(idCampanha, idPersonagem);
     }
 
     // Desvinculando um personagem a uma campanha
@@ -69,7 +69,7 @@ public class ControladorCampanha {
             throw new IllegalArgumentException("IDs inválidos para remover o personagem da campanha.");
         }
 
-        dao.removerPersonagem(idCampanha, idPersonagem);
+        campanhaDAO.removerPersonagem(idCampanha, idPersonagem);
     }
 
     // Vinculando um mestre a uma campanha
@@ -79,7 +79,7 @@ public class ControladorCampanha {
             throw new IllegalArgumentException("IDs inválidos para realizar o vínculo.");
         }
 
-        dao.adicionarPersonagem(idCampanha, idMestre);
+        campanhaDAO.adicionarPersonagem(idCampanha, idMestre);
     }
 
     // Desvinculando um mestre a uma campanha
@@ -88,7 +88,31 @@ public class ControladorCampanha {
             throw new IllegalArgumentException("IDs inválidos para remover o personagem da campanha.");
         }
 
-        dao.removerPersonagem(idCampanha, idMestre);
+        campanhaDAO.removerPersonagem(idCampanha, idMestre);
     }
 
+    // Vincular missão a campanha
+    public void adicionarMissaoAoCronograma(String idCampanha, String idMissao) 
+            throws SQLException, IllegalArgumentException {
+        
+        if (idCampanha == null || idCampanha.isBlank()) {
+            throw new IllegalArgumentException("ID da campanha inválido.");
+        }
+        if (idMissao == null || idMissao.isBlank()) {
+            throw new IllegalArgumentException("ID da missão inválido.");
+        }
+
+        campanhaDAO.adicionarMissaoAocampanha(idCampanha, idMissao);
+    }
+
+    // Remover missão da campanha
+    public void removerMissaoDoCronograma(String idCampanha, String idMissao) 
+            throws SQLException, IllegalArgumentException {
+        
+        if (idCampanha == null || idCampanha.isBlank() || idMissao == null || idMissao.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para desvincular a missão.");
+        }
+
+        campanhaDAO.removerMissaoDaCampanha(idCampanha, idMissao);
+    }
 }

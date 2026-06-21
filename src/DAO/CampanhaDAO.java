@@ -146,4 +146,32 @@ public class CampanhaDAO {
             stmt.executeUpdate();
         }
     }
+
+    // Vincular uma missão a uma campanha
+    public void adicionarMissaoAocampanha(String idCampanha, String idMissao) throws SQLException {
+        String sql = "INSERT INTO campanha_missao (id_campanha, id_missao) VALUES (?, ?)";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMissao);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Desvincular uma missão da campanha
+    public void removerMissaoDaCampanha(String idCampanha, String idMissao) throws SQLException {
+        String sql = "DELETE FROM campanha_missao WHERE id_campanha = ? AND id_missao = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMissao);
+
+            stmt.executeUpdate();
+        }
+    }
 }

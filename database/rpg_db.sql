@@ -155,3 +155,11 @@ CREATE TABLE missao_item (
     FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
 );
 
+CREATE TABLE campanha_missao (
+    id_campanha VARCHAR(36),
+    id_missao VARCHAR(36),
+    
+    PRIMARY KEY (id_campanha, id_missao),
+    FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,
+    FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE
+);

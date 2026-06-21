@@ -159,4 +159,10 @@ public class ControladorCampanha implements Controlador {
         //Chama o DAO que faz a mágica do JOIN
         return campanhaDAO.listarJogadoresPorCampanha(idCampanha);
     }
+
+    // Listar todas as campanhas cadastradas
+    public ArrayList<Campanha> listarTodasAsCampanhas() throws SQLException {
+        return campanhaDAO.listarTodos();
+    }
+    
 }

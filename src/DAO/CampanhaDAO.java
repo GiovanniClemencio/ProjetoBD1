@@ -223,4 +223,23 @@ public class CampanhaDAO {
         }
         return jogadores;
     }
+
+    // Listar todas as campanhas
+    public ArrayList<Campanha> listarTodos() throws SQLException {
+        ArrayList<Campanha> campanhas = new ArrayList<>();
+        String sql = "SELECT * FROM campanha ORDER BY nome ASC";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Campanha c = new Campanha(
+                        rs.getString("nome"),
+                        rs.getString("id_mestre")
+                );
+                c.setIdCampanha(rs.getString("id_campanha"));
+                campanhas.add(c);
+            }
+        }
+        return campanhas;
+    }
 }

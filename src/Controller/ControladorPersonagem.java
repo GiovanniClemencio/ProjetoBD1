@@ -175,4 +175,9 @@ public class ControladorPersonagem implements Controlador {
 
         return personagemDAO.listarCampanhasParticipando(idPersonagem);
     }
+
+    // Listar todos os personagens cadastrados
+    public ArrayList<Personagem> listarTodosOsPersonagens() throws SQLException {
+        return personagemDAO.listarTodos();
+    }
 }

@@ -23,8 +23,6 @@ public class Personagem {
     private int sabedoria;
     private int carisma;
     private String idJogador;
-    // private ArrayList<Classe> classes;
-    // private ArrayList<Item> inventario;
 
     public Personagem(String nome, double cargaMaxima, double xp, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, String idJogador){
         this.idPersonagem = UUID.randomUUID().toString();

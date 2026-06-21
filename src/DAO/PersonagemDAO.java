@@ -218,4 +218,26 @@ public class PersonagemDAO {
         return campanhas;
     }
 
+    // Listar todos os personagens cadastrados
+    public ArrayList<Personagem> listarTodos() throws SQLException {
+        ArrayList<Personagem> personagens = new ArrayList<>();
+        String sql = "SELECT * FROM personagem ORDER BY nome ASC";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Personagem p = new Personagem(rs.getString("nome"), rs.getDouble("carga_maxima"), rs.getDouble("xp"),
+                rs.getInt("vida"), rs.getInt("forca"), rs.getInt("destreza"), rs.getInt("constituicao"), rs.getInt("inteligencia"),
+                rs.getInt("sabedoria"), rs.getInt("carisma"), rs.getString("id_jogador"));
+
+                p.setIdPersonagem(rs.getString("id_personagem"));
+
+                personagens.add(p);
+            }
+        }
+        return personagens;
+    }
+
 }

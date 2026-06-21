@@ -31,6 +31,16 @@ CREATE TABLE campanha (
     nome VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE campanha_mestre (
+    id_campanha VARCHAR(36),
+    id_mestre VARCHAR(36),
+
+    PRIMARY KEY (id_campanha, id_mestre),
+
+    FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,
+    FOREIGN KEY (id_mestre) REFERENCES jogador(id_jogador) ON DELETE CASCADE
+)
+
 CREATE TABLE campanha_personagem (
     id_campanha VARCHAR(36),
     id_personagem VARCHAR(36),

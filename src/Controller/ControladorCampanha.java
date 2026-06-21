@@ -71,4 +71,24 @@ public class ControladorCampanha {
 
         dao.removerPersonagem(idCampanha, idPersonagem);
     }
+
+    // Vinculando um mestre a uma campanha
+    public void vincularMestre(String idCampanha, String idMestre) throws SQLException, IllegalArgumentException {
+        // Validação
+        if (idCampanha == null || idCampanha.isBlank() || idMestre == null || idMestre.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para realizar o vínculo.");
+        }
+
+        dao.adicionarPersonagem(idCampanha, idMestre);
+    }
+
+    // Desvinculando um mestre a uma campanha
+    public void desvincularMestre(String idCampanha, String idMestre) throws SQLException, IllegalArgumentException {
+        if (idCampanha == null || idCampanha.isBlank() || idMestre == null || idMestre.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para remover o personagem da campanha.");
+        }
+
+        dao.removerPersonagem(idCampanha, idMestre);
+    }
+
 }

@@ -119,4 +119,31 @@ public class CampanhaDAO {
             stmt.executeUpdate();
         }
     }
+
+    // Vincular um mestre a campanha
+    public void adicionarMestre(String idCampanha, String idMestre) throws SQLException {
+        String sql = "INSERT INTO campanha_mestre (id_campanha, id_Mestre) VALUES (?, ?)";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMestre);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Desvincula um mestre a campanha
+    public void removerMestre(String idCampanha, String idMestre) throws SQLException {
+        String sql = "DELETE FROM campanha_mestre WHERE id_campanha = ? AND id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMestre);
+
+            stmt.executeUpdate();
+        }
+    }
 }

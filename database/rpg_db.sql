@@ -110,3 +110,38 @@ CREATE TABLE monstro_drop (
     FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
 );
 
+CREATE TABLE missao (
+    id_missao VARCHAR(36) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    id_mestre VARCHAR(36),
+    xp_bonus INT DEFAULT 0,
+    FOREIGN KEY (id_mestre) REFERENCES jogador(id_jogador) ON DELETE SET NULL
+);
+
+CREATE TABLE missao_personagem (
+    id_missao VARCHAR(36),
+    id_personagem VARCHAR(36),
+    PRIMARY KEY (id_missao, id_personagem),
+    FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE,
+    FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem) ON DELETE CASCADE
+);
+
+CREATE TABLE missao_monstro (
+    id_missao VARCHAR(36),
+    id_monstro VARCHAR(36),
+    quantidade INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_missao, id_monstro),
+    FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE,
+    FOREIGN KEY (id_monstro) REFERENCES monstro(id_monstro) ON DELETE CASCADE
+);
+
+CREATE TABLE missao_item (
+    id_missao VARCHAR(36),
+    id_item VARCHAR(36),
+    quantidade INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (id_missao, id_item),
+    FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE,
+    FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
+);
+

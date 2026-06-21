@@ -4,7 +4,15 @@
  */
 package GUI.telas;
 
+import Classes.Missao;
+import Classes.Monstro;
+import Controller.ControladorMonstro;
 import Controller.GerenciadorControladores;
+import GUI.formularios.cadastroMonstro;
+import GUI.telas.telasEntradaIndividual.TelaMonstroIndividual;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,13 +22,17 @@ public class TelaMonstros extends javax.swing.JFrame {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
+    private final ControladorMonstro ctrlMonstro;
     private final Runnable aoFechar;
     
     public TelaMonstros(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.controladores = controladores;
+        this.ctrlMonstro = controladores.obter(ControladorMonstro.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        carregarMonstros();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -63,10 +75,18 @@ public class TelaMonstros extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCriar.setText("Cadastrar novo monstro");
+        buttonCriar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCriarActionPerformed(evt);
+            }
+        });
 
         buttonAbrir.setText("Abrir página do monstro");
-
-        comboMonstros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        buttonAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAbrirActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -109,20 +129,45 @@ public class TelaMonstros extends javax.swing.JFrame {
         buttonCampanhas.setText("Campanhas");
         buttonCampanhas.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonCampanhas.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonCampanhas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCampanhasActionPerformed(evt);
+            }
+        });
 
         buttonInicio.setText("Inicio");
         buttonInicio.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonInicio.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonInicioActionPerformed(evt);
+            }
+        });
 
         buttonJogadores.setText("Jogadores");
         buttonJogadores.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonJogadores.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonJogadores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonJogadoresActionPerformed(evt);
+            }
+        });
 
         buttonPersonagens.setText("Personagens");
+        buttonPersonagens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPersonagensActionPerformed(evt);
+            }
+        });
 
         buttonItens.setText("Itens");
         buttonItens.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonItens.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonItens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonItensActionPerformed(evt);
+            }
+        });
 
         buttonMonstros.setText("Monstros");
         buttonMonstros.setEnabled(false);
@@ -132,10 +177,20 @@ public class TelaMonstros extends javax.swing.JFrame {
         buttonClasses.setText("Classes");
         buttonClasses.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonClasses.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonClasses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClassesActionPerformed(evt);
+            }
+        });
 
         buttonMissoes.setLabel("Missões");
         buttonMissoes.setMaximumSize(new java.awt.Dimension(96, 23));
         buttonMissoes.setMinimumSize(new java.awt.Dimension(96, 23));
+        buttonMissoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMissoesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -230,7 +285,109 @@ public class TelaMonstros extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private void buttonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInicioActionPerformed
+        TelaInicial dialog = new TelaInicial(controladores);
+
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonInicioActionPerformed
+
+    private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonCampanhasActionPerformed
+
+    private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
+        TelaJogadores dialog = new TelaJogadores(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonJogadoresActionPerformed
+
+    private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
+        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose(); 
+    }//GEN-LAST:event_buttonPersonagensActionPerformed
+
+    private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
+        TelaClasses dialog = new TelaClasses(this, true, controladores, () -> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonClassesActionPerformed
+
+    private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
+        TelaItens dialog = new TelaItens(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonItensActionPerformed
+
+    private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
+        TelaMissoes dialog = new TelaMissoes(this, true, controladores, ()-> {
+            new TelaInicial(controladores).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonMissoesActionPerformed
+
+    private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
+        Monstro monstroSelecionado = (Monstro) comboMonstros.getSelectedItem();
+        
+        TelaMonstroIndividual dialog = new TelaMonstroIndividual(this, monstroSelecionado, controladores, () -> {
+            new TelaMonstros(this, true, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            }).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonAbrirActionPerformed
+
+    private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        cadastroMonstro dialog = new cadastroMonstro(this, true, controladores, () -> {
+            new TelaMonstros(parent, true, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            }).setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonCriarActionPerformed
+
+    private void carregarMonstros() {
+        try {
+            comboMonstros.removeAllItems();
+
+            ArrayList<Monstro> monstros = ctrlMonstro.listarTodosOsMonstros();
+            for (Monstro monstro : monstros) {
+                comboMonstros.addItem(monstro);
+            }
+
+            comboMonstros.setSelectedItem(null);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar monstros: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAbrir;
@@ -243,7 +400,7 @@ public class TelaMonstros extends javax.swing.JFrame {
     private javax.swing.JButton buttonMissoes;
     private javax.swing.JButton buttonMonstros;
     private javax.swing.JButton buttonPersonagens;
-    private javax.swing.JComboBox<String> comboMonstros;
+    private javax.swing.JComboBox<Monstro> comboMonstros;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

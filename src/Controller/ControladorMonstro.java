@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Luan
  */
-public class ControladorMonstro {
+public class ControladorMonstro implements Controlador {
 
     private MonstroDAO monstroDAO = new MonstroDAO();
 

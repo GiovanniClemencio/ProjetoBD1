@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Luan
  */
-public class ControladorPersonagem {
+public class ControladorPersonagem implements Controlador {
 
     private PersonagemDAO personagemDAO;
 

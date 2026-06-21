@@ -136,6 +136,25 @@ public class Personagem {
     public void setIdJogador(String idJogador) {
         this.idJogador = idJogador;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Personagem{" + "nome=" + nome + '}';
+    }
+
+    public String toStringResumo() {
+        return "Personagem{" + "idPersonagem=" + idPersonagem + 
+                "\n nome=" + nome + 
+                "\n cargaMaxima=" + cargaMaxima + 
+                "\n xp=" + xp + 
+                "\n vida=" + vida + 
+                "\n forca=" + forca + 
+                "\n destreza=" + destreza + 
+                "\n constituicao=" + constituicao + 
+                "\n inteligencia=" + inteligencia + 
+                "\n sabedoria=" + sabedoria + 
+                "\n carisma=" + carisma + 
+                "\n idJogador=" + idJogador + '}' + "\n\n";
+    }
     
 }

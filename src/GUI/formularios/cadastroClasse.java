@@ -4,7 +4,10 @@
  */
 package GUI.formularios;
 
+import Controller.ControladorClasse;
 import Controller.GerenciadorControladores;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,14 +17,18 @@ public class cadastroClasse extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
+    private final ControladorClasse ctrlClasse;
     private final Runnable aoFechar;
     
     public cadastroClasse(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
+        this.ctrlClasse = controladores.obter(ControladorClasse.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        configurarEventos();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -58,8 +65,18 @@ public class cadastroClasse extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
 
         campoNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,7 +182,69 @@ public class cadastroClasse extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeActionPerformed
 
-    
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        campoNome.setText("");
+        textAreaDescricao.setText("");
+        atualizarEstadoBotaoCadastrar();
+    }//GEN-LAST:event_buttonLimparActionPerformed
+
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+            String descricao = textAreaDescricao.getText().trim();
+
+            ctrlClasse.cadastrarClasse(nome, descricao);
+
+            JOptionPane.showMessageDialog(this, "Item cadastrado com sucesso!");
+            dispose();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar item: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void configurarEventos() {
+        buttonCadastrar.setEnabled(false);
+
+        javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        campoNome.getDocument().addDocumentListener(listener);
+        
+        textAreaDescricao.getDocument().addDocumentListener(listener);
+    }
+
+    private void atualizarEstadoBotaoCadastrar() {
+        boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
+        boolean descricaoPreenchida = !textAreaDescricao.getText().trim().isEmpty();
+
+        buttonCadastrar.setEnabled(
+                nomePreenchido
+                && descricaoPreenchida
+        );
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;

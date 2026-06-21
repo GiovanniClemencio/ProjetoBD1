@@ -135,6 +135,24 @@ public class Monstro {
     public void setCr(int cr) {
         this.cr = cr;
     }
+
+    @Override
+    public String toString() {
+        return "Monstro{" + "nome=" + nome + ", tipo=" + tipo + '}';
+    }
     
-    
+    public String toStringResumo() {
+        return "Monstro{" + "idMonstro=" + idMonstro + 
+                "\n nome=" + nome + 
+                "\n descricao=" + descricao + 
+                "\n tipo=" + tipo + 
+                "\n vida=" + vida + 
+                "\n forca=" + forca + 
+                "\n destreza=" + destreza + 
+                "\n constituicao=" + constituicao + 
+                "\n inteligencia=" + inteligencia + 
+                "\n sabedoria=" + sabedoria + 
+                "\n carisma=" + carisma + 
+                "\n cr=" + cr + '}' + "\n\n";
+    }
 }

@@ -4,37 +4,43 @@
  */
 package GUI.formularios;
 
+import Classes.Campanha;
+import Classes.Item;
+import Controller.ControladorCampanha;
 import Controller.ControladorItem;
+import Controller.ControladorJogador;
 import Controller.GerenciadorControladores;
 import javax.swing.JOptionPane;
-import java.sql.SQLException;
 
 /**
  *
  * @author Portu
  */
-public class cadastroItem extends javax.swing.JDialog {
+public class edicaoItem extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
     private final ControladorItem ctrlItem;
+    private final Item item;
     private final Runnable aoFechar;
     
-    public cadastroItem(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
+    public edicaoItem(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Item item, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
         this.ctrlItem = controladores.obter(ControladorItem.class);
+        this.item = item;
         this.aoFechar = aoFechar;
         
         initComponents();
         configurarEventos();
+        carregarDadosDoItem();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                if (cadastroItem.this.aoFechar != null) {
-                    cadastroItem.this.aoFechar.run();
+                if (edicaoItem.this.aoFechar != null) {
+                    edicaoItem.this.aoFechar.run();
                 }
             }
         });
@@ -70,7 +76,7 @@ public class cadastroItem extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
-        buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.setText("Editar");
         buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCadastrarActionPerformed(evt);
@@ -130,7 +136,7 @@ public class cadastroItem extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addComponent(buttonLimpar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 331, Short.MAX_VALUE)
                 .addComponent(buttonCadastrar)
                 .addGap(71, 71, 71))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -229,6 +235,15 @@ public class cadastroItem extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        campoNome.setText("");
+        comboRaridade.setSelectedIndex(-1);
+        campoCusto.setText("");
+        campoPeso.setText("");
+        textAreaDescricao.setText("");
+        atualizarEstadoBotaoCadastrar();
+    }//GEN-LAST:event_buttonLimparActionPerformed
+
     private void campoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeActionPerformed
@@ -241,14 +256,6 @@ public class cadastroItem extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoPesoActionPerformed
 
-    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
-        campoNome.setText("");
-        campoCusto.setText("");
-        campoPeso.setText("");
-        textAreaDescricao.setText("");
-        atualizarEstadoBotaoCadastrar();
-    }//GEN-LAST:event_buttonLimparActionPerformed
-
     private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
         try {
             String nome = campoNome.getText().trim();
@@ -257,29 +264,35 @@ public class cadastroItem extends javax.swing.JDialog {
             double peso = Double.parseDouble(campoPeso.getText().trim());
             String descricao = textAreaDescricao.getText().trim();
 
-            ctrlItem.cadastrarItem(nome, raridade, custo, peso, descricao);
+            ctrlItem.atualizarItem(
+                    item.getIdItem(),
+                    nome,
+                    raridade,
+                    custo,
+                    peso,
+                    descricao
+            );
 
-            JOptionPane.showMessageDialog(this, "Item cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(this, "Item atualizado com sucesso!");
             dispose();
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Custo e peso devem ser números válidos.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao cadastrar item: " + e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),
-                    "Validação",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Custo e peso devem ser números válidos.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar item: " + e.getMessage());
         }
     }//GEN-LAST:event_buttonCadastrarActionPerformed
 
+    private void carregarDadosDoItem() {
+        campoNome.setText(item.getNome());
+        comboRaridade.setSelectedItem(item.getRaridade());
+        campoCusto.setText(String.valueOf(item.getCusto()));
+        campoPeso.setText(String.valueOf(item.getPeso()));
+        textAreaDescricao.setText(item.getDescricao());
+
+        atualizarEstadoBotaoCadastrar();
+    }
+    
     private void configurarEventos() {
         buttonCadastrar.setEnabled(false);
 
@@ -315,19 +328,17 @@ public class cadastroItem extends javax.swing.JDialog {
 
     private void atualizarEstadoBotaoCadastrar() {
         boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
-        boolean custoPreenchido = !campoCusto.getText().trim().isEmpty();
-        boolean pesoPreenchido = !campoPeso.getText().trim().isEmpty();
-        boolean descricaoPreenchida = !textAreaDescricao.getText().trim().isEmpty();
         boolean raridadeSelecionada = comboRaridade.getSelectedIndex() != -1;
+        boolean custoValido = textoEhDouble(campoCusto.getText().trim());
+        boolean pesoValido = textoEhDouble(campoPeso.getText().trim());
+        boolean descricaoPreenchida = !textAreaDescricao.getText().trim().isEmpty();
 
         buttonCadastrar.setEnabled(
                 nomePreenchido
-                && custoPreenchido
-                && pesoPreenchido
-                && descricaoPreenchida
                 && raridadeSelecionada
-                && textoEhDouble(campoCusto.getText().trim())
-                && textoEhDouble(campoPeso.getText().trim())
+                && custoValido
+                && pesoValido
+                && descricaoPreenchida
         );
     }
 

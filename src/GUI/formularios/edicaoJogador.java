@@ -4,37 +4,41 @@
  */
 package GUI.formularios;
 
+import Classes.Item;
+import Classes.Jogador;
+import Controller.ControladorItem;
 import Controller.ControladorJogador;
 import Controller.GerenciadorControladores;
 import javax.swing.JOptionPane;
-import java.sql.SQLException;
 
 /**
  *
  * @author Portu
  */
-public class cadastroJogador extends javax.swing.JDialog {
+public class edicaoJogador extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
     private final ControladorJogador ctrlJogador;
+    private final Jogador jogador;
     private final Runnable aoFechar;
     
-    public cadastroJogador(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
+    public edicaoJogador(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Jogador jogador, Runnable aoFechar) {
         super(parent, modal);
-        this.controladores = controladores;
         this.parent = parent;
+        this.controladores = controladores;
         this.ctrlJogador = controladores.obter(ControladorJogador.class);
+        this.jogador = jogador;
         this.aoFechar = aoFechar;
         
         initComponents();
-        configurarEventos();
+        carregarDadosDoJogador();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                if (cadastroJogador.this.aoFechar != null) {
-                    cadastroJogador.this.aoFechar.run();
+                if (edicaoJogador.this.aoFechar != null) {
+                    edicaoJogador.this.aoFechar.run();
                 }
             }
         });
@@ -64,7 +68,7 @@ public class cadastroJogador extends javax.swing.JDialog {
         titulo.setFont(new java.awt.Font("Times New Roman", 3, 36)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Cadastro de Jogador");
+        titulo.setText("Edição de Jogador");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,7 +89,7 @@ public class cadastroJogador extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
-        buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.setText("Editar");
         buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCadastrarActionPerformed(evt);
@@ -109,7 +113,7 @@ public class cadastroJogador extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addComponent(buttonLimpar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 331, Short.MAX_VALUE)
                 .addComponent(buttonCadastrar)
                 .addGap(71, 71, 71))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -160,24 +164,27 @@ public class cadastroJogador extends javax.swing.JDialog {
         try {
             String nome = campoNome.getText().trim();
 
-            ctrlJogador.cadastrarJogador(nome);
+            ctrlJogador.atualizarJogador(
+                    jogador.getIdJogador(),
+                    nome
+            );
 
-            JOptionPane.showMessageDialog(this, "Jogador cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(this, "Item atualizado com sucesso!");
             dispose();
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erro ao cadastrar item: " + e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage(),
-                    "Validação",
-                    JOptionPane.WARNING_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Custo e peso devem ser números válidos.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar item: " + e.getMessage());
         }
     }//GEN-LAST:event_buttonCadastrarActionPerformed
 
+    private void carregarDadosDoJogador() {
+        campoNome.setText(jogador.getNome());
+
+        atualizarEstadoBotaoCadastrar();
+    }
+    
     private void configurarEventos() {
         buttonCadastrar.setEnabled(false);
 

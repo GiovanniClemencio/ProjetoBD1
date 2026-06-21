@@ -27,6 +27,7 @@ public class TelaMonstroIndividual extends javax.swing.JFrame {
         initComponents();
         
         titulo.setText(monstro.getNome());
+        carregarConteudo();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -243,7 +244,9 @@ public class TelaMonstroIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonInicioActionPerformed
 
-    
+    private void carregarConteudo(){
+        textAreaMonstro.setText(monstro.toStringResumo());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCampanhas;

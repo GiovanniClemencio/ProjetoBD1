@@ -4,8 +4,13 @@
  */
 package GUI.formularios;
 
+import Classes.Jogador;
 import Controller.ControladorCampanha;
+import Controller.ControladorJogador;
 import Controller.GerenciadorControladores;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,16 +21,22 @@ public class cadastroCampanha extends javax.swing.JDialog {
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
     private final ControladorCampanha ctrlCampanha;
+    private final ControladorJogador ctrlJogador;
     private final Runnable aoFechar;
-    
+
     public cadastroCampanha(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
         this.ctrlCampanha = controladores.obter(ControladorCampanha.class);
+        this.ctrlJogador = controladores.obter(ControladorJogador.class);
         this.aoFechar = aoFechar;
+
         initComponents();
-        
+        configurarEventos();
+        carregarJogadores();
+        atualizarEstadoBotaoCadastrar();
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -60,8 +71,18 @@ public class cadastroCampanha extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
 
         campoNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,8 +92,6 @@ public class cadastroCampanha extends javax.swing.JDialog {
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nome: ");
-
-        comboMestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Mestre: ");
@@ -166,13 +185,125 @@ public class cadastroCampanha extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeActionPerformed
 
-    
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        campoNome.setText("");
+        comboMestre.setSelectedItem(null);
+        atualizarEstadoBotaoCadastrar();
+    }//GEN-LAST:event_buttonLimparActionPerformed
+
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+
+            Jogador mestreSelecionado
+                    = (Jogador) comboMestre.getSelectedItem();
+
+            if (mestreSelecionado == null) {
+                JOptionPane.showMessageDialog(this,
+                        "Selecione um mestre.");
+                return;
+            }
+
+            String idMestre
+                    = mestreSelecionado.getIdJogador();
+
+            ctrlCampanha.cadastrarCampanha(
+                    nome,
+                    idMestre
+            );
+
+            JOptionPane.showMessageDialog(this,
+                    "Campanha cadastrada com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar campanha: "
+                    + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } catch (IllegalArgumentException e) {
+
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void carregarJogadores() {
+        try {
+            comboMestre.removeAllItems();
+
+            ArrayList<Jogador> jogadores = ctrlJogador.listarTodosOsJogadores();
+
+            for (Jogador jogador : jogadores) {
+                comboMestre.addItem(jogador);
+            }
+
+            comboMestre.setSelectedItem(null);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar jogadores: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void configurarEventos() {
+        buttonCadastrar.setEnabled(false);
+
+        campoNome.getDocument().addDocumentListener(
+                new javax.swing.event.DocumentListener() {
+
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
+
+        comboMestre.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
+    }
+
+    private void atualizarEstadoBotaoCadastrar() {
+
+        boolean nomePreenchido
+                = !campoNome.getText().trim().isEmpty();
+
+        boolean mestreSelecionado
+                = comboMestre.getSelectedIndex() != -1;
+
+        buttonCadastrar.setEnabled(
+                nomePreenchido && mestreSelecionado
+        );
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;
     private javax.swing.JButton buttonLimpar;
     private javax.swing.JTextField campoNome;
-    private javax.swing.JComboBox<String> comboMestre;
+    private javax.swing.JComboBox<Jogador> comboMestre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;

@@ -4,34 +4,53 @@
  */
 package GUI.formularios;
 
+import Classes.Item;
+import Classes.Jogador;
+import Classes.Missao;
+import Controller.ControladorItem;
+import Controller.ControladorMissao;
+import Controller.ControladorMonstro;
+import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
-import java.sql.SQLException;
 
 /**
  *
  * @author Portu
  */
-public class cadastroMissao extends javax.swing.JDialog {
+public class edicaoMissao extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final GerenciadorControladores controladores;
+    private final ControladorMissao ctrlMissao;
+    private final ControladorMonstro ctrlMonstro;
+    private final ControladorPersonagem ctrlPersonagem;
+    private final ControladorItem ctrlItem;
+    private final Missao missao;
     private final Runnable aoFechar;
     
-    public cadastroMissao(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
+    public edicaoMissao(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Missao missao, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
         this.controladores = controladores;
+        this.ctrlMissao = controladores.obter(ControladorMissao.class);
+        this.ctrlMonstro = controladores.obter(ControladorMonstro.class);
+        this.ctrlPersonagem = controladores.obter(ControladorPersonagem.class);
+        this.ctrlItem = controladores.obter(ControladorItem.class);
+        this.missao = missao;
         this.aoFechar = aoFechar;
+        
         initComponents();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
-                if (cadastroMissao.this.aoFechar != null) {
-                    cadastroMissao.this.aoFechar.run();
+                if (edicaoMissao.this.aoFechar != null) {
+                    edicaoMissao.this.aoFechar.run();
                 }
             }
         });
+        
+        fduhgaoisdhgfoa // vou arrumar isso é só pra eu lembrar que essa janela n ta finalizada
     }
 
     /**
@@ -106,8 +125,6 @@ public class cadastroMissao extends javax.swing.JDialog {
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Mestre: ");
-
-        comboMestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         listPersonagens.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -219,7 +236,7 @@ public class cadastroMissao extends javax.swing.JDialog {
         titulo.setFont(new java.awt.Font("Times New Roman", 3, 36)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Cadastro de Missão");
+        titulo.setText("Edição de Missão");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -267,7 +284,7 @@ public class cadastroMissao extends javax.swing.JDialog {
     private javax.swing.JButton buttonLimpar;
     private javax.swing.JTextField campoNome;
     private javax.swing.JTextField campoXp;
-    private javax.swing.JComboBox<String> comboMestre;
+    private javax.swing.JComboBox<Jogador> comboMestre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

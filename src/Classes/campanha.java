@@ -13,10 +13,12 @@ import java.util.UUID;
 public class Campanha {
     private String idCampanha;
     private String nome;
+    private String idMestre;
 
-    public Campanha(String nome) {
+    public Campanha(String nome, String idMestre) {
         this.idCampanha = UUID.randomUUID().toString();
         this.nome = nome;
+        this.idMestre = idMestre;
     }
 
     public String getIdCampanha() {
@@ -33,6 +35,14 @@ public class Campanha {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getIdMestre() {
+        return idMestre;
+    }
+
+    public void setIdMestre(String idMestre) {
+        this.idMestre = idMestre;
     }
     
     

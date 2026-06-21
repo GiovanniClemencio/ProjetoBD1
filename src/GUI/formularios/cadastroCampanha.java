@@ -4,6 +4,8 @@
  */
 package GUI.formularios;
 
+import Controller.ControladorCampanha;
+
 /**
  *
  * @author Portu
@@ -11,11 +13,13 @@ package GUI.formularios;
 public class cadastroCampanha extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
+    private final ControladorCampanha ctrlCampanha;
     private final Runnable aoFechar;
     
-    public cadastroCampanha(java.awt.Frame parent, boolean modal, Runnable aoFechar) {
+    public cadastroCampanha(java.awt.Frame parent, boolean modal, ControladorCampanha ctrlCampanha, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
+        this.ctrlCampanha = ctrlCampanha;
         this.aoFechar = aoFechar;
         initComponents();
         

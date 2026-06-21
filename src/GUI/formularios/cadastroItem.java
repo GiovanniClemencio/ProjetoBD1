@@ -62,6 +62,11 @@ public class cadastroItem extends javax.swing.JDialog {
         buttonCadastrar.setLabel("Cadastrar");
 
         buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
 
         campoNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,6 +224,10 @@ public class cadastroItem extends javax.swing.JDialog {
     private void campoPesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoPesoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoPesoActionPerformed
+
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonLimparActionPerformed
 
     
 

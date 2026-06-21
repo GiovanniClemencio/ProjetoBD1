@@ -12,7 +12,7 @@ import java.sql.SQLException;
  *
  * @author Luan
  */
-public class ControladorClasse {
+public class ControladorClasse implements Controlador  {
 
     private ClasseDAO classeDAO;
 

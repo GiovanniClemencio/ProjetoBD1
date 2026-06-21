@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Luan
  */
-public class ControladorJogador {
+public class ControladorJogador implements Controlador  {
     
     private JogadorDAO jogadorDAO;
 

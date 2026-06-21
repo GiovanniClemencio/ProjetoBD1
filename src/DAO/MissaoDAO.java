@@ -27,7 +27,7 @@ public class MissaoDAO {
             stmt.setString(2, missao.getNome());
             stmt.setString(3, missao.getDescricao());
             // Pega o ID do jogador que está mestrando
-            stmt.setString(4, missao.getMestre() != null ? missao.getMestre().getIdJogador() : null);
+            stmt.setString(4, missao.getMestre());
             stmt.setInt(5, missao.getXpBonus());
 
             stmt.executeUpdate();
@@ -55,7 +55,7 @@ public class MissaoDAO {
 
             stmt.setString(1, missao.getNome());
             stmt.setString(2, missao.getDescricao());
-            stmt.setString(3, missao.getMestre() != null ? missao.getMestre().getIdJogador() : null);
+            stmt.setString(3, missao.getMestre());
             stmt.setInt(4, missao.getXpBonus());
             stmt.setString(5, missao.getIdMissao());
 

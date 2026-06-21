@@ -14,17 +14,17 @@ public class Missao {
     private String idMissao;
     private String nome;
     private String descricao;
-    private Jogador mestre;
+    private String idMestre;
     // private ArrayList<Personagem> personagens;
     // private ArrayList<Monstro> inimigos;
     // private ArrayList<Item> recompensas;
     private int xpBonus;
 
-    public Missao(String nome, String descricao, Jogador mestre, int xpBonus) {
+    public Missao(String nome, String descricao, String idMestre, int xpBonus) {
         this.idMissao = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;
-        this.mestre = mestre;
+        this.idMestre = idMestre;
         this.xpBonus = xpBonus;
     }
 
@@ -40,8 +40,8 @@ public class Missao {
         return descricao;
     }
 
-    public Jogador getMestre() {
-        return mestre;
+    public String getMestre() {
+        return idMestre;
     }
 
     public int getXpBonus() {
@@ -60,8 +60,8 @@ public class Missao {
         this.descricao = descricao;
     }
 
-    public void setMestre(Jogador mestre) {
-        this.mestre = mestre;
+    public void setMestre(String idMestre) {
+        this.idMestre = idMestre;
     }
 
     public void setXpBonus(int xpBonus) {

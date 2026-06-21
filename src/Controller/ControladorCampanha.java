@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Luan
  */
-public class ControladorCampanha {
+public class ControladorCampanha implements Controlador {
 
     private CampanhaDAO campanhaDAO;
 
@@ -23,14 +23,18 @@ public class ControladorCampanha {
     }
 
     // Cadastrar
-    public void cadastrarCampanha(String nome) throws SQLException, IllegalArgumentException {
+    public void cadastrarCampanha(String nome, String idMestre) throws SQLException, IllegalArgumentException {
 
         // Validar nome
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("O nome da campanha não pode estar vazio!");
         }
+        // Validar mestre
+        if (idMestre == null || idMestre.isBlank()) {
+            throw new IllegalArgumentException("Campanha precisa de um mestre cadastrado!");
+        }
 
-        Campanha campanha = new Campanha(nome);
+        Campanha campanha = new Campanha(nome, idMestre);
 
         campanhaDAO.inserir(campanha);
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Luan
  */
-public class ControladorItem {
+public class ControladorItem implements Controlador  {
 
     private ItemDAO itemDAO;
 

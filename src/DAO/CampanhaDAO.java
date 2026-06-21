@@ -32,6 +32,33 @@ public class CampanhaDAO {
         }
     }
 
+    // Excluir campanha
+    public void excluir(String idCampanha) throws SQLException {
+        String sql = "DELETE FROM campanha WHERE id_campanha = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Atualizar campanha
+    public void atualizar(Campanha campanha) throws SQLException {
+        String sql = "UPDATE campanha SET nome = ?, id_mestre = ? WHERE id_campanha = ?";
+
+            try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, campanha.getNome());
+            stmt.setString(2, campanha.getIdMestre());
+            stmt.setString(3, campanha.getIdCampanha());
+
+            stmt.executeUpdate();
+        }
+    }
+
     // Busca
     public Campanha buscarPorId(String idCampanha) throws SQLException {
         String sql = "SELECT * FROM campanha WHERE id_campanha = ?";

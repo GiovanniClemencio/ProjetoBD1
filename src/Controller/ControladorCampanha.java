@@ -39,6 +39,35 @@ public class ControladorCampanha implements Controlador {
         campanhaDAO.inserir(campanha);
     }
 
+    // Excluir campanha
+    public void excluirCampanha(String idCampanha) throws SQLException, IllegalArgumentException {
+        if (idCampanha == null || idCampanha.isBlank()) {
+            throw new IllegalArgumentException("ID inválido para exclusão da campanha.");
+        }
+
+        campanhaDAO.excluir(idCampanha);
+    }
+
+    // Atualizar campanha
+    public void atualizarCampanha(String idCampanha, String nome, String idMestre) throws SQLException, IllegalArgumentException {
+
+        // Validar
+        if (idCampanha == null || idCampanha.isBlank()) {
+            throw new IllegalArgumentException("ID inválido para atualização da campanha.");
+        }
+        if(nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("O nome da campanha não pode estar vazio!");
+        }
+        if (idMestre == null || idMestre.isBlank()) {
+            throw new IllegalArgumentException("A campanha deve ter um mestre!");
+        }
+
+        Campanha campanhaAtualizada = new Campanha(nome, idMestre);
+        campanhaAtualizada.setIdCampanha(idCampanha);
+
+        campanhaDAO.atualizar(campanhaAtualizada);
+    }
+
     // Buscar por ID
     public Campanha buscarCampanha(String idCampanha) throws SQLException, IllegalArgumentException {
         if (idCampanha == null || idCampanha.isBlank()) {

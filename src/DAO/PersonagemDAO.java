@@ -4,12 +4,14 @@
  */
 package DAO;
 
+import Classes.Campanha;
 import Classes.Personagem;
 import database.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -115,4 +117,35 @@ public class PersonagemDAO {
             stmt.executeUpdate();
         }
     }
+
+    // Campanhas que participa
+    public ArrayList<Campanha> listarCampanhasParticipando(String idPersonagem) throws SQLException {
+        ArrayList<Campanha> campanhas = new ArrayList<>();
+
+        // O SQL faz um JOIN entre a tabela intermediária e a tabela de campanhas
+        String sql = "SELECT c.* FROM campanha c "
+                + "JOIN campanha_personagem cp ON c.id_campanha = cp.id_campanha "
+                + "WHERE cp.id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    // Instancia a campanha com os dados vindos do banco
+                    Campanha c = new Campanha(rs.getString("nome"));
+
+                    // Garante que o objeto Java use o ID real que veio do banco
+                    c.setIdCampanha(rs.getString("id_campanha"));
+
+                    // Adiciona a campanha na lista
+                    campanhas.add(c);
+                }
+            }
+        }
+
+        return campanhas;
+    }
+
 }

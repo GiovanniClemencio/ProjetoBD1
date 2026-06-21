@@ -5,7 +5,10 @@
 package Controller;
 
 import Classes.Campanha;
+import Classes.Personagem;
 import DAO.CampanhaDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,10 +18,34 @@ public class ControladorCampanha {
 
     private CampanhaDAO dao = new CampanhaDAO();
 
-    public void cadastrarCampanha(String nome) {
+    // Cadastrar
+    public void cadastrarCampanha(String nome) throws SQLException, IllegalArgumentException {
+        
+        // Validar nome
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("O nome da campanha não pode estar vazio!");
+        }
         
         Campanha campanha = new Campanha(nome);
 
         dao.inserir(campanha);
+    }
+
+    // Buscar por ID
+    public Campanha buscarCampanha(String idCampanha) throws SQLException, IllegalArgumentException {
+        if (idCampanha == null || idCampanha.isBlank()) {
+            throw new IllegalArgumentException("ID inválido para busca de campanha.");
+        }
+        
+        return dao.buscarPorId(idCampanha);
+    }
+
+    // Buscar personagens que participam da campanha
+    public ArrayList<Personagem> obterPersonagensParticipantes(String idCampanha) throws SQLException, IllegalArgumentException {
+        if (idCampanha == null || idCampanha.isBlank()) {
+            throw new IllegalArgumentException("ID da campanha inválido para listagem de participantes.");
+        }
+        
+        return dao.listarPersonagensParticipantes(idCampanha);
     }
 }

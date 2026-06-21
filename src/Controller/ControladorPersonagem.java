@@ -4,9 +4,11 @@
  */
 package Controller;
 
+import Classes.Campanha;
 import Classes.Personagem;
 import DAO.PersonagemDAO;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -89,5 +91,15 @@ public class ControladorPersonagem {
         }
 
         personagemDAO.adicionarXP(idPersonagem, xp);
+    }
+
+    // Listar campanhas que o personagem participa
+    public ArrayList<Campanha> obterCampanhasParticipando(String idPersonagem) throws SQLException, IllegalArgumentException {
+        // Validação
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido para listar campanhas.");
+        }
+
+        return personagemDAO.listarCampanhasParticipando(idPersonagem);
     }
 }

@@ -22,7 +22,7 @@ public class ControladorMissao {
     }
 
     // Criar Missão
-    public void cadastrarMissao(String nome, String descricao, Jogador mestre, int xpBonus) 
+    public void cadastrarMissao(String nome, String descricao, String idMestre, int xpBonus) 
             throws SQLException, IllegalArgumentException {
         
         if (nome == null || nome.isBlank()) {
@@ -31,11 +31,11 @@ public class ControladorMissao {
         if (xpBonus < 0) {
             throw new IllegalArgumentException("O XP bônus não pode ser negativo!");
         }
-        if (mestre == null || mestre.getIdJogador().isBlank()) {
+        if (idMestre == null || idMestre.isBlank()) {
             throw new IllegalArgumentException("A missão precisa de um mestre válido!");
         }
 
-        Missao novaMissao = new Missao(nome, descricao, mestre, xpBonus);
+        Missao novaMissao = new Missao(nome, descricao, idMestre, xpBonus);
 
         missaoDAO.inserir(novaMissao);
     }
@@ -50,7 +50,7 @@ public class ControladorMissao {
     }
 
     // Atualizar Missão
-    public void atualizarMissao(String idMissao, String novoNome, String novaDescricao, Jogador mestre, int novoXpBonus) throws SQLException, IllegalArgumentException {
+    public void atualizarMissao(String idMissao, String novoNome, String novaDescricao, String idMestre, int novoXpBonus) throws SQLException, IllegalArgumentException {
         
         if (idMissao == null || idMissao.isBlank()) {
             throw new IllegalArgumentException("ID inválido para atualização da missão.");
@@ -61,11 +61,11 @@ public class ControladorMissao {
         if (novoXpBonus < 0) {
             throw new IllegalArgumentException("O XP bônus não pode ser negativo!");
         }
-        if (mestre == null || mestre.getIdJogador().isBlank()) {
+        if (idMestre == null || idMestre.isBlank()) {
             throw new IllegalArgumentException("A missão precisa de um mestre válido!");
         }
 
-        Missao missaoAtualizada = new Missao(novoNome, novaDescricao, mestre, novoXpBonus);
+        Missao missaoAtualizada = new Missao(novoNome, novaDescricao, idMestre, novoXpBonus);
         missaoAtualizada.setIdMissao(idMissao);
 
         missaoDAO.atualizar(missaoAtualizada);

@@ -21,18 +21,17 @@ public class ControladorClasse implements Controlador  {
         this.classeDAO = new ClasseDAO();
     }
 
-    // Cadastrar classe
+    // Cadastrar classe no catálogo
     public void cadastrarClasse(String nome, String descricao) throws SQLException, IllegalArgumentException {
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("O nome da classe não pode estar vazio!");
         }
 
         Classe novaClasse = new Classe(nome, descricao);
-
         classeDAO.inserir(novaClasse);
     }
 
-    // Excluir classe
+    // Excluir classe do catálogo
     public void excluirClasse(String idClasse) throws SQLException, IllegalArgumentException {
         if (idClasse == null || idClasse.isBlank()) {
             throw new IllegalArgumentException("ID inválido para exclusão.");
@@ -40,7 +39,7 @@ public class ControladorClasse implements Controlador  {
         classeDAO.excluir(idClasse);
     }
 
-    // Atualizar classe
+    // Atualizar dados da classe no catálogo
     public void atualizarClasse(String idClasse, String novoNome, String novaDescricao) throws SQLException, IllegalArgumentException {
         if (idClasse == null || idClasse.isBlank()) {
             throw new IllegalArgumentException("ID inválido para atualização.");
@@ -55,50 +54,7 @@ public class ControladorClasse implements Controlador  {
         classeDAO.atualizar(classeAtualizada);
     }
 
-    // Vincular classe a um personagem
-    public void adicionarClasseAoPersonagem(String idPersonagem, String idClasse, int nivelInicial) throws SQLException, IllegalArgumentException {
-        if (idPersonagem == null || idPersonagem.isBlank()) {
-            throw new IllegalArgumentException("ID do personagem inválido.");
-        }
-        if (idClasse == null || idClasse.isBlank()) {
-            throw new IllegalArgumentException("ID da classe inválido.");
-        }
-        if (nivelInicial <= 0) {
-            throw new IllegalArgumentException("O nível inicial da classe deve ser pelo menos 1!");
-        }
-
-        classeDAO.adicionarClasseAoPersonagem(idPersonagem, idClasse, nivelInicial);
-    }
-
-    // Personagem upa o nível
-    public void uparClassePersonagem(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
-
-        // Validação IDs
-        if (idPersonagem == null || idPersonagem.isBlank()) {
-            throw new IllegalArgumentException("ID do personagem inválido para subir de nível.");
-        }
-        if (idClasse == null || idClasse.isBlank()) {
-            throw new IllegalArgumentException("ID da classe inválido para subir de nível.");
-        }
-
-        classeDAO.uparNivelClasse(idPersonagem, idClasse);
-    }
-
-    // Reduzir o nível de uma classe (Caso o usuário de um clique acidental de aumento de nivel)
-    public void diminuirNivelClasse(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
-        if (idPersonagem == null || idPersonagem.isBlank()) {
-            throw new IllegalArgumentException("ID do personagem inválido.");
-        }
-        if (idClasse == null || idClasse.isBlank()) {
-            throw new IllegalArgumentException("ID da classe inválido.");
-        }
-
-        // Você pode usar um método de busca (tipo o que fizemos para o inventário) 
-        // para checar o nível atual se quiser validar antes, ou deixar o WHERE do banco barrar.
-        classeDAO.reduzirNivelClasse(idPersonagem, idClasse);
-    }
-
-    // Listar todas as classes cadastradas
+    // Listar todas as classes cadastradas no sistema
     public ArrayList<Classe> listarTodasAsClasses() throws SQLException {
         return classeDAO.listarTodos();
     }

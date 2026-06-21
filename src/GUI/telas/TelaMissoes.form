@@ -98,7 +98,6 @@
         <Component class="javax.swing.JButton" name="buttonAbrir">
           <Properties>
             <Property name="text" type="java.lang.String" value="Abrir p&#xe1;gina da miss&#xe3;o"/>
-            <Property name="actionCommand" type="java.lang.String" value="Abrir p&#xe1;gina da miss&#xe3;o"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="comboItens">

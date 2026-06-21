@@ -5,6 +5,7 @@
 package GUI.formularios;
 
 import Controller.ControladorCampanha;
+import Controller.GerenciadorControladores;
 
 /**
  *
@@ -13,13 +14,15 @@ import Controller.ControladorCampanha;
 public class cadastroCampanha extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
+    private final GerenciadorControladores controladores;
     private final ControladorCampanha ctrlCampanha;
     private final Runnable aoFechar;
     
-    public cadastroCampanha(java.awt.Frame parent, boolean modal, ControladorCampanha ctrlCampanha, Runnable aoFechar) {
+    public cadastroCampanha(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
-        this.ctrlCampanha = ctrlCampanha;
+        this.controladores = controladores;
+        this.ctrlCampanha = controladores.obter(ControladorCampanha.class);
         this.aoFechar = aoFechar;
         initComponents();
         

@@ -4,6 +4,8 @@
  */
 package GUI.formularios;
 
+import Controller.GerenciadorControladores;
+
 /**
  *
  * @author Portu
@@ -11,11 +13,12 @@ package GUI.formularios;
 public class cadastroJogador extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
+    private final GerenciadorControladores controladores;
     private final Runnable aoFechar;
     
-    public cadastroJogador(java.awt.Frame parent, boolean modal, Runnable aoFechar) {
+    public cadastroJogador(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
-        
+        this.controladores = controladores;
         this.parent = parent;
         this.aoFechar = aoFechar;
         

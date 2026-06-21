@@ -5,6 +5,7 @@
 package GUI.telas.telasEntradaIndividual;
 
 import Classes.Item;
+import Controller.GerenciadorControladores;
 import GUI.telas.TelaInicial;
 
 /**
@@ -15,11 +16,13 @@ public class TelaItemIndividual extends javax.swing.JFrame {
 
     private final java.awt.Frame parent;
     private final Item item;
+    private final GerenciadorControladores controladores;
     private final Runnable aoFechar;
     
-    public TelaItemIndividual(java.awt.Frame parent, Item item, Runnable aoFechar) {
+    public TelaItemIndividual(java.awt.Frame parent, Item item, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.item = item;
+        this.controladores = controladores;
         this.aoFechar = aoFechar;
         initComponents();
         
@@ -234,7 +237,7 @@ public class TelaItemIndividual extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInicioActionPerformed
-        TelaInicial dialog = new TelaInicial();
+        TelaInicial dialog = new TelaInicial(controladores);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
         dispose();

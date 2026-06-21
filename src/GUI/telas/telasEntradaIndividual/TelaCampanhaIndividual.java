@@ -27,6 +27,7 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
         initComponents();
         
         titulo.setText(campanha.getNome());
+        carregarConteudo();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -243,7 +244,9 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonInicioActionPerformed
 
-    
+    private void carregarConteudo(){
+        textAreaCampanha.setText(campanha.toStringResumo());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCampanhas;

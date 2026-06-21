@@ -4,11 +4,15 @@
  */
 package DAO;
 
+import Classes.ItemDropDTO;
 import Classes.Missao;
+import Classes.Personagem;
 import database.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -64,11 +68,12 @@ public class MissaoDAO {
     }
 
     // Vincular um personagem a missão
-    public void adicionarPersonagem(String idMissao, String idPersonagem) throws SQLException {
-        String sql = "INSERT INTO missao_personagem (id_missao, id_personagem) VALUES (?, ?)";
+    public void adicionarPersonagem(String idCampanha, String idMissao, String idPersonagem) throws SQLException {
+        String sql = "INSERT INTO campanha_missao_personagem (id_campanha, id_missao, id_personagem) VALUES (?, ?, ?)";
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, idMissao);
-            stmt.setString(2, idPersonagem);
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMissao);
+            stmt.setString(3, idPersonagem);
             stmt.executeUpdate();
         }
     }
@@ -95,6 +100,101 @@ public class MissaoDAO {
             stmt.setString(2, idItem);
             stmt.setInt(3, qtd);
             stmt.setInt(4, qtd);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Retornar o XP da missão
+    public int buscarXpBonusDaMissao(String idMissao) throws SQLException {
+        String sql = "SELECT xp_bonus FROM missao WHERE id_missao = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, idMissao);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("xp_bonus");
+                }
+            }
+        }
+        return 0;
+    }
+
+    // Listar personagens participantes da missão em uma campanha
+    public ArrayList<Personagem> listarParticipantesDaMissao(String idCampanha, String idMissao) throws SQLException {
+        ArrayList<Personagem> participantes = new ArrayList<>();
+        
+        // SQL com JOIN para buscar os dados direto da tabela personagem
+        String sql = "SELECT p.* FROM personagem p " +
+                     "JOIN campanha_missao_personagem cmp ON p.id_personagem = cmp.id_personagem " +
+                     "WHERE cmp.id_campanha = ? AND cmp.id_missao = ? " +
+                     "ORDER BY p.nome ASC";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMissao);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Personagem p = new Personagem(
+                        rs.getString("nome"),
+                        rs.getDouble("carga_maxima"),
+                        rs.getDouble("xp"),
+                        rs.getInt("vida"),
+                        rs.getInt("forca"),
+                        rs.getInt("destreza"),
+                        rs.getInt("constituicao"),
+                        rs.getInt("inteligencia"),
+                        rs.getInt("sabedoria"),
+                        rs.getInt("carisma"),
+                        rs.getString("id_jogador")
+                    );
+                    
+                    p.setIdPersonagem(rs.getString("id_personagem"));
+                    participantes.add(p);
+                }
+            }
+        }
+        return participantes;
+    }
+
+    // Listar todas as recompensas de uma missão
+    public ArrayList<ItemDropDTO> listarRecompensasDaMissao(String idMissao) throws SQLException {
+        ArrayList<ItemDropDTO> recompensas = new ArrayList<>();
+        String sql = "SELECT id_item, quantidade FROM missao_item WHERE id_missao = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idMissao);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ItemDropDTO drop = new ItemDropDTO(
+                        rs.getString("id_item"),
+                        rs.getInt("quantidade")
+                    );
+                    recompensas.add(drop);
+                }
+            }
+        }
+        return recompensas;
+    }
+
+    // Atualizar o status da missão
+    public void atualizarStatusMissao(String idCampanha, String idMissao, boolean concluido) throws SQLException {
+        String sql = "UPDATE campanha_missao SET concluido = ? WHERE id_campanha = ? AND id_missao = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setBoolean(1, concluido);
+            stmt.setString(2, idCampanha);
+            stmt.setString(3, idMissao);
+
             stmt.executeUpdate();
         }
     }

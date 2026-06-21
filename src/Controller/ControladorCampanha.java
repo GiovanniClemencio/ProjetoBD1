@@ -125,7 +125,7 @@ public class ControladorCampanha implements Controlador {
     }
 
     // Vincular missão a campanha
-    public void adicionarMissaoAoCronograma(String idCampanha, String idMissao) throws SQLException, IllegalArgumentException {
+    public void adicionarMissaoACampanha(String idCampanha, String idMissao) throws SQLException, IllegalArgumentException {
         
         if (idCampanha == null || idCampanha.isBlank()) {
             throw new IllegalArgumentException("ID da campanha inválido.");
@@ -138,7 +138,7 @@ public class ControladorCampanha implements Controlador {
     }
 
     // Remover missão da campanha
-    public void removerMissaoDoCronograma(String idCampanha, String idMissao) throws SQLException, IllegalArgumentException {
+    public void removerMissaoDaCampanha(String idCampanha, String idMissao) throws SQLException, IllegalArgumentException {
         
         if (idCampanha == null || idCampanha.isBlank() || idMissao == null || idMissao.isBlank()) {
             throw new IllegalArgumentException("IDs inválidos para desvincular a missão.");

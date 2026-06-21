@@ -36,8 +36,7 @@ public class CampanhaDAO {
     public void excluir(String idCampanha) throws SQLException {
         String sql = "DELETE FROM campanha WHERE id_campanha = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idCampanha);
             stmt.executeUpdate();
@@ -48,8 +47,7 @@ public class CampanhaDAO {
     public void atualizar(Campanha campanha) throws SQLException {
         String sql = "UPDATE campanha SET nome = ?, id_mestre = ? WHERE id_campanha = ?";
 
-            try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, campanha.getNome());
             stmt.setString(2, campanha.getIdMestre());
@@ -138,8 +136,7 @@ public class CampanhaDAO {
     public void removerPersonagem(String idCampanha, String idPersonagem) throws SQLException {
         String sql = "DELETE FROM campanha_personagem WHERE id_campanha = ? AND id_personagem = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idCampanha);
             stmt.setString(2, idPersonagem);
@@ -155,7 +152,7 @@ public class CampanhaDAO {
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMestre);
-            stmt.setString(2, idCampanha);  
+            stmt.setString(2, idCampanha);
 
             stmt.executeUpdate();
         }
@@ -165,12 +162,10 @@ public class CampanhaDAO {
     public void removerMestreDaCampanha(String idCampanha, String idMestre) throws SQLException {
         String sql = "UPDATE campanha SET id_mestre = NULL WHERE id_campanha = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMestre);
             stmt.setString(2, idCampanha);
-            
 
             stmt.executeUpdate();
         }
@@ -178,10 +173,9 @@ public class CampanhaDAO {
 
     // Vincular uma missão a uma campanha
     public void adicionarMissaoAcampanha(String idCampanha, String idMissao) throws SQLException {
-        String sql = "INSERT INTO campanha_missao (id_campanha, id_missao) VALUES (?, ?)";
+        String sql = "INSERT INTO campanha_missao (id_campanha, id_missao, concluido) VALUES (?, ?, false)" + "ON DUPLICATE KEY UPDATE concluido = false";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idCampanha);
             stmt.setString(2, idMissao);
@@ -194,8 +188,7 @@ public class CampanhaDAO {
     public void removerMissaoDaCampanha(String idCampanha, String idMissao) throws SQLException {
         String sql = "DELETE FROM campanha_missao WHERE id_campanha = ? AND id_missao = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idCampanha);
             stmt.setString(2, idMissao);
@@ -203,4 +196,5 @@ public class CampanhaDAO {
             stmt.executeUpdate();
         }
     }
+
 }

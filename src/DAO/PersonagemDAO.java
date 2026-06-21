@@ -42,36 +42,6 @@ public class PersonagemDAO {
         }
     }
 
-    // Busca
-    public Personagem buscarPorId(String idPersonagem) throws SQLException {
-        String sql = "SELECT * FROM personagem WHERE id_personagem = ?";
-
-        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, idPersonagem);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Personagem p = new Personagem(
-                            rs.getString("nome"),
-                            rs.getDouble("carga_maxima"),
-                            rs.getDouble("xp"),
-                            rs.getInt("vida"),
-                            rs.getInt("forca"),
-                            rs.getInt("destreza"),
-                            rs.getInt("constituicao"),
-                            rs.getInt("inteligencia"),
-                            rs.getInt("sabedoria"),
-                            rs.getInt("carisma"),
-                            rs.getString("id_jogador")
-                    );
-                    p.setIdPersonagem(rs.getString("id_personagem"));
-                    return p;
-                }
-            }
-        }
-        return null;
-    }
-
     // Atualizar dados
     public void atualizar(Personagem personagem) throws SQLException {
         String sql = "UPDATE personagem SET nome = ?, carga_maxima = ?, xp = ?, vida = ?, forca = ?, destreza = ?, constituicao = ?, inteligencia = ?, sabedoria = ?, carisma = ? WHERE id_personagem = ?";
@@ -103,6 +73,36 @@ public class PersonagemDAO {
             stmt.setString(1, idPersonagem);
             stmt.executeUpdate();
         }
+    }
+
+    // Busca
+    public Personagem buscarPorId(String idPersonagem) throws SQLException {
+        String sql = "SELECT * FROM personagem WHERE id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Personagem p = new Personagem(
+                            rs.getString("nome"),
+                            rs.getDouble("carga_maxima"),
+                            rs.getDouble("xp"),
+                            rs.getInt("vida"),
+                            rs.getInt("forca"),
+                            rs.getInt("destreza"),
+                            rs.getInt("constituicao"),
+                            rs.getInt("inteligencia"),
+                            rs.getInt("sabedoria"),
+                            rs.getInt("carisma"),
+                            rs.getString("id_jogador")
+                    );
+                    p.setIdPersonagem(rs.getString("id_personagem"));
+                    return p;
+                }
+            }
+        }
+        return null;
     }
 
     // Aquisição de XP

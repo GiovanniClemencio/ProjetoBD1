@@ -125,10 +125,13 @@ CREATE TABLE missao (
     FOREIGN KEY (id_mestre) REFERENCES jogador(id_jogador) ON DELETE SET NULL
 );
 
-CREATE TABLE missao_personagem (
+CREATE TABLE campanha_missao_personagem (
+    id_campanha VARCHAR(36),
     id_missao VARCHAR(36),
     id_personagem VARCHAR(36),
-    PRIMARY KEY (id_missao, id_personagem),
+    
+    PRIMARY KEY (id_campanha, id_missao, id_personagem),
+    FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,
     FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE,
     FOREIGN KEY (id_personagem) REFERENCES personagem(id_personagem) ON DELETE CASCADE
 );
@@ -154,6 +157,7 @@ CREATE TABLE missao_item (
 CREATE TABLE campanha_missao (
     id_campanha VARCHAR(36),
     id_missao VARCHAR(36),
+    concluido BOOLEAN NOT NULL DEFAULT FALSE,
     
     PRIMARY KEY (id_campanha, id_missao),
     FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,

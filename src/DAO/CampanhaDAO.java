@@ -93,4 +93,30 @@ public class CampanhaDAO {
         return participantes;
     }
 
+    // Vincular um personagem a campanha
+    public void adicionarPersonagem(String idCampanha, String idPersonagem) throws SQLException {
+        String sql = "INSERT INTO campanha_personagem (id_campanha, id_personagem) VALUES (?, ?)";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idPersonagem);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Desvincula um personagem de uma campanha
+    public void removerPersonagem(String idCampanha, String idPersonagem) throws SQLException {
+        String sql = "DELETE FROM campanha_personagem WHERE id_campanha = ? AND id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idPersonagem);
+
+            stmt.executeUpdate();
+        }
+    }
 }

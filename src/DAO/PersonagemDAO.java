@@ -289,4 +289,82 @@ public class PersonagemDAO {
         return classesDoPersonagem;
     }
 
+    // Buscar o nível de uma classe especifica de um personagem
+    public int buscarNivelClasse(String idPersonagem, String idClasse) throws SQLException {
+        String sql = "SELECT nivel_classe FROM classe_personagem WHERE id_personagem = ? AND id_classe = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            stmt.setString(2, idClasse);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("nivel_classe");
+                }
+            }
+        }
+        return 0;
+    }
+
+    // Vincular classe a um personagem
+    public void adicionarClasse(String idPersonagem, String idClasse, int nivelInicial) throws SQLException {
+        String sql = "INSERT INTO classe_personagem (id_personagem, id_classe, nivel_classe) VALUES (?, ?, ?)";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            stmt.setString(2, idClasse);
+            stmt.setInt(3, nivelInicial);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Aumentar nível da classe de um personagem
+    public void uparNivelClasse(String idPersonagem, String idClasse) throws SQLException {
+        String sql = "UPDATE classe_personagem SET nivel_classe = nivel_classe + 1 " +
+                     "WHERE id_personagem = ? AND id_classe = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            stmt.setString(2, idClasse);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Reduzir o nível de uma classe
+    public void reduzirNivelClasse(String idPersonagem, String idClasse) throws SQLException {
+        // WHERE garante que só altera se o nível atual for maior que 1
+        String sql = "UPDATE classe_personagem SET nivel_classe = nivel_classe - 1 " +
+                     "WHERE id_personagem = ? AND id_classe = ? AND nivel_classe > 1";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            stmt.setString(2, idClasse);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Remover a classe do personagem
+    public void removerVinculoClasse(String idPersonagem, String idClasse) throws SQLException {
+        String sql = "DELETE FROM personagem_classe WHERE id_personagem = ? AND id_classe = ?";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            stmt.setString(2, idClasse);
+
+            stmt.executeUpdate();
+        }
+    }
 }

@@ -199,4 +199,80 @@ public class ControladorPersonagem implements Controlador {
 
         return personagemDAO.listarClassesDoPersonagem(idPersonagem);
     }
+
+    // Buscar o nível de uma classe especifica de um personagem
+    public int obterNivelClasseDoPersonagem(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido para buscar nível.");
+        }
+        if (idClasse == null || idClasse.isBlank()) {
+            throw new IllegalArgumentException("ID da classe inválido para buscar nível.");
+        }
+
+        return personagemDAO.buscarNivelClasse(idPersonagem, idClasse);
+    }
+
+    public void adicionarClasseAoPersonagem(String idPersonagem, String idClasse, int nivelInicial) throws SQLException, IllegalArgumentException {
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido.");
+        }
+        if (idClasse == null || idClasse.isBlank()) {
+            throw new IllegalArgumentException("ID da classe inválido.");
+        }
+        if (nivelInicial <= 0) {
+            throw new IllegalArgumentException("O nível inicial da classe deve ser pelo menos 1!");
+        }
+
+        // Caso o personagem já tenha essa classe, o ideal é barrar ou mandar upar
+        if (personagemDAO.buscarNivelClasse(idPersonagem, idClasse) > 0) {
+            throw new IllegalArgumentException("O personagem já possui esta classe! Use o método de subir de nível.");
+        }
+
+        personagemDAO.adicionarClasse(idPersonagem, idClasse, nivelInicial);
+    }
+
+    public void uparClassePersonagem(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido para subir de nível.");
+        }
+        if (idClasse == null || idClasse.isBlank()) {
+            throw new IllegalArgumentException("ID da classe inválido para subir de nível.");
+        }
+        
+        if (personagemDAO.buscarNivelClasse(idPersonagem, idClasse) == 0) {
+            throw new IllegalArgumentException("O personagem não pode upar uma classe que ele ainda não aprendeu.");
+        }
+
+        personagemDAO.uparNivelClasse(idPersonagem, idClasse);
+    }
+    
+    public void diminuirNivelClasse(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido.");
+        }
+        if (idClasse == null || idClasse.isBlank()) {
+            throw new IllegalArgumentException("ID da classe inválido.");
+        }
+
+        int nivelAtual = personagemDAO.buscarNivelClasse(idPersonagem, idClasse);
+
+        if (nivelAtual == 0) {
+            throw new IllegalArgumentException("O personagem não possui a classe para diminuir o nível.");
+        }
+
+        if (nivelAtual == 1) {
+            personagemDAO.removerVinculoClasse(idPersonagem, idClasse);
+        } else {
+            personagemDAO.reduzirNivelClasse(idPersonagem, idClasse);
+        }
+    }
+
+    public void desvincularClasse(String idPersonagem, String idClasse) throws SQLException, IllegalArgumentException {
+        if (idPersonagem == null || idPersonagem.isBlank() || idClasse == null || idClasse.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para desvincular classe.");
+        }
+        
+        personagemDAO.removerVinculoClasse(idPersonagem, idClasse);
+    }
+
 }

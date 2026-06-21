@@ -106,25 +106,6 @@ public class ControladorCampanha implements Controlador {
         campanhaDAO.removerPersonagem(idCampanha, idPersonagem);
     }
 
-    // Vinculando um mestre a uma campanha
-    public void vincularMestre(String idCampanha, String idMestre) throws SQLException, IllegalArgumentException {
-        // Validação
-        if (idCampanha == null || idCampanha.isBlank() || idMestre == null || idMestre.isBlank()) {
-            throw new IllegalArgumentException("IDs inválidos para realizar o vínculo.");
-        }
-
-        campanhaDAO.adicionarPersonagem(idCampanha, idMestre);
-    }
-
-    // Desvinculando um mestre a uma campanha
-    public void desvincularMestre(String idCampanha, String idMestre) throws SQLException, IllegalArgumentException {
-        if (idCampanha == null || idCampanha.isBlank() || idMestre == null || idMestre.isBlank()) {
-            throw new IllegalArgumentException("IDs inválidos para remover o personagem da campanha.");
-        }
-
-        campanhaDAO.removerPersonagem(idCampanha, idMestre);
-    }
-
     // Vincular missão a campanha
     public void adicionarMissaoACampanha(String idCampanha, String idMissao) throws SQLException, IllegalArgumentException {
         
@@ -151,12 +132,10 @@ public class ControladorCampanha implements Controlador {
     // Listar todos os jogadores únicos que possuem personagem na campanha
     public ArrayList<Jogador> listarJogadoresDaCampanha(String idCampanha) throws SQLException, IllegalArgumentException {
         
-        // Validação de segurança básica
         if (idCampanha == null || idCampanha.isBlank()) {
             throw new IllegalArgumentException("ID da campanha inválido para listagem de jogadores.");
         }
 
-        //Chama o DAO que faz a mágica do JOIN
         return campanhaDAO.listarJogadoresPorCampanha(idCampanha);
     }
 
@@ -165,4 +144,6 @@ public class ControladorCampanha implements Controlador {
         return campanhaDAO.listarTodos();
     }
     
+    // TODO: listar todas as missões da campanha
+
 }

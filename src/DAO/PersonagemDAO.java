@@ -204,8 +204,10 @@ public class PersonagemDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Campanha c = new Campanha(rs.getString("nome"));
-
+                    Campanha c = new Campanha(
+                            rs.getString("nome"),
+                            rs.getString("id_mestre")
+                    );
                     c.setIdCampanha(rs.getString("id_campanha"));
 
                     campanhas.add(c);

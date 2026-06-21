@@ -42,9 +42,10 @@ public class CampanhaDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Campanha c = new Campanha(
-                            rs.getString("nome")
+                            rs.getString("nome"),
+                            rs.getString("id_mestre")
                     );
-                    c.setIdCampanha(rs.getString("id_personagem"));
+                    c.setIdCampanha(rs.getString("id_campanha"));
                     return c;
                 }
             }

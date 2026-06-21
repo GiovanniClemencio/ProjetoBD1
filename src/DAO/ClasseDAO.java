@@ -32,6 +32,19 @@ public class ClasseDAO {
         }
     }
     
+
+    // Excluir classe
+    public void excluir(String idClasse) throws SQLException {
+        String sql = "DELETE FROM classe WHERE id_classe = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idClasse);
+            stmt.executeUpdate();
+        }
+    }
+
+
     // Vincular classe a um personagem
     public void adicionarClasseAoPersonagem(String idPersonagem, String idClasse, int nivelInicial) throws SQLException {
         String sql = "INSERT INTO classe_personagem (id_personagem, id_classe, nivel_classe) VALUES (?, ?, ?)";

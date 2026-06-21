@@ -32,6 +32,14 @@ public class ControladorClasse implements Controlador  {
         classeDAO.inserir(novaClasse);
     }
 
+    // Excluir classe
+    public void excluirClasse(String idClasse) throws SQLException, IllegalArgumentException {
+        if (idClasse == null || idClasse.isBlank()) {
+            throw new IllegalArgumentException("ID inválido para exclusão.");
+        }
+        classeDAO.excluir(idClasse);
+    }
+
     // Vincular classe a um personagem
     public void adicionarClasseAoPersonagem(String idPersonagem, String idClasse, int nivelInicial) throws SQLException, IllegalArgumentException {
         if (idPersonagem == null || idPersonagem.isBlank()) {

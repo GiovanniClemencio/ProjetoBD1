@@ -112,6 +112,33 @@ public class ControladorPersonagem {
         personagemDAO.adquirirItem(idPersonagem, idItem, qtd);
     }
 
+    // Personagem consome/perde um item
+    public void personagemPerdeItem(String idPersonagem, String idItem, int qtd) throws SQLException, IllegalArgumentException {
+        
+        // Validação IDs e quantidade válida
+        if (idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("ID do personagem inválido.");
+        }
+        if (idItem == null || idItem.isBlank()) {
+            throw new IllegalArgumentException("ID do item inválido.");
+        }
+        if (qtd <= 0) {
+            throw new IllegalArgumentException("A quantidade a ser removida deve ser maior que zero!");
+        }
+
+        // Validação se o personagem em questão tem o item e a quantidade para usar/perder
+        int qtdAtual = personagemDAO.buscarQuantidadeItemInventario(idPersonagem, idItem);
+        
+        if (qtdAtual == 0) {
+            throw new IllegalArgumentException("O personagem não possui este item no inventário!");
+        }
+        if (qtd > qtdAtual) {
+            throw new IllegalArgumentException("Quantidade insuficiente! O personagem possui apenas " + qtdAtual + " unidade(s) deste item.");
+        }
+
+        personagemDAO.removerItem(idPersonagem, idItem, qtd);
+    }
+
     // Listar campanhas que o personagem participa
     public ArrayList<Campanha> obterCampanhasParticipando(String idPersonagem) throws SQLException, IllegalArgumentException {
         // Validação

@@ -135,6 +135,60 @@ public class PersonagemDAO {
         }
     }
 
+    // Personagem gasta/perde um item do inventário
+    public void removerItem(String idPersonagem, String idItem, int qtd) throws SQLException {
+        String sqlSubtrair = "UPDATE inventario SET quantidade = quantidade - ? WHERE id_personagem = ? AND id_item = ?";
+        String sqlLimparVazios = "DELETE FROM inventario WHERE id_personagem = ? AND id_item = ? AND quantidade <= 0";
+
+        try (Connection conn = Conexao.conectar()) {
+            // Desativa para garantir que ambos serão executados
+            conn.setAutoCommit(false);
+
+            try {
+                // Subtrai a quantidade
+                try (PreparedStatement stmtSub = conn.prepareStatement(sqlSubtrair)) {
+                    stmtSub.setInt(1, qtd);
+                    stmtSub.setString(2, idPersonagem);
+                    stmtSub.setString(3, idItem);
+                    stmtSub.executeUpdate();
+                }
+
+                // Se a quantidade zerou
+                try (PreparedStatement stmtLimpar = conn.prepareStatement(sqlLimparVazios)) {
+                    stmtLimpar.setString(1, idPersonagem);
+                    stmtLimpar.setString(2, idItem);
+                    stmtLimpar.executeUpdate();
+                }
+
+                conn.commit();
+
+            } catch (SQLException e) {
+                conn.rollback(); // Se der erro desfaz
+                throw e;
+            } finally {
+                conn.setAutoCommit(true); // Restaura o padrão
+            }
+        }
+    }
+
+    // Buscar a quantidade de um item específico no inventário do personagem
+    public int buscarQuantidadeItemInventario(String idPersonagem, String idItem) throws SQLException {
+        String sql = "SELECT quantidade FROM inventario WHERE id_personagem = ? AND id_item = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idPersonagem);
+            stmt.setString(2, idItem);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("quantidade"); // Retorna a quantidade 
+                }
+            }
+        }
+        return 0; // Se não encontrar nenhuma linha, significa que o personagem tem 0 unidades do item
+    }
+
     // Campanhas que participa
     public ArrayList<Campanha> listarCampanhasParticipando(String idPersonagem) throws SQLException {
         ArrayList<Campanha> campanhas = new ArrayList<>();

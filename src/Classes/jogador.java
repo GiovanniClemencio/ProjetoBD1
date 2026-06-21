@@ -36,7 +36,5 @@ public class Jogador {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-    
     
 }

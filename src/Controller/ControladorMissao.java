@@ -17,7 +17,7 @@ public class ControladorMissao {
 
     private MissaoDAO missaoDAO;
 
-    public ControladorMissao(MissaoDAO missaoDAO) {
+    public ControladorMissao() {
         this.missaoDAO = new MissaoDAO();
     }
 

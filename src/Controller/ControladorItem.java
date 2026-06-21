@@ -17,7 +17,7 @@ public class ControladorItem {
 
     private ItemDAO itemDAO;
 
-    public ControladorItem(ItemDAO itemDAO) {
+    public ControladorItem() {
         this.itemDAO = new ItemDAO();
     }
 

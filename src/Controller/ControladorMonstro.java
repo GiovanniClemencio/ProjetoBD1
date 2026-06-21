@@ -15,7 +15,11 @@ import java.util.ArrayList;
  */
 public class ControladorMonstro {
 
-    private MonstroDAO monstroDAO = new MonstroDAO();
+    private MonstroDAO monstroDAO;
+
+    public ControladorMonstro() {
+        this.monstroDAO = new MonstroDAO();
+    }
 
     // Cadastrar monstro
     public void cadastrarMonstro(String nome, String descricao, String tipo, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, int cr) throws SQLException, IllegalArgumentException {

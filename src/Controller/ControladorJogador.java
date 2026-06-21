@@ -17,7 +17,7 @@ public class ControladorJogador {
     
     private JogadorDAO jogadorDAO;
 
-    public ControladorJogador(JogadorDAO jogadorDAO) {
+    public ControladorJogador() {
         this.jogadorDAO = new JogadorDAO();
     }
     

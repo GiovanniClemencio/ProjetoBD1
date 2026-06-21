@@ -44,6 +44,19 @@ public class ClasseDAO {
         }
     }
 
+    // Atualizar dados da classe
+    public void atualizar(Classe classe) throws SQLException {
+        String sql = "UPDATE classe SET nome = ?, descricao = ? WHERE id_classe = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, classe.getNome());
+            stmt.setString(2, classe.getDescricao());
+            stmt.setString(3, classe.getIdClasse());
+
+            stmt.executeUpdate();
+        }
+    }
 
     // Vincular classe a um personagem
     public void adicionarClasseAoPersonagem(String idPersonagem, String idClasse, int nivelInicial) throws SQLException {

@@ -40,6 +40,21 @@ public class ControladorClasse implements Controlador  {
         classeDAO.excluir(idClasse);
     }
 
+    // Atualizar classe
+    public void atualizarClasse(String idClasse, String novoNome, String novaDescricao) throws SQLException, IllegalArgumentException {
+        if (idClasse == null || idClasse.isBlank()) {
+            throw new IllegalArgumentException("ID inválido para atualização.");
+        }
+        if (novoNome == null || novoNome.isBlank()) {
+            throw new IllegalArgumentException("O novo nome da classe não pode estar vazio!");
+        }
+
+        Classe classeAtualizada = new Classe(novoNome, novaDescricao);
+        classeAtualizada.setIdClasse(idClasse);
+
+        classeDAO.atualizar(classeAtualizada);
+    }
+
     // Vincular classe a um personagem
     public void adicionarClasseAoPersonagem(String idPersonagem, String idClasse, int nivelInicial) throws SQLException, IllegalArgumentException {
         if (idPersonagem == null || idPersonagem.isBlank()) {

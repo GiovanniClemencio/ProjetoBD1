@@ -42,6 +42,7 @@ public class TelaJogadores extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -350,25 +351,24 @@ public class TelaJogadores extends javax.swing.JFrame {
     private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
         Jogador jogadorSelecionado = (Jogador) comboJogadores.getSelectedItem();
         
+        this.setVisible(false);
+        
         TelaJogadorIndividual dialog = new TelaJogadorIndividual(this, jogadorSelecionado, controladores, () -> {
-            new TelaJogadores(this, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarJogadores();
+            TelaJogadores.this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonAbrirActionPerformed
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        this.setVisible(false);
         cadastroJogador dialog = new cadastroJogador(this, true, controladores, () -> {
-            new TelaJogadores(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarJogadores();
+            TelaJogadores.this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonCriarActionPerformed
 
     private void carregarJogadores() {

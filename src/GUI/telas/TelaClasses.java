@@ -43,6 +43,7 @@ public class TelaClasses extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -351,25 +352,25 @@ public class TelaClasses extends javax.swing.JFrame {
     private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
         Classe classeSelecionada = (Classe) comboClasses.getSelectedItem();
         
+        this.setVisible(false);
+        
         TelaClasseIndividual dialog = new TelaClasseIndividual(this, classeSelecionada, controladores, () -> {
-            new TelaClasses(this, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarClasses();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonAbrirActionPerformed
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        this.setVisible(false);
+        
         cadastroClasse dialog = new cadastroClasse(this, true, controladores, () -> {
-            new TelaClasses(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarClasses();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonCriarActionPerformed
 
     private void carregarClasses() {

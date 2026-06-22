@@ -42,6 +42,7 @@ public class TelaMonstros extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -350,25 +351,25 @@ public class TelaMonstros extends javax.swing.JFrame {
     private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
         Monstro monstroSelecionado = (Monstro) comboMonstros.getSelectedItem();
         
+        this.setVisible(false);
+        
         TelaMonstroIndividual dialog = new TelaMonstroIndividual(this, monstroSelecionado, controladores, () -> {
-            new TelaMonstros(this, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarMonstros();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonAbrirActionPerformed
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        this.setVisible(false);
+        
         cadastroMonstro dialog = new cadastroMonstro(this, true, controladores, () -> {
-            new TelaMonstros(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarMonstros();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonCriarActionPerformed
 
     private void carregarMonstros() {

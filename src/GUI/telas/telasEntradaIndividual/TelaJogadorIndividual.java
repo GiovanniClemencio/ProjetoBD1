@@ -46,6 +46,7 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**

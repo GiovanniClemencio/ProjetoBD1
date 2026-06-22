@@ -42,6 +42,7 @@ public class TelaPersonagens extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -350,25 +351,25 @@ public class TelaPersonagens extends javax.swing.JFrame {
     private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
         Personagem personagemSelecionado = (Personagem) comboPersonagens.getSelectedItem();
         
+        this.setVisible(false);
+        
         TelaPersonagemIndividual dialog = new TelaPersonagemIndividual(this, personagemSelecionado, controladores, () -> {
-            new TelaPersonagens(this, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarPersonagens();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonAbrirActionPerformed
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        this.setVisible(false);
+        
         cadastroPersonagem dialog = new cadastroPersonagem(this, true, controladores, () -> {
-            new TelaPersonagens(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarPersonagens();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonCriarActionPerformed
 
     private void carregarPersonagens() {

@@ -43,6 +43,7 @@ public class TelaItens extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -351,25 +352,25 @@ public class TelaItens extends javax.swing.JFrame {
     private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
         Item itemSelecionado = (Item) comboItens.getSelectedItem();
         
+        this.setVisible(false);
+        
         TelaItemIndividual dialog = new TelaItemIndividual(this, itemSelecionado, controladores, () -> {
-            new TelaItens(this, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarItens();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonAbrirActionPerformed
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        this.setVisible(false);
+        
         cadastroItem dialog = new cadastroItem(this, true, controladores, () -> {
-            new TelaItens(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarItens();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonCriarActionPerformed
 
     private void carregarItens() {

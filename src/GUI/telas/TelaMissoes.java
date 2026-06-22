@@ -43,6 +43,7 @@ public class TelaMissoes extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -351,25 +352,25 @@ public class TelaMissoes extends javax.swing.JFrame {
     private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
         Missao missaoSelecionada = (Missao) comboMissoes.getSelectedItem();
         
+        this.setVisible(false);
+        
         TelaMissaoIndividual dialog = new TelaMissaoIndividual(this, missaoSelecionada, controladores, () -> {
-            new TelaMissoes(this, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarMissoes();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonAbrirActionPerformed
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        this.setVisible(false);
+        
         cadastroMissao dialog = new cadastroMissao(this, true, controladores, () -> {
-            new TelaMissoes(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarMissoes();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonCriarActionPerformed
 
     private void carregarMissoes() {

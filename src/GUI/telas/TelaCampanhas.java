@@ -41,6 +41,7 @@ public class TelaCampanhas extends javax.swing.JFrame {
                 }
             }
         });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -347,27 +348,27 @@ public class TelaCampanhas extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonMissoesActionPerformed
 
     private void buttonCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarActionPerformed
+        this.setVisible(false);
+        
         cadastroCampanha dialog = new cadastroCampanha(this, true, controladores, () -> {
-            new TelaCampanhas(parent, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarCampanhas();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonCriarActionPerformed
 
     private void buttonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbrirActionPerformed
         Campanha campanhaSelecionada = (Campanha) comboCampanhas.getSelectedItem();
         
+        this.setVisible(false);
+        
         TelaCampanhaIndividual dialog = new TelaCampanhaIndividual(this, campanhaSelecionada, controladores, () -> {
-            new TelaCampanhas(this, true, controladores, () -> {
-                new TelaInicial(controladores).setVisible(true);
-            }).setVisible(true);
+            carregarCampanhas();
+            this.setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();
     }//GEN-LAST:event_buttonAbrirActionPerformed
 
     private void carregarCampanhas() {

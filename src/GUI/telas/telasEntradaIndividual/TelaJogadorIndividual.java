@@ -26,7 +26,7 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     private final java.awt.Frame parent;
     private final Jogador jogador;
     private final GerenciadorControladores controladores;
-    private final Runnable aoFechar;
+    private Runnable aoFechar;
     
     public TelaJogadorIndividual(java.awt.Frame parent, Jogador jogador, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
@@ -288,6 +288,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInicioActionPerformed
+        this.aoFechar = null;
+        
         TelaInicial dialog = new TelaInicial(controladores); 
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -295,6 +297,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonInicioActionPerformed
 
     private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
+        this.aoFechar = null;
+        
         TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -304,6 +308,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCampanhasActionPerformed
 
     private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
+        this.aoFechar = null;
+        
         TelaJogadores dialog = new TelaJogadores(this, true, controladores, ()-> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -313,6 +319,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonJogadoresActionPerformed
 
     private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
+        this.aoFechar = null;
+        
         TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, ()-> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -322,6 +330,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonPersonagensActionPerformed
 
     private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
+        this.aoFechar = null;
+        
         TelaClasses dialog = new TelaClasses(this, true, controladores, ()-> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -331,6 +341,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonClassesActionPerformed
 
     private void buttonMonstrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMonstrosActionPerformed
+        this.aoFechar = null;
+        
         TelaMonstros dialog = new TelaMonstros(this, true, controladores, ()-> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -340,6 +352,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonMonstrosActionPerformed
 
     private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
+        this.aoFechar = null;
+        
         TelaItens dialog = new TelaItens(this, true, controladores, ()-> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -349,6 +363,8 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonItensActionPerformed
 
     private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
+        this.aoFechar = null;
+        
         TelaMissoes dialog = new TelaMissoes(this, true, controladores, ()-> {
             new TelaInicial(controladores).setVisible(true);
         });

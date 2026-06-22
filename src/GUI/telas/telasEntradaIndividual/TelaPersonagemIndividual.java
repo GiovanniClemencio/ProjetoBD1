@@ -12,8 +12,10 @@ import Classes.PersonagemClasseDTO;
 import Controller.ControladorItem;
 import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
+import GUI.formularios.adicionarClassePersonagem;
 import GUI.formularios.adicionarItemPersonagem;
 import GUI.formularios.edicaoPersonagem;
+import GUI.formularios.removerClassePersonagem;
 import GUI.formularios.removerItemPersonagem;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
@@ -112,6 +114,11 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         buttonExcluir.setText("Excluir");
 
         buttonAdicionarClasse.setText("Adicionar classe");
+        buttonAdicionarClasse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAdicionarClasseActionPerformed(evt);
+            }
+        });
 
         buttonRemoverClasse.setText("Remover classe");
         buttonRemoverClasse.addActionListener(new java.awt.event.ActionListener() {
@@ -438,7 +445,14 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void buttonRemoverClasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverClasseActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+
+        removerClassePersonagem dialog = new removerClassePersonagem(this, true, controladores, personagem, () -> {
+            carregarConteudo();
+            this.setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }//GEN-LAST:event_buttonRemoverClasseActionPerformed
 
     private void buttonRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverItemActionPerformed
@@ -462,6 +476,17 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_buttonAdicionarItemActionPerformed
+
+    private void buttonAdicionarClasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarClasseActionPerformed
+        this.setVisible(false);
+
+        adicionarClassePersonagem dialog = new adicionarClassePersonagem(this, true, controladores, personagem, () -> {
+            carregarConteudo();
+            this.setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_buttonAdicionarClasseActionPerformed
 
     private void carregarConteudo() {
         try {

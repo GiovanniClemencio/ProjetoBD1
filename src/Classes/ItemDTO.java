@@ -24,4 +24,6 @@ public class ItemDTO {
     public int getQuantidade() {
         return quantidade;
     }
+
+    
 }

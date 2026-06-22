@@ -10,6 +10,7 @@ import Classes.Jogador;
 import Classes.Missao;
 import Classes.Monstro;
 import Classes.Personagem;
+import Controller.ControladorItem;
 import Controller.ControladorMissao;
 import Controller.GerenciadorControladores;
 import GUI.formularios.edicaoMissao;
@@ -35,6 +36,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
     private final Missao missao;
     private final GerenciadorControladores controladores;
     private final ControladorMissao ctrlMissao;
+    private final ControladorItem ctrlItem;
     private Runnable aoFechar;
 
     public TelaMissaoIndividual(java.awt.Frame parent, Missao missao, GerenciadorControladores controladores, Runnable aoFechar) {
@@ -42,11 +44,17 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
         this.missao = missao;
         this.controladores = controladores;
         this.ctrlMissao = controladores.obter(ControladorMissao.class);
+        this.ctrlItem = controladores.obter(ControladorItem.class);
         this.aoFechar = aoFechar;
         initComponents();
 
         titulo.setText(missao.getNome());
-        carregarConteudo();
+        try {
+            carregarConteudo();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao carregar missão: " + e.getMessage());
+        }
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -299,7 +307,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInicioActionPerformed
         this.aoFechar = null;
-        
+
         TelaInicial dialog = new TelaInicial(controladores);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -308,7 +316,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
         this.aoFechar = null;
-        
+
         TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -319,7 +327,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
         this.aoFechar = null;
-        
+
         TelaJogadores dialog = new TelaJogadores(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -330,7 +338,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
         this.aoFechar = null;
-        
+
         TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -341,7 +349,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
         this.aoFechar = null;
-        
+
         TelaClasses dialog = new TelaClasses(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -352,7 +360,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonMonstrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMonstrosActionPerformed
         this.aoFechar = null;
-        
+
         TelaMonstros dialog = new TelaMonstros(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -363,7 +371,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
         this.aoFechar = null;
-        
+
         TelaItens dialog = new TelaItens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -374,7 +382,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
     private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
         this.aoFechar = null;
-        
+
         TelaMissoes dialog = new TelaMissoes(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
@@ -394,7 +402,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonEditarActionPerformed
 
-    private void carregarConteudo() {
+    private void carregarConteudo() throws SQLException {
 
         textAreaMissao.setText(missao.toStringResumo());
 
@@ -410,7 +418,8 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
 
         sb.append("\n=== Recompensas ===\n");
         for (ItemDTO i : recompensas) {
-            sb.append(i).append("\n");
+            Item item = ctrlItem.buscarItem(i.getIdItem());
+            sb.append(item).append(" QTD: " + i.getQuantidade()).append("\n");
         }
 
         textAreaMissao.append(sb.toString());

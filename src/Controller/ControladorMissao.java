@@ -78,6 +78,16 @@ public class ControladorMissao implements Controlador {
         missaoDAO.adicionarMonstro(idMissao, idMonstro, qtd);
     }
 
+    // Remover inimigo da missão
+    public void removerInimigo(String idMissao, String idMonstro) throws SQLException, IllegalArgumentException {
+        if (idMissao == null || idMissao.isBlank() || idMonstro == null || idMonstro.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para remover inimigo.");
+        }
+
+        missaoDAO.removerMonstro(idMissao, idMonstro);
+    }
+
+
     // Adicionar recompensa a missão
     public void adicionarRecompensa(String idMissao, String idItem, int qtd) throws SQLException, IllegalArgumentException {
         if (idMissao == null || idMissao.isBlank() || idItem == null || idItem.isBlank()) {

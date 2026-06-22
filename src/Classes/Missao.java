@@ -18,7 +18,7 @@ public class Missao {
 
     private int xpBonus;
 
-    public Missao(String nome, String descricao, String idMestre, int xpBonus) {
+    public Missao(String nome, String descricao, int xpBonus) {
         this.idMissao = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;

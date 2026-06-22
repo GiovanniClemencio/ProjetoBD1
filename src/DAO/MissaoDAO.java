@@ -73,6 +73,20 @@ public class MissaoDAO {
         }
     }
 
+    // Remover um certo tipo de monstro da missão
+    public void removerMonstro(String idMissao, String idMonstro) throws SQLException {
+        String sql = "DELETE FROM missao_monstro WHERE id_missao = ? AND id_monstro = ?";
+
+        try (Connection conn = Conexao.conectar(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, idMissao);
+            stmt.setString(2, idMonstro);
+            
+            stmt.executeUpdate();
+        }
+    }
+
     // Vincular a recompensa a missão
     public void adicionarRecompensa(String idMissao, String idItem, int qtd) throws SQLException {
         String sql = "INSERT INTO missao_item (id_missao, id_item, quantidade) VALUES (?, ?, ?) "
@@ -147,7 +161,6 @@ public class MissaoDAO {
                 Missao m = new Missao(
                         rs.getString("nome"),
                         rs.getString("descricao"),
-                        rs.getString("id_mestre"),
                         rs.getInt("xp_bonus")
                 );
                 m.setIdMissao(rs.getString("id_missao"));

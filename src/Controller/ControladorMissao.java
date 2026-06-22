@@ -22,7 +22,7 @@ public class ControladorMissao implements Controlador {
     }
 
     // Criar Missão
-    public Missao cadastrarMissao(String nome, String descricao, String idMestre, int xpBonus)
+    public Missao cadastrarMissao(String nome, String descricao, int xpBonus)
             throws SQLException, IllegalArgumentException {
 
         if (nome == null || nome.isBlank()) {
@@ -31,11 +31,8 @@ public class ControladorMissao implements Controlador {
         if (xpBonus < 0) {
             throw new IllegalArgumentException("O XP bônus não pode ser negativo!");
         }
-        if (idMestre == null || idMestre.isBlank()) {
-            throw new IllegalArgumentException("A missão precisa de um mestre válido!");
-        }
 
-        Missao novaMissao = new Missao(nome, descricao, idMestre, xpBonus);
+        Missao novaMissao = new Missao(nome, descricao, xpBonus);
 
         missaoDAO.inserir(novaMissao);
         
@@ -52,7 +49,7 @@ public class ControladorMissao implements Controlador {
     }
 
     // Atualizar Missão
-    public void atualizarMissao(String idMissao, String novoNome, String novaDescricao, String idMestre, int novoXpBonus) throws SQLException, IllegalArgumentException {
+    public void atualizarMissao(String idMissao, String novoNome, String novaDescricao, int novoXpBonus) throws SQLException, IllegalArgumentException {
 
         if (idMissao == null || idMissao.isBlank()) {
             throw new IllegalArgumentException("ID inválido para atualização da missão.");
@@ -63,11 +60,8 @@ public class ControladorMissao implements Controlador {
         if (novoXpBonus < 0) {
             throw new IllegalArgumentException("O XP bônus não pode ser negativo!");
         }
-        if (idMestre == null || idMestre.isBlank()) {
-            throw new IllegalArgumentException("A missão precisa de um mestre válido!");
-        }
 
-        Missao missaoAtualizada = new Missao(novoNome, novaDescricao, idMestre, novoXpBonus);
+        Missao missaoAtualizada = new Missao(novoNome, novaDescricao, novoXpBonus);
         missaoAtualizada.setIdMissao(idMissao);
 
         missaoDAO.atualizar(missaoAtualizada);

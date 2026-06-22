@@ -6,7 +6,6 @@ package GUI.formularios;
 
 import Classes.Campanha;
 import Classes.Item;
-import Classes.Jogador;
 import Classes.Missao;
 import Classes.Monstro;
 import Classes.Personagem;
@@ -86,8 +85,6 @@ public class cadastroMissao extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         listMonstros = new javax.swing.JList<>();
-        jLabel5 = new javax.swing.JLabel();
-        comboMestre = new javax.swing.JComboBox<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         listPersonagens = new javax.swing.JList<>();
         jLabel6 = new javax.swing.JLabel();
@@ -141,9 +138,6 @@ public class cadastroMissao extends javax.swing.JDialog {
 
         jScrollPane2.setViewportView(listMonstros);
 
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Mestre: ");
-
         jScrollPane3.setViewportView(listPersonagens);
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,15 +176,9 @@ public class cadastroMissao extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboMestre, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -215,9 +203,7 @@ public class cadastroMissao extends javax.swing.JDialog {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(comboMestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3)
@@ -293,7 +279,6 @@ public class cadastroMissao extends javax.swing.JDialog {
         campoNome.setText("");
         campoXp.setText("");
         jTextArea1.setText("");
-        comboMestre.setSelectedItem(null);
         comboCampanha.setSelectedItem(null);
 
         listPersonagens.clearSelection();
@@ -309,15 +294,9 @@ public class cadastroMissao extends javax.swing.JDialog {
             String descricao = jTextArea1.getText().trim();
             int xpBonus = Integer.parseInt(campoXp.getText().trim());
 
-            Jogador mestreSelecionado = (Jogador) comboMestre.getSelectedItem();
-            if (mestreSelecionado == null) {
-                JOptionPane.showMessageDialog(this, "Selecione um mestre.");
-                return;
-            }
+            
 
-            String idMestre = mestreSelecionado.getIdJogador();
-
-            Missao novaMissao = ctrlMissao.cadastrarMissao(nome, descricao, idMestre, xpBonus);
+            Missao novaMissao = ctrlMissao.cadastrarMissao(nome, descricao, xpBonus);
             
             Campanha campanhaSelecionada = (Campanha) comboCampanha.getSelectedItem();
             if (campanhaSelecionada == null) {
@@ -328,7 +307,7 @@ public class cadastroMissao extends javax.swing.JDialog {
             String idCampanha = campanhaSelecionada.getIdCampanha();
 
             for (Personagem personagem : listPersonagens.getSelectedValuesList()) {
-                ctrlMissao.adicionarParticipante(idCampanha, novaMissao.getIdMissao(), personagem.getIdPersonagem());
+                ctrlCampanha.adicionarParticipanteAMissao(idCampanha, novaMissao.getIdMissao(), personagem.getIdPersonagem());
             }
 
             for (Monstro monstro : listMonstros.getSelectedValuesList()) {
@@ -366,13 +345,6 @@ public class cadastroMissao extends javax.swing.JDialog {
 
     private void carregarDados() {
         try {
-            comboMestre.removeAllItems();
-
-            ArrayList<Jogador> jogadores = ctrlJogador.listarTodosOsJogadores();
-            for (Jogador jogador : jogadores) {
-                comboMestre.addItem(jogador);
-            }
-            comboMestre.setSelectedItem(null);
 
             javax.swing.DefaultListModel<Personagem> modelPersonagens = new javax.swing.DefaultListModel<>();
             for (Personagem personagem : ctrlPersonagem.listarTodosOsPersonagens()) {
@@ -438,12 +410,6 @@ public class cadastroMissao extends javax.swing.JDialog {
         campoXp.getDocument().addDocumentListener(listener);
         jTextArea1.getDocument().addDocumentListener(listener);
 
-        comboMestre.addItemListener(e -> {
-            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
-                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
-                atualizarEstadoBotaoCadastrar();
-            }
-        });
         
         comboCampanha.addItemListener(e -> {
             if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
@@ -467,7 +433,6 @@ public class cadastroMissao extends javax.swing.JDialog {
         boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
         boolean xpValido = textoEhInteiro(campoXp.getText().trim());
         boolean descricaoPreenchida = !jTextArea1.getText().trim().isEmpty();
-        boolean mestreSelecionado = comboMestre.getSelectedIndex() != -1;
         boolean campanhaSelecionada = comboCampanha.getSelectedIndex() != -1;
 
         boolean personagensSelecionados = !listPersonagens.isSelectionEmpty();
@@ -478,7 +443,6 @@ public class cadastroMissao extends javax.swing.JDialog {
                 nomePreenchido
                 && xpValido
                 && descricaoPreenchida
-                && mestreSelecionado
                 && campanhaSelecionada
                 && personagensSelecionados
                 && monstrosSelecionados
@@ -505,12 +469,10 @@ public class cadastroMissao extends javax.swing.JDialog {
     private javax.swing.JTextField campoNome;
     private javax.swing.JTextField campoXp;
     private javax.swing.JComboBox<Campanha> comboCampanha;
-    private javax.swing.JComboBox<Jogador> comboMestre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

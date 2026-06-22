@@ -89,7 +89,7 @@ public class JogadorDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Jogador j = new Jogador("nome");
+                Jogador j = new Jogador(rs.getString("nome"));
                 j.setIdJogador(rs.getString("id_jogador"));
                 
                 jogadores.add(j);

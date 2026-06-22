@@ -5,6 +5,10 @@
 package GUI.telas.telasEntradaIndividual;
 
 import Classes.Campanha;
+import Classes.Jogador;
+import Classes.Missao;
+import Classes.Personagem;
+import Controller.ControladorCampanha;
 import Controller.GerenciadorControladores;
 import GUI.formularios.edicaoCampanha;
 import GUI.telas.TelaCampanhas;
@@ -15,6 +19,9 @@ import GUI.telas.TelaJogadores;
 import GUI.telas.TelaMissoes;
 import GUI.telas.TelaMonstros;
 import GUI.telas.TelaPersonagens;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -25,12 +32,14 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
     private final java.awt.Frame parent;
     private final Campanha campanha;
     private final GerenciadorControladores controladores;
+    private final ControladorCampanha ctrlCampanha;
     private final Runnable aoFechar;
 
     public TelaCampanhaIndividual(java.awt.Frame parent, Campanha campanha, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.campanha = campanha;
         this.controladores = controladores;
+        this.ctrlCampanha = controladores.obter(ControladorCampanha.class);
         this.aoFechar = aoFechar;
         initComponents();
 
@@ -367,7 +376,38 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void carregarConteudo() {
-        textAreaCampanha.setText(campanha.toStringResumo());
+        try {
+            textAreaCampanha.setText(campanha.toStringResumo());
+
+            ArrayList<Personagem> participantes = ctrlCampanha.obterPersonagensParticipantes(campanha.getIdCampanha());
+            ArrayList<Jogador> jogadores = ctrlCampanha.listarJogadoresDaCampanha(campanha.getIdCampanha());
+            ArrayList<Missao> missoes = ctrlCampanha.listarMissoesDaCampanha(campanha.getIdCampanha());
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("\n=== PARTICIPANTES ===\n");
+            for (Personagem p : participantes) {
+                sb.append(p).append("\n");
+            }
+
+            sb.append("\n=== JOGADORES ===\n");
+            for (Jogador j : jogadores) {
+                sb.append(j).append("\n");
+            }
+
+            sb.append("\n=== MISSÕES ===\n");
+            for (Missao m : missoes) {
+                sb.append(m).append("\n");
+            }
+
+            textAreaCampanha.append(sb.toString());
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar conteúdo da campanha: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -4,7 +4,13 @@
  */
 package GUI.telas.telasEntradaIndividual;
 
+import Classes.Item;
+import Classes.ItemDTO;
+import Classes.Jogador;
 import Classes.Missao;
+import Classes.Monstro;
+import Classes.Personagem;
+import Controller.ControladorMissao;
 import Controller.GerenciadorControladores;
 import GUI.formularios.edicaoMissao;
 import GUI.telas.TelaCampanhas;
@@ -15,6 +21,9 @@ import GUI.telas.TelaJogadores;
 import GUI.telas.TelaMissoes;
 import GUI.telas.TelaMonstros;
 import GUI.telas.TelaPersonagens;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -25,18 +34,20 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
     private final java.awt.Frame parent;
     private final Missao missao;
     private final GerenciadorControladores controladores;
+    private final ControladorMissao ctrlMissao;
     private final Runnable aoFechar;
-    
+
     public TelaMissaoIndividual(java.awt.Frame parent, Missao missao, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.missao = missao;
         this.controladores = controladores;
+        this.ctrlMissao = controladores.obter(ControladorMissao.class);
         this.aoFechar = aoFechar;
         initComponents();
-        
+
         titulo.setText(missao.getNome());
         carregarConteudo();
-        
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -293,7 +304,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonInicioActionPerformed
 
     private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
-        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -302,16 +313,16 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCampanhasActionPerformed
 
     private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
-        TelaJogadores dialog = new TelaJogadores(this, true, controladores, ()-> {
+        TelaJogadores dialog = new TelaJogadores(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_buttonJogadoresActionPerformed
 
     private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
-        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, ()-> {
+        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -320,16 +331,16 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonPersonagensActionPerformed
 
     private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
-        TelaClasses dialog = new TelaClasses(this, true, controladores, ()-> {
+        TelaClasses dialog = new TelaClasses(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_buttonClassesActionPerformed
 
     private void buttonMonstrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMonstrosActionPerformed
-        TelaMonstros dialog = new TelaMonstros(this, true, controladores, ()-> {
+        TelaMonstros dialog = new TelaMonstros(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -338,7 +349,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonMonstrosActionPerformed
 
     private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
-        TelaItens dialog = new TelaItens(this, true, controladores, ()-> {
+        TelaItens dialog = new TelaItens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -347,7 +358,7 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonItensActionPerformed
 
     private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
-        TelaMissoes dialog = new TelaMissoes(this, true, controladores, ()-> {
+        TelaMissoes dialog = new TelaMissoes(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -366,8 +377,27 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonEditarActionPerformed
 
-    private void carregarConteudo(){
+    private void carregarConteudo() {
+
         textAreaMissao.setText(missao.toStringResumo());
+
+        ArrayList<Monstro> inimigos = ctrlMissao.listarInimigosDaMissao(missao.getIdMissao());
+        ArrayList<ItemDTO> recompensas = ctrlMissao.listarRecompensasDaMissao(missao.getIdMissao());
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n=== Inimigos ===\n");
+        for (Monstro m : inimigos) {
+            sb.append(m).append("\n");
+        }
+
+        sb.append("\n=== Recompensas ===\n");
+        for (ItemDTO i : recompensas) {
+            sb.append(i).append("\n");
+        }
+
+        textAreaMissao.append(sb.toString());
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

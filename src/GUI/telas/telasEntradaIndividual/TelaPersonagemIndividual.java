@@ -5,7 +5,10 @@
 package GUI.telas.telasEntradaIndividual;
 
 import Classes.Campanha;
+import Classes.ItemDTO;
 import Classes.Personagem;
+import Classes.PersonagemClasseDTO;
+import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
 import GUI.formularios.edicaoPersonagem;
 import GUI.telas.TelaCampanhas;
@@ -16,6 +19,9 @@ import GUI.telas.TelaJogadores;
 import GUI.telas.TelaMissoes;
 import GUI.telas.TelaMonstros;
 import GUI.telas.TelaPersonagens;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -26,12 +32,14 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
     private final java.awt.Frame parent;
     private final Personagem personagem;
     private final GerenciadorControladores controladores;
+    private final ControladorPersonagem ctrlPersonagem;
     private final Runnable aoFechar;
     
     public TelaPersonagemIndividual(java.awt.Frame parent, Personagem personagem, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.personagem = personagem;
         this.controladores = controladores;
+        this.ctrlPersonagem = controladores.obter(ControladorPersonagem.class);
         this.aoFechar = aoFechar;
         initComponents();
         
@@ -367,8 +375,39 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonEditarActionPerformed
 
-    private void carregarConteudo(){
-        textAreaPersonagem.setText(personagem.toStringResumo());
+    private void carregarConteudo() {
+        try {
+            textAreaPersonagem.setText(personagem.toStringResumo());
+
+            ArrayList<Campanha> campanhas = ctrlPersonagem.obterCampanhasParticipando(personagem.getIdPersonagem());
+            ArrayList<ItemDTO> inventario = ctrlPersonagem.obterInventarioDoPersonagem(personagem.getIdPersonagem());
+            ArrayList<PersonagemClasseDTO> classes = ctrlPersonagem.obterClassesDoPersonagem(personagem.getIdPersonagem());
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("\n=== CAMPANHAS ===\n");
+            for (Campanha c : campanhas) {
+                sb.append(c).append("\n");
+            }
+
+            sb.append("\n=== INVENTÁRIO ===\n");
+            for (ItemDTO i : inventario) {
+                sb.append(i).append("\n");
+            }
+
+            sb.append("\n=== Classes ===\n");
+            for (PersonagemClasseDTO cl : classes) {
+                sb.append(cl).append("\n");
+            }
+
+            textAreaPersonagem.append(sb.toString());
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar conteúdo da campanha: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

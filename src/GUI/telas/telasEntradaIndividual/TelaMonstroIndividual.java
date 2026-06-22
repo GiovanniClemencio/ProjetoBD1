@@ -4,7 +4,12 @@
  */
 package GUI.telas.telasEntradaIndividual;
 
+import Classes.Item;
+import Classes.Jogador;
+import Classes.Missao;
 import Classes.Monstro;
+import Classes.Personagem;
+import Controller.ControladorMonstro;
 import Controller.GerenciadorControladores;
 import GUI.formularios.edicaoMonstro;
 import GUI.telas.TelaCampanhas;
@@ -15,6 +20,9 @@ import GUI.telas.TelaJogadores;
 import GUI.telas.TelaMissoes;
 import GUI.telas.TelaMonstros;
 import GUI.telas.TelaPersonagens;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,12 +33,14 @@ public class TelaMonstroIndividual extends javax.swing.JFrame {
     private final java.awt.Frame parent;
     private final Monstro monstro;
     private final GerenciadorControladores controladores;
+    private final ControladorMonstro ctrlMonstro;
     private final Runnable aoFechar;
     
     public TelaMonstroIndividual(java.awt.Frame parent, Monstro monstro, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.monstro = monstro;
         this.controladores = controladores;
+        this.ctrlMonstro = controladores.obter(ControladorMonstro.class);
         this.aoFechar = aoFechar;
         initComponents();
         
@@ -366,8 +376,27 @@ public class TelaMonstroIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonEditarActionPerformed
 
-    private void carregarConteudo(){
-        textAreaMonstro.setText(monstro.toStringResumo());
+    private void carregarConteudo() {
+        try {
+            textAreaMonstro.setText(monstro.toStringResumo());
+
+            ArrayList<Item> drops = ctrlMonstro.listarDropsDoMonstro(monstro.getIdMonstro());
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("\n=== Drops ===\n");
+            for (Item i : drops) {
+                sb.append(i).append("\n");
+            }
+
+            textAreaMonstro.append(sb.toString());
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar conteúdo do monstro: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

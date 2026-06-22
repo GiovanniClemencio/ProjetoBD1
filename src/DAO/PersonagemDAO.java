@@ -246,7 +246,7 @@ public class PersonagemDAO {
 
         // Pega o item e a quantidade
         String sql = "SELECT i.id_item, i.nome, i.peso, pi.quantidade FROM item i "
-                + "JOIN personagem_item pi ON i.id_item = pi.id_item "
+                + "JOIN inventario pi ON i.id_item = pi.id_item "
                 + "WHERE pi.id_personagem = ?";
 
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -267,7 +267,7 @@ public class PersonagemDAO {
     public ArrayList<PersonagemClasseDTO> listarClassesDoPersonagem(String idPersonagem) throws SQLException {
         ArrayList<PersonagemClasseDTO> classesDoPersonagem = new ArrayList<>();
 
-        String sql = "SELECT c.id_classe, c.nome, pc.nivel FROM classe c "
+        String sql = "SELECT c.id_classe, c.nome, pc.nivel_classe FROM classe c "
                 + "JOIN classe_personagem pc ON c.id_classe = pc.id_classe "
                 + "WHERE pc.id_personagem = ?";
 

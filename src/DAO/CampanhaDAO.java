@@ -246,12 +246,11 @@ public class CampanhaDAO {
     // Listar todas as missões vinculadas a campanha
     public ArrayList<Missao> listarMissoesPorCampanha(String idCampanha) throws SQLException {
         ArrayList<Missao> missoes = new ArrayList<>();
-        String sql = "SELECT m.* FROM missao m " +
-                     "JOIN campanha_missao cm ON m.id_missao = cm.id_missao " +
-                     "WHERE cm.id_campanha = ?";
+        String sql = "SELECT m.* FROM missao m "
+                + "JOIN campanha_missao cm ON m.id_missao = cm.id_missao "
+                + "WHERE cm.id_campanha = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idCampanha);
 
@@ -266,4 +265,83 @@ public class CampanhaDAO {
         }
         return missoes;
     }
+
+    // Vincular um personagem a missão
+    public void adicionarPersonagemAMissao(String idCampanha, String idMissao, String idPersonagem) throws SQLException {
+        String sql = "INSERT INTO campanha_missao_personagem (id_campanha, id_missao, id_personagem) VALUES (?, ?, ?)";
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMissao);
+            stmt.setString(3, idPersonagem);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Desvincular um personagem da missão
+    public void removerPersonagemDaMissao(String idCampanha, String idMissao, String idPersonagem) throws SQLException {
+        String sql = "DELETE FROM campanha_missao_personagem WHERE id_campanha = ? AND id_missao = ? AND id_personagem = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMissao);
+            stmt.setString(3, idPersonagem);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Atualizar o status da missão
+    public void atualizarStatusMissao(String idCampanha, String idMissao, boolean concluido) throws SQLException {
+        String sql = "UPDATE campanha_missao SET concluido = ? WHERE id_campanha = ? AND id_missao = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setBoolean(1, concluido);
+            stmt.setString(2, idCampanha);
+            stmt.setString(3, idMissao);
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Listar personagens participantes da missão em uma campanha
+    public ArrayList<Personagem> listarParticipantesDaMissao(String idCampanha, String idMissao) throws SQLException {
+        ArrayList<Personagem> participantes = new ArrayList<>();
+
+        // SQL com JOIN para buscar os dados direto da tabela personagem
+        String sql = "SELECT p.* FROM personagem p "
+                + "JOIN campanha_missao_personagem cmp ON p.id_personagem = cmp.id_personagem "
+                + "WHERE cmp.id_campanha = ? AND cmp.id_missao = ? "
+                + "ORDER BY p.nome ASC";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idCampanha);
+            stmt.setString(2, idMissao);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Personagem p = new Personagem(
+                            rs.getString("nome"),
+                            rs.getDouble("carga_maxima"),
+                            rs.getDouble("xp"),
+                            rs.getInt("vida"),
+                            rs.getInt("forca"),
+                            rs.getInt("destreza"),
+                            rs.getInt("constituicao"),
+                            rs.getInt("inteligencia"),
+                            rs.getInt("sabedoria"),
+                            rs.getInt("carisma"),
+                            rs.getString("id_jogador")
+                    );
+
+                    p.setIdPersonagem(rs.getString("id_personagem"));
+                    participantes.add(p);
+                }
+            }
+        }
+        return participantes;
+    }
+
 }

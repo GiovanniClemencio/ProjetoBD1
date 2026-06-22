@@ -6,7 +6,6 @@ package DAO;
 
 import Classes.ItemDTO;
 import Classes.Missao;
-import Classes.Personagem;
 import database.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +29,7 @@ public class MissaoDAO {
             stmt.setString(1, missao.getIdMissao());
             stmt.setString(2, missao.getNome());
             stmt.setString(3, missao.getDescricao());
-            stmt.setInt(5, missao.getXpBonus());
+            stmt.setInt(4, missao.getXpBonus());
 
             stmt.executeUpdate();
         }
@@ -57,20 +56,9 @@ public class MissaoDAO {
 
             stmt.setString(1, missao.getNome());
             stmt.setString(2, missao.getDescricao());
-            stmt.setInt(4, missao.getXpBonus());
-            stmt.setString(5, missao.getIdMissao());
+            stmt.setInt(3, missao.getXpBonus());
+            stmt.setString(4, missao.getIdMissao());
 
-            stmt.executeUpdate();
-        }
-    }
-
-    // Vincular um personagem a missão
-    public void adicionarPersonagem(String idCampanha, String idMissao, String idPersonagem) throws SQLException {
-        String sql = "INSERT INTO campanha_missao_personagem (id_campanha, id_missao, id_personagem) VALUES (?, ?, ?)";
-        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, idCampanha);
-            stmt.setString(2, idMissao);
-            stmt.setString(3, idPersonagem);
             stmt.executeUpdate();
         }
     }
@@ -119,46 +107,6 @@ public class MissaoDAO {
         return 0;
     }
 
-    // Listar personagens participantes da missão em uma campanha
-    public ArrayList<Personagem> listarParticipantesDaMissao(String idCampanha, String idMissao) throws SQLException {
-        ArrayList<Personagem> participantes = new ArrayList<>();
-        
-        // SQL com JOIN para buscar os dados direto da tabela personagem
-        String sql = "SELECT p.* FROM personagem p " +
-                     "JOIN campanha_missao_personagem cmp ON p.id_personagem = cmp.id_personagem " +
-                     "WHERE cmp.id_campanha = ? AND cmp.id_missao = ? " +
-                     "ORDER BY p.nome ASC";
-
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, idCampanha);
-            stmt.setString(2, idMissao);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Personagem p = new Personagem(
-                        rs.getString("nome"),
-                        rs.getDouble("carga_maxima"),
-                        rs.getDouble("xp"),
-                        rs.getInt("vida"),
-                        rs.getInt("forca"),
-                        rs.getInt("destreza"),
-                        rs.getInt("constituicao"),
-                        rs.getInt("inteligencia"),
-                        rs.getInt("sabedoria"),
-                        rs.getInt("carisma"),
-                        rs.getString("id_jogador")
-                    );
-                    
-                    p.setIdPersonagem(rs.getString("id_personagem"));
-                    participantes.add(p);
-                }
-            }
-        }
-        return participantes;
-    }
-
     // Listar todas as recompensas de uma missão
     public ArrayList<ItemDTO> listarRecompensasDaMissao(String idMissao) throws SQLException {
         ArrayList<ItemDTO> recompensas = new ArrayList<>();
@@ -180,20 +128,6 @@ public class MissaoDAO {
             }
         }
         return recompensas;
-    }
-
-    // Atualizar o status da missão
-    public void atualizarStatusMissao(String idCampanha, String idMissao, boolean concluido) throws SQLException {
-        String sql = "UPDATE campanha_missao SET concluido = ? WHERE id_campanha = ? AND id_missao = ?";
-
-        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setBoolean(1, concluido);
-            stmt.setString(2, idCampanha);
-            stmt.setString(3, idMissao);
-
-            stmt.executeUpdate();
-        }
     }
 
     // Listar todas as missões cadastradas

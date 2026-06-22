@@ -5,10 +5,13 @@
 package Controller;
 
 import Classes.Campanha;
+import Classes.ItemDTO;
 import Classes.Jogador;
 import Classes.Missao;
 import Classes.Personagem;
 import DAO.CampanhaDAO;
+import DAO.MissaoDAO;
+import DAO.PersonagemDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -19,9 +22,13 @@ import java.util.ArrayList;
 public class ControladorCampanha implements Controlador {
 
     private final CampanhaDAO campanhaDAO;
+    private final MissaoDAO missaoDAO;
+    private final PersonagemDAO personagemDAO;
 
     public ControladorCampanha() {
         this.campanhaDAO = new CampanhaDAO();
+        this.missaoDAO = new MissaoDAO();
+        this.personagemDAO = new PersonagemDAO();
     }
 
     // Cadastrar
@@ -154,4 +161,63 @@ public class ControladorCampanha implements Controlador {
         return campanhaDAO.listarMissoesPorCampanha(idCampanha);
     }
 
+    // Vincular participante a missão
+    public void adicionarParticipanteAMissao(String idCampanha, String idMissao, String idPersonagem) throws SQLException, IllegalArgumentException {
+        if (idCampanha == null || idCampanha.isBlank() || idMissao == null || idMissao.isBlank() || idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para adicionar participante.");
+        }
+        campanhaDAO.adicionarPersonagemAMissao(idCampanha, idMissao, idPersonagem);
+    }
+
+    // Desvincular participante da missão
+    public void desvincularPersonagemDaMissao(String idCampanha, String idMissao, String idPersonagem) throws SQLException, IllegalArgumentException {
+        if (idCampanha == null || idCampanha.isBlank() || 
+            idMissao == null || idMissao.isBlank() || 
+            idPersonagem == null || idPersonagem.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para remover o personagem da missão.");
+        }
+
+        campanhaDAO.removerPersonagemDaMissao(idCampanha, idMissao, idPersonagem);
+    }
+
+    // Listar personagens participantes da missão em uma campanha
+    public ArrayList<Personagem> listarParticipantesDaMissao(String idCampanha, String idMissao) throws SQLException, IllegalArgumentException {
+
+        if (idCampanha == null || idCampanha.isBlank() || idMissao == null || idMissao.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para listagem");
+        }
+
+        return campanhaDAO.listarParticipantesDaMissao(idCampanha, idMissao);
+    }
+
+    // Finalizar uma missão, distribuindo o XP e os itens para todos os personagens participantes
+    public void concluirMissao(String idCampanha, String idMissao) throws SQLException, IllegalArgumentException {
+        
+        if (idCampanha == null || idCampanha.isBlank() ||idMissao == null || idMissao.isBlank()) {
+            throw new IllegalArgumentException("ID inválido para conclusão.");
+        }
+
+        int xpGanho = missaoDAO.buscarXpBonusDaMissao(idMissao);
+
+        ArrayList<Personagem> participantes = campanhaDAO.listarParticipantesDaMissao(idCampanha, idMissao);
+
+        if (participantes.isEmpty()) {
+            throw new IllegalArgumentException("Não é possível concluir uma missão sem personagens participantes!");
+        }
+
+        ArrayList<ItemDTO> recompensas = missaoDAO.listarRecompensasDaMissao(idMissao);
+
+
+        for (Personagem personagem : participantes) {
+            String idPersonagem = personagem.getIdPersonagem();
+            
+            personagemDAO.adicionarXP(idPersonagem, xpGanho);
+            
+            for (ItemDTO item : recompensas) {
+                personagemDAO.adquirirItem(idPersonagem, item.getIdItem(), item.getQuantidade());
+            }
+        }
+
+        campanhaDAO.atualizarStatusMissao(idCampanha, idMissao, true);
+    }
 }

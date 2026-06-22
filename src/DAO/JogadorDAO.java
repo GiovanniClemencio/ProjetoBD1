@@ -70,7 +70,7 @@ public class JogadorDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Jogador j = new Jogador("nome");
+                    Jogador j = new Jogador(rs.getString("nome"));
                     j.setIdJogador(rs.getString("id_jogador"));
                     return j;
                 }

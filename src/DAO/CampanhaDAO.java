@@ -23,12 +23,13 @@ public class CampanhaDAO {
 
     // Inserção
     public void inserir(Campanha campanha) throws SQLException {
-        String sql = "INSERT INTO campanha (id_campanha, nome) VALUES (?, ?)";
+        String sql = "INSERT INTO campanha (id_campanha, nome, id_mestre) VALUES (?, ?, ?)";
 
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, campanha.getIdCampanha());
             stmt.setString(2, campanha.getNome());
+            stmt.setString(3, campanha.getIdMestre());
 
             stmt.executeUpdate();
         }

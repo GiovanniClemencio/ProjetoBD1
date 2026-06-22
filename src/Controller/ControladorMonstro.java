@@ -4,7 +4,10 @@
  */
 package Controller;
 
+import Classes.Item;
+import Classes.ItemDTO;
 import Classes.Monstro;
+import DAO.ItemDAO;
 import DAO.MonstroDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,9 +19,11 @@ import java.util.ArrayList;
 public class ControladorMonstro implements Controlador {
 
     private final MonstroDAO monstroDAO;
+    private final ItemDAO itemDAO;
 
     public ControladorMonstro() {
         this.monstroDAO = new MonstroDAO();
+        this.itemDAO = new ItemDAO();
     }
 
     // Cadastrar monstro
@@ -41,7 +46,7 @@ public class ControladorMonstro implements Controlador {
         Monstro novoMonstro = new Monstro(nome, descricao, tipo, vida, forca, destreza, constituicao, inteligencia, sabedoria, carisma, cr);
 
         monstroDAO.inserir(novoMonstro);
-        
+
         return novoMonstro;
     }
 
@@ -56,7 +61,7 @@ public class ControladorMonstro implements Controlador {
 
     // Atualizar monstro
     public void atualizarMonstro(String idMonstro, String nome, String descricao, String tipo, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, int cr) throws SQLException, IllegalArgumentException {
-        
+
         // Validação
         if (idMonstro == null || idMonstro.isBlank()) {
             throw new IllegalArgumentException("ID inválido para atualização do monstro.");
@@ -122,5 +127,26 @@ public class ControladorMonstro implements Controlador {
         }
 
         monstroDAO.removerDrop(idMonstro, idItem);
+    }
+
+    public ArrayList<Item> listarDropsDoMonstro(String idMonstro)
+            throws SQLException, IllegalArgumentException {
+
+        if (idMonstro == null || idMonstro.isBlank()) {
+            throw new IllegalArgumentException("ID do monstro inválido.");
+        }
+
+        ArrayList<ItemDTO> dropsDTO = monstroDAO.buscarItensDoDrop(idMonstro);
+        ArrayList<Item> drops = new ArrayList<>();
+
+        for (ItemDTO drop : dropsDTO) {
+            Item item = itemDAO.buscarPorId(drop.getIdItem());
+
+            if (item != null) {
+                drops.add(item);
+            }
+        }
+
+        return drops;
     }
 }

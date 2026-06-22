@@ -141,12 +141,12 @@ public class ControladorMissao implements Controlador {
             throw new RuntimeException("Erro ao listar inimigos da missão " + idMissao, e);
         }
     }
-    
+
     public ArrayList<ItemDTO> listarRecompensasDaMissao(String idMissao) {
-    try {
-        return missaoDAO.listarRecompensasDaMissao(idMissao);
-    } catch (SQLException e) {
-        throw new RuntimeException("Erro ao listar recompensas da missão " + idMissao, e);
+        try {
+            return missaoDAO.listarRecompensasDaMissao(idMissao);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar recompensas da missão " + idMissao, e);
+        }
     }
-}
 }

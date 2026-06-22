@@ -6,6 +6,7 @@ package GUI.formularios;
 
 import Classes.Campanha;
 import Classes.Item;
+import Classes.ItemDTO;
 import Classes.Jogador;
 import Classes.Missao;
 import Classes.Monstro;
@@ -16,6 +17,9 @@ import Controller.ControladorMissao;
 import Controller.ControladorMonstro;
 import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,7 +36,7 @@ public class edicaoMissao extends javax.swing.JDialog {
     private final ControladorCampanha ctrlCampanha;
     private final Missao missao;
     private final Runnable aoFechar;
-    
+
     public edicaoMissao(java.awt.Frame parent, boolean modal, GerenciadorControladores controladores, Missao missao, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
@@ -44,9 +48,12 @@ public class edicaoMissao extends javax.swing.JDialog {
         this.ctrlCampanha = controladores.obter(ControladorCampanha.class);
         this.missao = missao;
         this.aoFechar = aoFechar;
-        
+
         initComponents();
-        
+        configurarEventos();
+        carregarDados();
+        atualizarEstadoBotaoCadastrar();
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -55,8 +62,6 @@ public class edicaoMissao extends javax.swing.JDialog {
                 }
             }
         });
-        oghsqhgopah
-        
     }
 
     /**
@@ -98,9 +103,19 @@ public class edicaoMissao extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
-        buttonCadastrar.setLabel("Cadastrar");
+        buttonCadastrar.setText("Editar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
+        buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLimparActionPerformed(evt);
+            }
+        });
 
         campoNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,7 +164,7 @@ public class edicaoMissao extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(82, 82, 82)
                 .addComponent(buttonLimpar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 311, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 319, Short.MAX_VALUE)
                 .addComponent(buttonCadastrar)
                 .addGap(71, 71, 71))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -280,7 +295,343 @@ public class edicaoMissao extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoNomeActionPerformed
 
-    
+    private void buttonLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimparActionPerformed
+        campoNome.setText("");
+        campoXp.setText("");
+        jTextArea1.setText("");
+        comboCampanha.setSelectedItem(null);
+
+        listPersonagens.clearSelection();
+        listMonstros.clearSelection();
+        listRecompensas.clearSelection();
+
+        atualizarEstadoBotaoCadastrar();
+    }//GEN-LAST:event_buttonLimparActionPerformed
+
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+            String descricao = jTextArea1.getText().trim();
+            int xpBonus = Integer.parseInt(campoXp.getText().trim());
+
+            Campanha campanhaSelecionada = (Campanha) comboCampanha.getSelectedItem();
+            if (campanhaSelecionada == null) {
+                JOptionPane.showMessageDialog(this, "Selecione uma campanha.");
+                return;
+            }
+
+            String idCampanha = campanhaSelecionada.getIdCampanha();
+            String idMissao = missao.getIdMissao();
+
+            ctrlMissao.atualizarMissao(idMissao, nome, descricao, xpBonus);
+
+            sincronizarParticipantes(idCampanha, idMissao);
+            sincronizarInimigos(idMissao);
+            sincronizarRecompensas(idMissao);
+
+            missao.setNome(nome);
+            missao.setDescricao(descricao);
+            missao.setXpBonus(xpBonus);
+
+            JOptionPane.showMessageDialog(this,
+                    "Missão atualizada com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "XP bônus deve ser um número inteiro válido.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao atualizar missão: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void carregarDados() {
+        try {
+
+            javax.swing.DefaultListModel<Personagem> modelPersonagens = new javax.swing.DefaultListModel<>();
+            for (Personagem personagem : ctrlPersonagem.listarTodosOsPersonagens()) {
+                modelPersonagens.addElement(personagem);
+            }
+            listPersonagens.setModel(modelPersonagens);
+            listPersonagens.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            listPersonagens.clearSelection();
+
+            javax.swing.DefaultListModel<Monstro> modelMonstros = new javax.swing.DefaultListModel<>();
+            for (Monstro monstro : ctrlMonstro.listarTodosOsMonstros()) {
+                modelMonstros.addElement(monstro);
+            }
+            listMonstros.setModel(modelMonstros);
+            listMonstros.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            listMonstros.clearSelection();
+
+            javax.swing.DefaultListModel<Item> modelItens = new javax.swing.DefaultListModel<>();
+            for (Item item : ctrlItem.listarTodosOsItens()) {
+                modelItens.addElement(item);
+            }
+            listRecompensas.setModel(modelItens);
+            listRecompensas.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            listRecompensas.clearSelection();
+
+            comboCampanha.removeAllItems();
+
+            ArrayList<Campanha> campanhas = ctrlCampanha.listarTodasAsCampanhas();
+            for (Campanha campanha : campanhas) {
+                comboCampanha.addItem(campanha);
+            }
+            comboCampanha.setSelectedItem(null);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar dados: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void configurarEventos() {
+        buttonCadastrar.setEnabled(false);
+
+        javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        campoNome.getDocument().addDocumentListener(listener);
+        campoXp.getDocument().addDocumentListener(listener);
+        jTextArea1.getDocument().addDocumentListener(listener);
+
+        comboCampanha.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED
+                    || e.getStateChange() == java.awt.event.ItemEvent.DESELECTED) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        });
+
+        javax.swing.event.ListSelectionListener selectionListener = e -> {
+            if (!e.getValueIsAdjusting()) {
+                atualizarEstadoBotaoCadastrar();
+            }
+        };
+
+        listPersonagens.addListSelectionListener(selectionListener);
+        listMonstros.addListSelectionListener(selectionListener);
+        listRecompensas.addListSelectionListener(selectionListener);
+    }
+
+    private void atualizarEstadoBotaoCadastrar() {
+        boolean nomePreenchido = !campoNome.getText().trim().isEmpty();
+        boolean xpValido = textoEhInteiro(campoXp.getText().trim());
+        boolean descricaoPreenchida = !jTextArea1.getText().trim().isEmpty();
+        boolean campanhaSelecionada = comboCampanha.getSelectedIndex() != -1;
+
+        boolean personagensSelecionados = !listPersonagens.isSelectionEmpty();
+        boolean monstrosSelecionados = !listMonstros.isSelectionEmpty();
+        boolean recompensasSelecionadas = !listRecompensas.isSelectionEmpty();
+
+        buttonCadastrar.setEnabled(
+                nomePreenchido
+                && xpValido
+                && descricaoPreenchida
+                && campanhaSelecionada
+                && personagensSelecionados
+                && monstrosSelecionados
+                && recompensasSelecionadas
+        );
+    }
+
+    private boolean textoEhInteiro(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private <T> void selecionarNoComboPorId(javax.swing.JComboBox<T> combo, java.util.function.Function<T, String> extratorId, String idBuscado) {
+        if (idBuscado == null || idBuscado.isBlank()) {
+            combo.setSelectedItem(null);
+            return;
+        }
+
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            T item = combo.getItemAt(i);
+            if (idBuscado.equals(extratorId.apply(item))) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+
+        combo.setSelectedItem(null);
+    }
+
+    private <T> void selecionarNaListaPorIds(javax.swing.JList<T> lista, java.util.function.Function<T, String> extratorId, java.util.Collection<String> idsSelecionados) {
+        if (idsSelecionados == null || idsSelecionados.isEmpty()) {
+            lista.clearSelection();
+            return;
+        }
+
+        javax.swing.ListModel<T> model = lista.getModel();
+        java.util.List<Integer> indices = new java.util.ArrayList<>();
+
+        for (int i = 0; i < model.getSize(); i++) {
+            T item = model.getElementAt(i);
+            String id = extratorId.apply(item);
+
+            if (idsSelecionados.contains(id)) {
+                indices.add(i);
+            }
+        }
+
+        int[] arrayIndices = indices.stream().mapToInt(Integer::intValue).toArray();
+        lista.setSelectedIndices(arrayIndices);
+    }
+
+    private void selecionarDadosDaMissao() {
+        try {
+
+            String idCampanha = ctrlMissao.obterCampanhasDaMissao(missao.getIdMissao()).getFirst().getIdCampanha();
+
+            selecionarNoComboPorId(comboCampanha, Campanha::getIdCampanha, idCampanha);
+
+            // Aqui você precisa ter métodos que retornem os IDs vinculados à missão.
+            java.util.List<Personagem> participantes = ctrlCampanha.listarParticipantesDaMissao(idCampanha, missao.getIdMissao());
+            java.util.Set<String> idsPersonagens = new java.util.HashSet<>();
+            for (Personagem p : participantes) {
+                idsPersonagens.add(p.getIdPersonagem());
+            }
+            selecionarNaListaPorIds(listPersonagens, Personagem::getIdPersonagem, idsPersonagens);
+
+            java.util.List<Monstro> monstros = ctrlMissao.listarInimigosDaMissao(missao.getIdMissao());
+            java.util.Set<String> idsMonstros = new java.util.HashSet<>();
+            for (Monstro m : monstros) {
+                idsMonstros.add(m.getIdMonstro());
+            }
+            selecionarNaListaPorIds(listMonstros, Monstro::getIdMonstro, idsMonstros);
+
+            java.util.List<ItemDTO> recompensas = ctrlMissao.listarRecompensasDaMissao(missao.getIdMissao());
+            java.util.Set<String> idsItens = new java.util.HashSet<>();
+            for (ItemDTO item : recompensas) {
+                idsItens.add(item.getIdItem());
+            }
+            selecionarNaListaPorIds(listRecompensas, Item::getIdItem, idsItens);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao selecionar dados da missão: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void sincronizarParticipantes(String idCampanha, String idMissao) throws SQLException {
+        java.util.List<Personagem> selecionados = listPersonagens.getSelectedValuesList();
+        java.util.List<Personagem> atuais = ctrlCampanha.listarParticipantesDaMissao(idCampanha, idMissao);
+
+        java.util.Set<String> idsSelecionados = new java.util.HashSet<>();
+        for (Personagem p : selecionados) {
+            idsSelecionados.add(p.getIdPersonagem());
+        }
+
+        java.util.Set<String> idsAtuais = new java.util.HashSet<>();
+        for (Personagem p : atuais) {
+            idsAtuais.add(p.getIdPersonagem());
+        }
+
+        for (Personagem p : atuais) {
+            if (!idsSelecionados.contains(p.getIdPersonagem())) {
+                ctrlCampanha.desvincularPersonagemDaMissao(idCampanha, idMissao, p.getIdPersonagem());
+            }
+        }
+
+        for (Personagem p : selecionados) {
+            if (!idsAtuais.contains(p.getIdPersonagem())) {
+                ctrlCampanha.adicionarParticipanteAMissao(idCampanha, idMissao, p.getIdPersonagem());
+            }
+        }
+    }
+
+    private void sincronizarInimigos(String idMissao) throws SQLException {
+        java.util.List<Monstro> selecionados = listMonstros.getSelectedValuesList();
+        java.util.List<Monstro> atuais = ctrlMissao.listarInimigosDaMissao(idMissao);
+
+        java.util.Set<String> idsSelecionados = new java.util.HashSet<>();
+        for (Monstro m : selecionados) {
+            idsSelecionados.add(m.getIdMonstro());
+        }
+
+        java.util.Set<String> idsAtuais = new java.util.HashSet<>();
+        for (Monstro m : atuais) {
+            idsAtuais.add(m.getIdMonstro());
+        }
+
+        for (Monstro m : atuais) {
+            if (!idsSelecionados.contains(m.getIdMonstro())) {
+                ctrlMissao.removerInimigo(idMissao, m.getIdMonstro());
+            }
+        }
+
+        for (Monstro m : selecionados) {
+            if (!idsAtuais.contains(m.getIdMonstro())) {
+                ctrlMissao.adicionarInimigo(idMissao, m.getIdMonstro(), 1);
+            }
+        }
+    }
+
+    private void sincronizarRecompensas(String idMissao) throws SQLException {
+        java.util.List<Item> selecionados = listRecompensas.getSelectedValuesList();
+        java.util.List<ItemDTO> atuais = ctrlMissao.listarRecompensasDaMissao(idMissao);
+
+        java.util.Set<String> idsSelecionados = new java.util.HashSet<>();
+        for (Item item : selecionados) {
+            idsSelecionados.add(item.getIdItem());
+        }
+
+        java.util.Set<String> idsAtuais = new java.util.HashSet<>();
+        for (ItemDTO item : atuais) {
+            idsAtuais.add(item.getIdItem());
+        }
+
+        for (ItemDTO item : atuais) {
+            if (!idsSelecionados.contains(item.getIdItem())) {
+                ctrlMissao.removerRecompensa(idMissao, item.getIdItem());
+            }
+        }
+
+        for (Item item : selecionados) {
+            if (!idsAtuais.contains(item.getIdItem())) {
+                ctrlMissao.adicionarRecompensa(idMissao, item.getIdItem(), 1);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;

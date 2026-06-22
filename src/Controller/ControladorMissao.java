@@ -5,7 +5,9 @@
 package Controller;
 
 import Classes.Campanha;
+import Classes.ItemDTO;
 import Classes.Missao;
+import Classes.Monstro;
 import DAO.MissaoDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class ControladorMissao implements Controlador {
         Missao novaMissao = new Missao(nome, descricao, xpBonus);
 
         missaoDAO.inserir(novaMissao);
-        
+
         return novaMissao;
     }
 
@@ -88,7 +90,6 @@ public class ControladorMissao implements Controlador {
         missaoDAO.removerMonstro(idMissao, idMonstro);
     }
 
-
     // Adicionar recompensa a missão
     public void adicionarRecompensa(String idMissao, String idItem, int qtd) throws SQLException, IllegalArgumentException {
         if (idMissao == null || idMissao.isBlank() || idItem == null || idItem.isBlank()) {
@@ -131,5 +132,21 @@ public class ControladorMissao implements Controlador {
         }
 
         return missaoDAO.listarCampanhasPorMissao(idMissao);
+    }
+
+    public ArrayList<Monstro> listarInimigosDaMissao(String idMissao) {
+        try {
+            return missaoDAO.listarMonstrosPorMissao(idMissao);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar inimigos da missão " + idMissao, e);
+        }
+    }
+
+    public ArrayList<ItemDTO> listarRecompensasDaMissao(String idMissao) {
+        try {
+            return missaoDAO.listarRecompensasDaMissao(idMissao);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar recompensas da missão " + idMissao, e);
+        }
     }
 }

@@ -7,6 +7,7 @@ package DAO;
 import Classes.Campanha;
 import Classes.ItemDTO;
 import Classes.Missao;
+import Classes.Monstro;
 import database.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -78,12 +79,11 @@ public class MissaoDAO {
     public void removerMonstro(String idMissao, String idMonstro) throws SQLException {
         String sql = "DELETE FROM missao_monstro WHERE id_missao = ? AND id_monstro = ?";
 
-        try (Connection conn = Conexao.conectar(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, idMissao);
             stmt.setString(2, idMonstro);
-            
+
             stmt.executeUpdate();
         }
     }
@@ -174,29 +174,69 @@ public class MissaoDAO {
     // Listar todas as campanhas que possuem uma determinada missão
     public ArrayList<Campanha> listarCampanhasPorMissao(String idMissao) throws SQLException {
         ArrayList<Campanha> campanhas = new ArrayList<>();
-        
-        // JOIN entre campanha e a tabela intermediária, filtrando pelo ID da missão
-        String sql = "SELECT c.* FROM campanha c " +
-                     "JOIN campanha_missao cm ON c.id_campanha = cm.id_campanha " +
-                     "WHERE cm.id_missao = ? ORDER BY c.nome ASC";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        // JOIN entre campanha e a tabela intermediária, filtrando pelo ID da missão
+        String sql = "SELECT c.* FROM campanha c "
+                + "JOIN campanha_missao cm ON c.id_campanha = cm.id_campanha "
+                + "WHERE cm.id_missao = ? ORDER BY c.nome ASC";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMissao);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Campanha c = new Campanha(
-                        rs.getString("nome"),
-                        rs.getString("id_mestre")
+                            rs.getString("nome"),
+                            rs.getString("id_mestre")
                     );
                     c.setIdCampanha(rs.getString("id_campanha"));
-                    
+
                     campanhas.add(c);
                 }
             }
         }
         return campanhas;
+    }
+
+    public ArrayList<Monstro> listarMonstrosPorMissao(String idMissao) throws SQLException {
+        ArrayList<Monstro> monstros = new ArrayList<>();
+
+        String sql = """
+        SELECT m.id_monstro, m.nome, m.descricao, m.tipo, m.vida,
+               m.forca, m.destreza, m.constituicao, m.inteligencia,
+               m.sabedoria, m.carisma, m.cr
+        FROM monstro m
+        INNER JOIN missao_monstro mm ON m.id_monstro = mm.id_monstro
+        WHERE mm.id_missao = ?
+        """;
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idMissao);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Monstro monstro = new Monstro(
+                            rs.getString("id_monstro"),
+                            rs.getString("nome"),
+                            rs.getString("descricao"),
+                            rs.getString("tipo"),
+                            rs.getInt("vida"),
+                            rs.getInt("forca"),
+                            rs.getInt("destreza"),
+                            rs.getInt("constituicao"),
+                            rs.getInt("inteligencia"),
+                            rs.getInt("sabedoria"),
+                            rs.getInt("carisma"),
+                            rs.getInt("cr")
+                    );
+
+                    monstros.add(monstro);
+                }
+            }
+        }
+
+        return monstros;
     }
 }

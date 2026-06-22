@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Classes.Campanha;
 import Classes.ItemDTO;
 import Classes.Missao;
 import database.Conexao;
@@ -168,5 +169,34 @@ public class MissaoDAO {
             }
         }
         return missoes;
+    }
+
+    // Listar todas as campanhas que possuem uma determinada missão
+    public ArrayList<Campanha> listarCampanhasPorMissao(String idMissao) throws SQLException {
+        ArrayList<Campanha> campanhas = new ArrayList<>();
+        
+        // JOIN entre campanha e a tabela intermediária, filtrando pelo ID da missão
+        String sql = "SELECT c.* FROM campanha c " +
+                     "JOIN campanha_missao cm ON c.id_campanha = cm.id_campanha " +
+                     "WHERE cm.id_missao = ? ORDER BY c.nome ASC";
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, idMissao);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Campanha c = new Campanha(
+                        rs.getString("nome"),
+                        rs.getString("id_mestre")
+                    );
+                    c.setIdCampanha(rs.getString("id_campanha"));
+                    
+                    campanhas.add(c);
+                }
+            }
+        }
+        return campanhas;
     }
 }

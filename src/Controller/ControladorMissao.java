@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import Classes.Campanha;
 import Classes.Missao;
 import DAO.MissaoDAO;
 import java.sql.SQLException;
@@ -121,5 +122,14 @@ public class ControladorMissao implements Controlador {
     // Listar todas as missões cadastradas
     public ArrayList<Missao> listarTodasAsMissoes() throws SQLException {
         return missaoDAO.listarTodos();
+    }
+
+    // Listar todas as campanhas que possuem uma determinada missão
+    public ArrayList<Campanha> obterCampanhasDaMissao(String idMissao) throws SQLException, IllegalArgumentException {
+        if (idMissao == null || idMissao.isBlank()) {
+            throw new IllegalArgumentException("ID da missão inválido para buscar as campanhas.");
+        }
+
+        return missaoDAO.listarCampanhasPorMissao(idMissao);
     }
 }

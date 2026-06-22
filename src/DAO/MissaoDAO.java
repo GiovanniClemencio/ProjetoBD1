@@ -22,7 +22,7 @@ public class MissaoDAO {
 
     // Inserir missão
     public void inserir(Missao missao) throws SQLException {
-        String sql = "INSERT INTO missao (id_missao, nome, descricao, id_mestre, xp_bonus) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO missao (id_missao, nome, descricao, xp_bonus) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = Conexao.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -30,8 +30,6 @@ public class MissaoDAO {
             stmt.setString(1, missao.getIdMissao());
             stmt.setString(2, missao.getNome());
             stmt.setString(3, missao.getDescricao());
-            // Pega o ID do jogador que está mestrando
-            stmt.setString(4, missao.getMestre());
             stmt.setInt(5, missao.getXpBonus());
 
             stmt.executeUpdate();
@@ -52,14 +50,13 @@ public class MissaoDAO {
 
     // Atualizar missão
     public void atualizar(Missao missao) throws SQLException {
-        String sql = "UPDATE missao SET nome = ?, descricao = ?, id_mestre = ?, xp_bonus = ? WHERE id_missao = ?";
+        String sql = "UPDATE missao SET nome = ?, descricao = ?, xp_bonus = ? WHERE id_missao = ?";
 
         try (Connection conn = Conexao.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, missao.getNome());
             stmt.setString(2, missao.getDescricao());
-            stmt.setString(3, missao.getMestre());
             stmt.setInt(4, missao.getXpBonus());
             stmt.setString(5, missao.getIdMissao());
 

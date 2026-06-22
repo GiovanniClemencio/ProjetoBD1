@@ -50,9 +50,10 @@ CREATE TABLE campanha_personagem (
 CREATE TABLE item (
     id_item VARCHAR(36) PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    raridade VARCHAR(50) NOT NULL,
-    custo DOUBLE NOT NULL DEFAULT 0.0,
-    peso DOUBLE NOT NULL DEFAULT 0.0
+    raridade VARCHAR(50),
+    custo DOUBLE DEFAULT 0.0,
+    peso DOUBLE DEFAULT 0.0,
+    descricao TEXT
 );
 
 CREATE TABLE inventario (
@@ -97,15 +98,6 @@ CREATE TABLE monstro (
     cr INT NOT NULL
 );
 
-CREATE TABLE item (
-    id_item VARCHAR(36) PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    raridade VARCHAR(50),
-    custo DOUBLE DEFAULT 0.0,
-    peso DOUBLE DEFAULT 0.0,
-    descricao TEXT
-);
-
 CREATE TABLE monstro_drop (
     id_monstro VARCHAR(36),
     id_item VARCHAR(36),
@@ -120,9 +112,17 @@ CREATE TABLE missao (
     id_missao VARCHAR(36) PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
-    id_mestre VARCHAR(36),
-    xp_bonus INT DEFAULT 0,
-    FOREIGN KEY (id_mestre) REFERENCES jogador(id_jogador) ON DELETE SET NULL
+    xp_bonus INT DEFAULT 0
+);
+
+CREATE TABLE campanha_missao (
+    id_campanha VARCHAR(36),
+    id_missao VARCHAR(36),
+    concluido BOOLEAN NOT NULL DEFAULT FALSE,
+    
+    PRIMARY KEY (id_campanha, id_missao),
+    FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,
+    FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE
 );
 
 CREATE TABLE campanha_missao_personagem (
@@ -152,14 +152,4 @@ CREATE TABLE missao_item (
     PRIMARY KEY (id_missao, id_item),
     FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE,
     FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
-);
-
-CREATE TABLE campanha_missao (
-    id_campanha VARCHAR(36),
-    id_missao VARCHAR(36),
-    concluido BOOLEAN NOT NULL DEFAULT FALSE,
-    
-    PRIMARY KEY (id_campanha, id_missao),
-    FOREIGN KEY (id_campanha) REFERENCES campanha(id_campanha) ON DELETE CASCADE,
-    FOREIGN KEY (id_missao) REFERENCES missao(id_missao) ON DELETE CASCADE
 );

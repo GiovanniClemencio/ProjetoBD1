@@ -14,7 +14,7 @@ public class Missao {
     private String idMissao;
     private String nome;
     private String descricao;
-    private String idMestre;
+    // private String idMestre; Redundante não? Quem está mestrando a campanha é quem vai mestrar a missão
 
     private int xpBonus;
 
@@ -22,7 +22,6 @@ public class Missao {
         this.idMissao = UUID.randomUUID().toString();
         this.nome = nome;
         this.descricao = descricao;
-        this.idMestre = idMestre;
         this.xpBonus = xpBonus;
     }
 
@@ -36,10 +35,6 @@ public class Missao {
 
     public String getDescricao() {
         return descricao;
-    }
-
-    public String getMestre() {
-        return idMestre;
     }
 
     public int getXpBonus() {
@@ -58,10 +53,6 @@ public class Missao {
         this.descricao = descricao;
     }
 
-    public void setMestre(String idMestre) {
-        this.idMestre = idMestre;
-    }
-
     public void setXpBonus(int xpBonus) {
         this.xpBonus = xpBonus;
     }
@@ -74,8 +65,7 @@ public class Missao {
     public String toStringResumo() {
         return "Missao{" + "idMissao=" + idMissao + 
                 "\n nome=" + nome + 
-                "\n descricao=" + descricao + 
-                "\n idMestre=" + idMestre + 
+                "\n descricao=" + descricao +
                 "\n xpBonus=" + xpBonus + '}' + "\n\n";
     }
 }

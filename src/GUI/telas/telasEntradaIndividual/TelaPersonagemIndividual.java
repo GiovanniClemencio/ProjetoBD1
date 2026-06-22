@@ -7,6 +7,7 @@ package GUI.telas.telasEntradaIndividual;
 import Classes.Campanha;
 import Classes.Personagem;
 import Controller.GerenciadorControladores;
+import GUI.formularios.edicaoPersonagem;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
 import GUI.telas.TelaInicial;
@@ -82,6 +83,11 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         jScrollPane1.setViewportView(textAreaPersonagem);
 
         buttonEditar.setText("Editar");
+        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditarActionPerformed(evt);
+            }
+        });
 
         buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
         buttonExcluir.setText("Excluir");
@@ -349,6 +355,17 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         dialog.setVisible(true);
         dispose();
     }//GEN-LAST:event_buttonMissoesActionPerformed
+
+    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+        edicaoPersonagem dialog = new edicaoPersonagem(this, true, personagem, controladores, () -> {
+            new TelaPersonagemIndividual(this, personagem, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            });
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void carregarConteudo(){
         textAreaPersonagem.setText(personagem.toStringResumo());

@@ -6,6 +6,7 @@ package GUI.telas.telasEntradaIndividual;
 
 import Classes.Missao;
 import Controller.GerenciadorControladores;
+import GUI.formularios.edicaoMissao;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
 import GUI.telas.TelaInicial;
@@ -81,6 +82,11 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
         jScrollPane1.setViewportView(textAreaMissao);
 
         buttonEditar.setText("Editar");
+        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditarActionPerformed(evt);
+            }
+        });
 
         buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
         buttonExcluir.setText("Excluir");
@@ -348,6 +354,17 @@ public class TelaMissaoIndividual extends javax.swing.JFrame {
         dialog.setVisible(true);
         dispose();
     }//GEN-LAST:event_buttonMissoesActionPerformed
+
+    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+        edicaoMissao dialog = new edicaoMissao(this, true, controladores, missao, () -> {
+            new TelaMissaoIndividual(this, missao, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            });
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void carregarConteudo(){
         textAreaMissao.setText(missao.toStringResumo());

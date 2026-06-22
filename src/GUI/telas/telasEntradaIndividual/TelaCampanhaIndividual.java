@@ -6,6 +6,7 @@ package GUI.telas.telasEntradaIndividual;
 
 import Classes.Campanha;
 import Controller.GerenciadorControladores;
+import GUI.formularios.edicaoCampanha;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
 import GUI.telas.TelaInicial;
@@ -23,19 +24,19 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
 
     private final java.awt.Frame parent;
     private final Campanha campanha;
-    private final GerenciadorControladores controladores; 
+    private final GerenciadorControladores controladores;
     private final Runnable aoFechar;
-    
+
     public TelaCampanhaIndividual(java.awt.Frame parent, Campanha campanha, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.campanha = campanha;
         this.controladores = controladores;
         this.aoFechar = aoFechar;
         initComponents();
-        
+
         titulo.setText(campanha.getNome());
         carregarConteudo();
-        
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -81,6 +82,11 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
         jScrollPane1.setViewportView(textAreaCampanha);
 
         buttonEditar.setText("Editar");
+        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditarActionPerformed(evt);
+            }
+        });
 
         buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
         buttonExcluir.setText("Excluir");
@@ -287,43 +293,43 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonInicioActionPerformed
 
     private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
-        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_buttonCampanhasActionPerformed
 
     private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
-        TelaJogadores dialog = new TelaJogadores(this, true, controladores, ()-> {
+        TelaJogadores dialog = new TelaJogadores(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();  
+        dispose();
     }//GEN-LAST:event_buttonJogadoresActionPerformed
 
     private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
-        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, ()-> {
+        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();  
+        dispose();
     }//GEN-LAST:event_buttonPersonagensActionPerformed
 
     private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
-        TelaClasses dialog = new TelaClasses(this, true, controladores, ()-> {
+        TelaClasses dialog = new TelaClasses(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_buttonClassesActionPerformed
 
     private void buttonMonstrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMonstrosActionPerformed
-        TelaMonstros dialog = new TelaMonstros(this, true, controladores, ()-> {
+        TelaMonstros dialog = new TelaMonstros(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -332,7 +338,7 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonMonstrosActionPerformed
 
     private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
-        TelaItens dialog = new TelaItens(this, true, controladores, ()-> {
+        TelaItens dialog = new TelaItens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -341,7 +347,7 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonItensActionPerformed
 
     private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
-        TelaMissoes dialog = new TelaMissoes(this, true, controladores, ()-> {
+        TelaMissoes dialog = new TelaMissoes(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -349,7 +355,18 @@ public class TelaCampanhaIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonMissoesActionPerformed
 
-    private void carregarConteudo(){
+    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+        edicaoCampanha dialog = new edicaoCampanha(this, true, controladores, campanha, () -> {
+            new TelaCampanhaIndividual(this, campanha, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            });
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonEditarActionPerformed
+
+    private void carregarConteudo() {
         textAreaCampanha.setText(campanha.toStringResumo());
     }
 

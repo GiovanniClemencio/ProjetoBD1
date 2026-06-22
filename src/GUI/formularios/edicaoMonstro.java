@@ -500,7 +500,7 @@ public class edicaoMonstro extends javax.swing.JDialog {
                 && wisValido
                 && charValido
                 && crValido
-                && temDropSelecionado
+               
         );
     }
 

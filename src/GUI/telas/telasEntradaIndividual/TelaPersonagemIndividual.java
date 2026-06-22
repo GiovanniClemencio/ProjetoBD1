@@ -405,7 +405,7 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
-                    "Erro ao carregar conteúdo da campanha: " + e.getMessage(),
+                    "Erro ao carregar conteúdo do personagem: " + e.getMessage(),
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
         }

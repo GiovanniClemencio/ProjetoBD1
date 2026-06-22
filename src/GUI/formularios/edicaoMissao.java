@@ -459,8 +459,7 @@ public class edicaoMissao extends javax.swing.JDialog {
                 && descricaoPreenchida
                 && campanhaSelecionada
                 && personagensSelecionados
-                && monstrosSelecionados
-                && recompensasSelecionadas
+
         );
     }
 

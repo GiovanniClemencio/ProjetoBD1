@@ -445,8 +445,7 @@ public class cadastroMissao extends javax.swing.JDialog {
                 && descricaoPreenchida
                 && campanhaSelecionada
                 && personagensSelecionados
-                && monstrosSelecionados
-                && recompensasSelecionadas
+
         );
     }
 

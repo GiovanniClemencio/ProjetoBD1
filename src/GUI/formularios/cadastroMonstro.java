@@ -473,7 +473,7 @@ public class cadastroMonstro extends javax.swing.JDialog {
                 && wisValido
                 && charValido
                 && crValido
-                && temDropSelecionado
+                
         );
     }
 

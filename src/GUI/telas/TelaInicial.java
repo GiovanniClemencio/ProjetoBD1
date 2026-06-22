@@ -4,7 +4,18 @@
  */
 package GUI.telas;
 
+import Classes.Campanha;
+import Classes.Jogador;
+import Classes.Personagem;
+import Controller.ControladorCampanha;
+import Controller.ControladorJogador;
+import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
+import GUI.telas.telasEntradaIndividual.TelaCampanhaIndividual;
+import GUI.telas.telasEntradaIndividual.TelaJogadorIndividual;
+import GUI.telas.telasEntradaIndividual.TelaPersonagemIndividual;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -13,10 +24,18 @@ import Controller.GerenciadorControladores;
 public class TelaInicial extends javax.swing.JFrame {
 
     private final GerenciadorControladores controladores;
-    
+    private final ControladorCampanha ctrlCampanha;
+    private final ControladorJogador ctrlJogador;
+    private final ControladorPersonagem ctrlPersonagem;
+
     public TelaInicial(GerenciadorControladores controladores) {
         this.controladores = controladores;
+        this.ctrlCampanha = controladores.obter(ControladorCampanha.class);
+        this.ctrlJogador = controladores.obter(ControladorJogador.class);
+        this.ctrlPersonagem = controladores.obter(ControladorPersonagem.class);
+
         initComponents();
+        carregarCombos();
     }
 
     /**
@@ -93,21 +112,18 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Personagem: ");
 
-        comboCampanha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboCampanha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboCampanhaActionPerformed(evt);
             }
         });
 
-        comboJogador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboJogador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboJogadorActionPerformed(evt);
             }
         });
 
-        comboPersonagem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboPersonagem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboPersonagemActionPerformed(evt);
@@ -115,10 +131,25 @@ public class TelaInicial extends javax.swing.JFrame {
         });
 
         buttonSelecionarCampanha.setText("Abrir");
+        buttonSelecionarCampanha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSelecionarCampanhaActionPerformed(evt);
+            }
+        });
 
         buttonSelecionarJogador.setText("Abrir");
+        buttonSelecionarJogador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSelecionarJogadorActionPerformed(evt);
+            }
+        });
 
         buttonSelecionarPersonagem.setText("Abrir");
+        buttonSelecionarPersonagem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSelecionarPersonagemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -307,7 +338,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboCampanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCampanhaActionPerformed
-        
+
     }//GEN-LAST:event_comboCampanhaActionPerformed
 
     private void comboJogadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboJogadorActionPerformed
@@ -319,43 +350,43 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_comboPersonagemActionPerformed
 
     private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
-        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();  
+        dispose();
     }//GEN-LAST:event_buttonCampanhasActionPerformed
 
     private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
-        TelaJogadores dialog = new TelaJogadores(this, true, controladores, ()-> {
+        TelaJogadores dialog = new TelaJogadores(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();  
+        dispose();
     }//GEN-LAST:event_buttonJogadoresActionPerformed
 
     private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
-        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, ()-> {
+        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();  
+        dispose();
     }//GEN-LAST:event_buttonPersonagensActionPerformed
 
     private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
-        TelaClasses dialog = new TelaClasses(this, true, controladores, ()-> {
+        TelaClasses dialog = new TelaClasses(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-        dispose();  
+        dispose();
     }//GEN-LAST:event_buttonClassesActionPerformed
 
     private void buttonMonstrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMonstrosActionPerformed
-        TelaMonstros dialog = new TelaMonstros(this, true, controladores, ()-> {
+        TelaMonstros dialog = new TelaMonstros(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -364,7 +395,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonMonstrosActionPerformed
 
     private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
-        TelaItens dialog = new TelaItens(this, true, controladores, ()-> {
+        TelaItens dialog = new TelaItens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -373,7 +404,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonItensActionPerformed
 
     private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
-        TelaMissoes dialog = new TelaMissoes(this, true, controladores, ()-> {
+        TelaMissoes dialog = new TelaMissoes(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -381,7 +412,128 @@ public class TelaInicial extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonMissoesActionPerformed
 
-    
+    private void buttonSelecionarCampanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelecionarCampanhaActionPerformed
+        Campanha campanhaSelecionada = (Campanha) comboCampanha.getSelectedItem();
+
+        if (campanhaSelecionada == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecione uma campanha primeiro.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        this.setVisible(false);
+
+        TelaCampanhaIndividual tela = new TelaCampanhaIndividual(
+                this,
+                campanhaSelecionada,
+                controladores,
+                () -> this.setVisible(true)
+        );
+
+        tela.setLocationRelativeTo(this);
+        tela.setVisible(true);
+    }//GEN-LAST:event_buttonSelecionarCampanhaActionPerformed
+
+    private void buttonSelecionarJogadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelecionarJogadorActionPerformed
+        Jogador jogadorSelecionado = (Jogador) comboJogador.getSelectedItem();
+
+        if (jogadorSelecionado == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecione um jogador primeiro.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        this.setVisible(false);
+
+        TelaJogadorIndividual tela = new TelaJogadorIndividual(
+                this,
+                jogadorSelecionado,
+                controladores,
+                () -> this.setVisible(true)
+        );
+
+        tela.setLocationRelativeTo(this);
+        tela.setVisible(true);
+    }//GEN-LAST:event_buttonSelecionarJogadorActionPerformed
+
+    private void buttonSelecionarPersonagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelecionarPersonagemActionPerformed
+        Personagem personagemSelecionado = (Personagem) comboPersonagem.getSelectedItem();
+
+        if (personagemSelecionado == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecione um personagem primeiro.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        this.setVisible(false);
+
+        TelaPersonagemIndividual tela = new TelaPersonagemIndividual(
+                this,
+                personagemSelecionado,
+                controladores,
+                () -> this.setVisible(true)
+        );
+
+        tela.setLocationRelativeTo(this);
+        tela.setVisible(true);
+    }//GEN-LAST:event_buttonSelecionarPersonagemActionPerformed
+
+    private void carregarCombos() {
+        carregarCampanhasCombo();
+        carregarJogadoresCombo();
+        carregarPersonagensCombo();
+    }
+
+    private void carregarCampanhasCombo() {
+        comboCampanha.removeAllItems();
+
+        try {
+            for (Campanha campanha : ctrlCampanha.listarTodasAsCampanhas()) {
+                comboCampanha.addItem(campanha);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar campanhas: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void carregarJogadoresCombo() {
+        comboJogador.removeAllItems();
+
+        try {
+            for (Jogador jogador : ctrlJogador.listarTodosOsJogadores()) {
+                comboJogador.addItem(jogador);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar jogadores: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void carregarPersonagensCombo() {
+        comboPersonagem.removeAllItems();
+
+        try {
+            for (Personagem personagem : ctrlPersonagem.listarTodosOsPersonagens()) {
+                comboPersonagem.addItem(personagem);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar personagens: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCampanhas;
@@ -395,9 +547,9 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JButton buttonSelecionarCampanha;
     private javax.swing.JButton buttonSelecionarJogador;
     private javax.swing.JButton buttonSelecionarPersonagem;
-    private javax.swing.JComboBox<String> comboCampanha;
-    private javax.swing.JComboBox<String> comboJogador;
-    private javax.swing.JComboBox<String> comboPersonagem;
+    private javax.swing.JComboBox<Campanha> comboCampanha;
+    private javax.swing.JComboBox<Jogador> comboJogador;
+    private javax.swing.JComboBox<Personagem> comboPersonagem;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

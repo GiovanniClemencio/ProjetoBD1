@@ -6,7 +6,6 @@ package Controller;
 
 import Classes.Missao;
 import DAO.MissaoDAO;
-import DAO.PersonagemDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -17,11 +16,9 @@ import java.util.ArrayList;
 public class ControladorMissao implements Controlador {
 
     private final MissaoDAO missaoDAO;
-    private final PersonagemDAO personagemDAO;
 
     public ControladorMissao() {
         this.missaoDAO = new MissaoDAO();
-        this.personagemDAO = new PersonagemDAO();
     }
 
     // Criar Missão
@@ -96,6 +93,15 @@ public class ControladorMissao implements Controlador {
             throw new IllegalArgumentException("A quantidade de itens deve ser maior que zero!");
         }
         missaoDAO.adicionarRecompensa(idMissao, idItem, qtd);
+    }
+
+    // Remover item da missão
+    public void removerRecompensa(String idMissao, String idItem) throws SQLException, IllegalArgumentException {
+        if (idMissao == null || idMissao.isBlank() || idItem == null || idItem.isBlank()) {
+            throw new IllegalArgumentException("IDs inválidos para remover recompensa.");
+        }
+
+        missaoDAO.removerItemDaMissao(idMissao, idItem);
     }
 
     // Retornar XP da missão

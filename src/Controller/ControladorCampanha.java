@@ -171,9 +171,7 @@ public class ControladorCampanha implements Controlador {
 
     // Desvincular participante da missão
     public void desvincularPersonagemDaMissao(String idCampanha, String idMissao, String idPersonagem) throws SQLException, IllegalArgumentException {
-        if (idCampanha == null || idCampanha.isBlank() || 
-            idMissao == null || idMissao.isBlank() || 
-            idPersonagem == null || idPersonagem.isBlank()) {
+        if (idCampanha == null || idCampanha.isBlank() || idMissao == null || idMissao.isBlank() || idPersonagem == null || idPersonagem.isBlank()) {
             throw new IllegalArgumentException("IDs inválidos para remover o personagem da missão.");
         }
 

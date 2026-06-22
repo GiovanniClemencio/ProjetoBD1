@@ -23,8 +23,7 @@ public class MissaoDAO {
     public void inserir(Missao missao) throws SQLException {
         String sql = "INSERT INTO missao (id_missao, nome, descricao, xp_bonus) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, missao.getIdMissao());
             stmt.setString(2, missao.getNome());
@@ -39,8 +38,7 @@ public class MissaoDAO {
     public void excluir(String idMissao) throws SQLException {
         String sql = "DELETE FROM missao WHERE id_missao = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMissao);
             stmt.executeUpdate();
@@ -51,8 +49,7 @@ public class MissaoDAO {
     public void atualizar(Missao missao) throws SQLException {
         String sql = "UPDATE missao SET nome = ?, descricao = ?, xp_bonus = ? WHERE id_missao = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, missao.getNome());
             stmt.setString(2, missao.getDescricao());
@@ -65,8 +62,8 @@ public class MissaoDAO {
 
     // Vincular uma certa quantidade de um monstro a missão
     public void adicionarMonstro(String idMissao, String idMonstro, int qtd) throws SQLException {
-        String sql = "INSERT INTO missao_monstro (id_missao, id_monstro, quantidade) VALUES (?, ?, ?) " +
-                     "ON DUPLICATE KEY UPDATE quantidade = quantidade + ?";
+        String sql = "INSERT INTO missao_monstro (id_missao, id_monstro, quantidade) VALUES (?, ?, ?) "
+                + "ON DUPLICATE KEY UPDATE quantidade = quantidade + ?";
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, idMissao);
             stmt.setString(2, idMonstro);
@@ -78,8 +75,8 @@ public class MissaoDAO {
 
     // Vincular a recompensa a missão
     public void adicionarRecompensa(String idMissao, String idItem, int qtd) throws SQLException {
-        String sql = "INSERT INTO missao_item (id_missao, id_item, quantidade) VALUES (?, ?, ?) " +
-                     "ON DUPLICATE KEY UPDATE quantidade = quantidade + ?";
+        String sql = "INSERT INTO missao_item (id_missao, id_item, quantidade) VALUES (?, ?, ?) "
+                + "ON DUPLICATE KEY UPDATE quantidade = quantidade + ?";
         try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, idMissao);
             stmt.setString(2, idItem);
@@ -89,15 +86,25 @@ public class MissaoDAO {
         }
     }
 
+    // Remover um item de recompensa da missão
+    public void removerItemDaMissao(String idMissao, String idItem) throws SQLException {
+        String sql = "DELETE FROM missao_item WHERE id_missao = ? AND id_item = ?";
+
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, idMissao);
+            stmt.setString(2, idItem);
+            stmt.executeUpdate();
+        }
+    }
+
     // Retornar o XP da missão
     public int buscarXpBonusDaMissao(String idMissao) throws SQLException {
         String sql = "SELECT xp_bonus FROM missao WHERE id_missao = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, idMissao);
-            
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt("xp_bonus");
@@ -112,16 +119,15 @@ public class MissaoDAO {
         ArrayList<ItemDTO> recompensas = new ArrayList<>();
         String sql = "SELECT id_item, quantidade FROM missao_item WHERE id_missao = ?";
 
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexao.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, idMissao);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     ItemDTO drop = new ItemDTO(
-                        rs.getString("id_item"),
-                        rs.getInt("quantidade")
+                            rs.getString("id_item"),
+                            rs.getInt("quantidade")
                     );
                     recompensas.add(drop);
                 }
@@ -142,12 +148,12 @@ public class MissaoDAO {
                         rs.getString("nome"),
                         rs.getString("descricao"),
                         rs.getString("id_mestre"),
-                        rs.getInt( "xp_bonus")
+                        rs.getInt("xp_bonus")
                 );
                 m.setIdMissao(rs.getString("id_missao"));
                 missoes.add(m);
             }
         }
         return missoes;
-    } 
+    }
 }

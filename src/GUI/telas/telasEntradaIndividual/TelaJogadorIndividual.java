@@ -6,6 +6,8 @@ package GUI.telas.telasEntradaIndividual;
 
 import Classes.Jogador;
 import Controller.GerenciadorControladores;
+import GUI.formularios.edicaoItem;
+import GUI.formularios.edicaoJogador;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
 import GUI.telas.TelaInicial;
@@ -84,6 +86,11 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
         buttonExcluir.setText("Excluir");
 
         buttonEditar.setText("Editar");
+        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -348,6 +355,17 @@ public class TelaJogadorIndividual extends javax.swing.JFrame {
         dialog.setVisible(true);
         dispose();
     }//GEN-LAST:event_buttonMissoesActionPerformed
+
+    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+        edicaoJogador dialog = new edicaoJogador(this, true, controladores, jogador, () -> {
+            new TelaJogadorIndividual(this, jogador, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            });
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void carregarConteudo(){
         textAreaJogador.setText(jogador.toStringResumo());

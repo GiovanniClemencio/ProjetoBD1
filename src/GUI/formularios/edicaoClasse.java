@@ -6,6 +6,8 @@ package GUI.formularios;
 
 import Classes.Classe;
 import Classes.Jogador;
+import Controller.ControladorClasse;
+import Controller.GerenciadorControladores;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -18,14 +20,20 @@ public class edicaoClasse extends javax.swing.JDialog {
 
     private final java.awt.Frame parent;
     private final Classe classe;
+    private final GerenciadorControladores controladores;
+    private final ControladorClasse ctrlClasse;
     private final Runnable aoFechar;
     
-    public edicaoClasse(java.awt.Frame parent, boolean modal, Classe classe, Runnable aoFechar) {
+    public edicaoClasse(java.awt.Frame parent, boolean modal, Classe classe, GerenciadorControladores controladores, Runnable aoFechar) {
         super(parent, modal);
         this.parent = parent;
+        this.controladores = controladores;
         this.classe = classe;
+        this.ctrlClasse = controladores.obter(ControladorClasse.class);
         this.aoFechar = aoFechar;
+        
         initComponents();
+        configurarEventos();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -62,6 +70,11 @@ public class edicaoClasse extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(125, 125, 156));
 
         buttonCadastrar.setText("Editar");
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastrarActionPerformed(evt);
+            }
+        });
 
         buttonLimpar.setLabel("Limpar");
         buttonLimpar.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +192,29 @@ public class edicaoClasse extends javax.swing.JDialog {
         textAreaDescricao.setText("");
         atualizarEstadoBotaoCadastrar();
     }//GEN-LAST:event_buttonLimparActionPerformed
+
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
+        try {
+            String nome = campoNome.getText().trim();
+            String descricao = textAreaDescricao.getText().trim();
+
+            ctrlClasse.atualizarClasse(classe.getIdClasse(), nome, descricao);
+
+            JOptionPane.showMessageDialog(this, "Classe atualizada com sucesso!");
+            dispose();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao atualizar classe: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Validação",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
 
     private void configurarEventos() {
         buttonCadastrar.setEnabled(false);

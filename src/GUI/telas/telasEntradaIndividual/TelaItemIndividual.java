@@ -6,6 +6,7 @@ package GUI.telas.telasEntradaIndividual;
 
 import Classes.Item;
 import Controller.GerenciadorControladores;
+import GUI.formularios.edicaoItem;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
 import GUI.telas.TelaInicial;
@@ -198,6 +199,11 @@ public class TelaItemIndividual extends javax.swing.JFrame {
         jScrollPane1.setViewportView(textAreaItem);
 
         buttonEditar.setText("Editar");
+        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditarActionPerformed(evt);
+            }
+        });
 
         buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
         buttonExcluir.setText("Excluir");
@@ -347,6 +353,17 @@ public class TelaItemIndividual extends javax.swing.JFrame {
         dialog.setVisible(true);
         dispose();
     }//GEN-LAST:event_buttonMissoesActionPerformed
+
+    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+        edicaoItem dialog = new edicaoItem(this, true, controladores, item, () -> {
+            new TelaItemIndividual(this, item, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            });
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void carregarConteudo(){
         textAreaItem.setText(item.toStringResumo());

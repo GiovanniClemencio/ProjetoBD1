@@ -6,6 +6,7 @@ package GUI.telas.telasEntradaIndividual;
 
 import Classes.Monstro;
 import Controller.GerenciadorControladores;
+import GUI.formularios.edicaoMonstro;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
 import GUI.telas.TelaInicial;
@@ -199,6 +200,11 @@ public class TelaMonstroIndividual extends javax.swing.JFrame {
         jScrollPane1.setViewportView(textAreaMonstro);
 
         buttonEditar.setText("Editar");
+        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditarActionPerformed(evt);
+            }
+        });
 
         buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
         buttonExcluir.setText("Excluir");
@@ -348,6 +354,17 @@ public class TelaMonstroIndividual extends javax.swing.JFrame {
         dialog.setVisible(true);
         dispose();
     }//GEN-LAST:event_buttonMissoesActionPerformed
+
+    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+        edicaoMonstro dialog = new edicaoMonstro(this, true, monstro, controladores, () -> {
+            new TelaMonstroIndividual(this, monstro, controladores, () -> {
+                new TelaInicial(controladores).setVisible(true);
+            });
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void carregarConteudo(){
         textAreaMonstro.setText(monstro.toStringResumo());

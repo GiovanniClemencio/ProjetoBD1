@@ -40,6 +40,23 @@ public class Monstro {
         this.cr = cr;
     }
 
+    public Monstro(String idMonstro, String nome, String descricao, String tipo, int vida, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, int cr) {
+        this.idMonstro = idMonstro;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.tipo = tipo;
+        this.vida = vida;
+        this.forca = forca;
+        this.destreza = destreza;
+        this.constituicao = constituicao;
+        this.inteligencia = inteligencia;
+        this.sabedoria = sabedoria;
+        this.carisma = carisma;
+        this.cr = cr;
+    }
+    
+    
+
     public String getIdMonstro() {
         return idMonstro;
     }

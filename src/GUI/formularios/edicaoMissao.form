@@ -169,6 +169,9 @@
           <Properties>
             <Property name="label" type="java.lang.String" value="Limpar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonLimparActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="campoNome">
           <Events>

@@ -5,12 +5,16 @@
 package GUI.telas.telasEntradaIndividual;
 
 import Classes.Campanha;
+import Classes.Item;
 import Classes.ItemDTO;
 import Classes.Personagem;
 import Classes.PersonagemClasseDTO;
+import Controller.ControladorItem;
 import Controller.ControladorPersonagem;
 import Controller.GerenciadorControladores;
+import GUI.formularios.adicionarItemPersonagem;
 import GUI.formularios.edicaoPersonagem;
+import GUI.formularios.removerItemPersonagem;
 import GUI.telas.TelaCampanhas;
 import GUI.telas.TelaClasses;
 import GUI.telas.TelaInicial;
@@ -33,19 +37,21 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
     private final Personagem personagem;
     private final GerenciadorControladores controladores;
     private final ControladorPersonagem ctrlPersonagem;
+    private final ControladorItem ctrlItem;
     private Runnable aoFechar;
-    
+
     public TelaPersonagemIndividual(java.awt.Frame parent, Personagem personagem, GerenciadorControladores controladores, Runnable aoFechar) {
         this.parent = parent;
         this.personagem = personagem;
         this.controladores = controladores;
         this.ctrlPersonagem = controladores.obter(ControladorPersonagem.class);
+        this.ctrlItem = controladores.obter(ControladorItem.class);
         this.aoFechar = aoFechar;
         initComponents();
-        
+
         titulo.setText(personagem.getNome());
         carregarConteudo();
-        
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -71,6 +77,10 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         textAreaPersonagem = new javax.swing.JTextArea();
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
+        buttonAdicionarClasse = new javax.swing.JButton();
+        buttonRemoverClasse = new javax.swing.JButton();
+        buttonAdicionarItem = new javax.swing.JButton();
+        buttonRemoverItem = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         buttonCampanhas = new javax.swing.JButton();
         buttonInicio = new javax.swing.JButton();
@@ -101,22 +111,50 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         buttonExcluir.setForeground(new java.awt.Color(255, 0, 0));
         buttonExcluir.setText("Excluir");
 
+        buttonAdicionarClasse.setText("Adicionar classe");
+
+        buttonRemoverClasse.setText("Remover classe");
+        buttonRemoverClasse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoverClasseActionPerformed(evt);
+            }
+        });
+
+        buttonAdicionarItem.setText("Adicionar item");
+        buttonAdicionarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAdicionarItemActionPerformed(evt);
+            }
+        });
+
+        buttonRemoverItem.setText("Remover item");
+        buttonRemoverItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoverItemActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))
+                        .addComponent(buttonExcluir))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(buttonAdicionarClasse)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonRemoverClasse)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAdicionarItem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonRemoverItem))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,9 +163,16 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonExcluir)
-                    .addComponent(buttonEditar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonAdicionarClasse)
+                    .addComponent(buttonRemoverClasse)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buttonAdicionarItem)
+                        .addComponent(buttonRemoverItem)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonEditar)
+                    .addComponent(buttonExcluir))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(51, 104, 156));
@@ -262,7 +307,7 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(63, 63, 63)
                 .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,7 +342,7 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInicioActionPerformed
         this.aoFechar = null;
-        
+
         TelaInicial dialog = new TelaInicial(controladores);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
@@ -306,8 +351,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonCampanhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCampanhasActionPerformed
         this.aoFechar = null;
-        
-        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, ()-> {
+
+        TelaCampanhas dialog = new TelaCampanhas(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -317,8 +362,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonJogadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJogadoresActionPerformed
         this.aoFechar = null;
-        
-        TelaJogadores dialog = new TelaJogadores(this, true, controladores, ()-> {
+
+        TelaJogadores dialog = new TelaJogadores(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -328,8 +373,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonPersonagensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPersonagensActionPerformed
         this.aoFechar = null;
-        
-        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, ()-> {
+
+        TelaPersonagens dialog = new TelaPersonagens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -339,8 +384,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClassesActionPerformed
         this.aoFechar = null;
-        
-        TelaClasses dialog = new TelaClasses(this, true, controladores, ()-> {
+
+        TelaClasses dialog = new TelaClasses(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -350,8 +395,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonMonstrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMonstrosActionPerformed
         this.aoFechar = null;
-        
-        TelaMonstros dialog = new TelaMonstros(this, true, controladores, ()-> {
+
+        TelaMonstros dialog = new TelaMonstros(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -361,8 +406,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonItensActionPerformed
         this.aoFechar = null;
-        
-        TelaItens dialog = new TelaItens(this, true, controladores, ()-> {
+
+        TelaItens dialog = new TelaItens(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -372,8 +417,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
     private void buttonMissoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMissoesActionPerformed
         this.aoFechar = null;
-        
-        TelaMissoes dialog = new TelaMissoes(this, true, controladores, ()-> {
+
+        TelaMissoes dialog = new TelaMissoes(this, true, controladores, () -> {
             new TelaInicial(controladores).setVisible(true);
         });
         dialog.setLocationRelativeTo(this);
@@ -392,6 +437,32 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_buttonEditarActionPerformed
 
+    private void buttonRemoverClasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverClasseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonRemoverClasseActionPerformed
+
+    private void buttonRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverItemActionPerformed
+        this.setVisible(false);
+
+        removerItemPersonagem dialog = new removerItemPersonagem(this, true, controladores, personagem, () -> {
+            carregarConteudo();
+            this.setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_buttonRemoverItemActionPerformed
+
+    private void buttonAdicionarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarItemActionPerformed
+        this.setVisible(false);
+
+        adicionarItemPersonagem dialog = new adicionarItemPersonagem(this, true, controladores, personagem, () -> {
+            carregarConteudo();
+            this.setVisible(true);
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_buttonAdicionarItemActionPerformed
+
     private void carregarConteudo() {
         try {
             textAreaPersonagem.setText(personagem.toStringResumo());
@@ -409,7 +480,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
 
             sb.append("\n=== INVENTÁRIO ===\n");
             for (ItemDTO i : inventario) {
-                sb.append(i).append("\n");
+                Item item = ctrlItem.buscarItem(i.getIdItem());
+                sb.append(item).append(" QTD: " + i.getQuantidade()).append("\n");
             }
 
             sb.append("\n=== Classes ===\n");
@@ -428,6 +500,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAdicionarClasse;
+    private javax.swing.JButton buttonAdicionarItem;
     private javax.swing.JButton buttonCampanhas;
     private javax.swing.JButton buttonClasses;
     private javax.swing.JButton buttonEditar;
@@ -438,6 +512,8 @@ public class TelaPersonagemIndividual extends javax.swing.JFrame {
     private javax.swing.JButton buttonMissoes;
     private javax.swing.JButton buttonMonstros;
     private javax.swing.JButton buttonPersonagens;
+    private javax.swing.JButton buttonRemoverClasse;
+    private javax.swing.JButton buttonRemoverItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

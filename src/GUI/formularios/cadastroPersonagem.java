@@ -45,6 +45,7 @@ public class cadastroPersonagem extends javax.swing.JDialog {
                 }
             }
         });
+        
     }
 
     /**

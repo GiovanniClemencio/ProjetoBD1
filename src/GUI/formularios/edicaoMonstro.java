@@ -500,7 +500,6 @@ public class edicaoMonstro extends javax.swing.JDialog {
                 && wisValido
                 && charValido
                 && crValido
-               
         );
     }
 
@@ -529,17 +528,26 @@ public class edicaoMonstro extends javax.swing.JDialog {
         campoChar.setText(String.valueOf(monstro.getCarisma()));
         campoCr.setText(String.valueOf(monstro.getCr()));
 
+        selecionarDropsDoMonstro();
+    }
+
+    private void selecionarDropsDoMonstro() {
         try {
             ArrayList<Item> drops = ctrlMonstro.listarDropsDoMonstro(monstro.getIdMonstro());
 
-            DefaultListModel<Item> model = new DefaultListModel<>();
-            for (Item item : drops) {
-                model.addElement(item);
-            }
-
-            listDrops.setModel(model);
-            listDrops.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            DefaultListModel<Item> model = (DefaultListModel<Item>) listDrops.getModel();
             listDrops.clearSelection();
+
+            for (int i = 0; i < model.size(); i++) {
+                Item itemDaLista = model.get(i);
+
+                for (Item drop : drops) {
+                    if (itemDaLista.getIdItem().equals(drop.getIdItem())) {
+                        listDrops.addSelectionInterval(i, i);
+                        break;
+                    }
+                }
+            }
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
@@ -548,31 +556,31 @@ public class edicaoMonstro extends javax.swing.JDialog {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void sincronizarDrops(java.util.List<Item> dropsAtuais, java.util.List<Item> dropsSelecionados) throws SQLException {
-    java.util.Set<String> idsAtuais = new java.util.HashSet<>();
-    java.util.Set<String> idsSelecionados = new java.util.HashSet<>();
+        java.util.Set<String> idsAtuais = new java.util.HashSet<>();
+        java.util.Set<String> idsSelecionados = new java.util.HashSet<>();
 
-    for (Item item : dropsAtuais) {
-        idsAtuais.add(item.getIdItem());
-    }
+        for (Item item : dropsAtuais) {
+            idsAtuais.add(item.getIdItem());
+        }
 
-    for (Item item : dropsSelecionados) {
-        idsSelecionados.add(item.getIdItem());
-    }
+        for (Item item : dropsSelecionados) {
+            idsSelecionados.add(item.getIdItem());
+        }
 
-    for (Item item : dropsAtuais) {
-        if (!idsSelecionados.contains(item.getIdItem())) {
-            ctrlMonstro.removerDropDoMonstro(monstro.getIdMonstro(), item.getIdItem());
+        for (Item item : dropsAtuais) {
+            if (!idsSelecionados.contains(item.getIdItem())) {
+                ctrlMonstro.removerDropDoMonstro(monstro.getIdMonstro(), item.getIdItem());
+            }
+        }
+
+        for (Item item : dropsSelecionados) {
+            if (!idsAtuais.contains(item.getIdItem())) {
+                ctrlMonstro.adicionarDropAoMonstro(monstro.getIdMonstro(), item.getIdItem(), 1);
+            }
         }
     }
-
-    for (Item item : dropsSelecionados) {
-        if (!idsAtuais.contains(item.getIdItem())) {
-            ctrlMonstro.adicionarDropAoMonstro(monstro.getIdMonstro(), item.getIdItem(), 1);
-        }
-    }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCadastrar;

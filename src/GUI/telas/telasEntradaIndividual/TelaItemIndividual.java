@@ -35,6 +35,7 @@ public class TelaItemIndividual extends javax.swing.JFrame {
         initComponents();
         
         titulo.setText(item.getNome());
+        carregarConteudo();
         
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
